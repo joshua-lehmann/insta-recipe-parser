@@ -30,3 +30,19 @@ LLM_MODEL = "gemma3:4b"
 # Directory where HTML files will be generated for GitHub Pages
 DOCS_DIR = "docs"
 
+# --- Force Rerun Settings ---
+# Set these flags to True to force regeneration of specific stages
+# even if cached data exists in the progress file
+
+# Force refetch captions from Instagram (useful when scraping logic changes)
+FORCE_REFETCH_CAPTIONS = False
+
+# Force reprocess captions with LLM (useful when model or prompt changes)
+FORCE_REPROCESS_LLM = False
+
+# Force re-extract thumbnails (useful when thumbnail extraction logic changes) 
+FORCE_REEXTRACT_THUMBNAILS = True
+
+# Force regenerate HTML pages (useful when template or styling changes)
+FORCE_REGENERATE_HTML = True
+

@@ -56,3 +56,667 @@
 2025-09-08 15:46:34,877 - INFO - Successfully closed login popup for https://www.instagram.com/p/DNszop50FB3/
 2025-09-08 15:46:38,047 - INFO - --> Caption fetched and progress saved.
 2025-09-08 15:46:38,047 - INFO - Sending caption for https://www.instagram.com/reel/DNszop50FB3/ to LLM (gemma3:4b)...
+2025-09-08 15:47:11,436 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:47:11,438 - INFO - Successfully processed and validated recipe: 'Protein-Paprika-Füllung'
+2025-09-08 15:47:11,444 - INFO - Generated recipe page: docs\protein-paprika-fuellung.html
+2025-09-08 15:47:11,449 - INFO - Generated index page: docs\index.html
+2025-09-08 15:47:11,450 - INFO - Updated index.html with 4 recipes
+2025-09-08 15:47:11,450 - INFO - Processing post 5/139: https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 15:47:11,450 - INFO - ====== WebDriver manager ======
+2025-09-08 15:47:13,323 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:47:13,630 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:47:13,958 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:47:16,209 - INFO - Successfully declined cookies for https://www.instagram.com/p/DN3KlBA0OvE/
+2025-09-08 15:47:18,269 - INFO - Successfully closed login popup for https://www.instagram.com/p/DN3KlBA0OvE/
+2025-09-08 15:47:21,456 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:47:21,456 - INFO - Sending caption for https://www.instagram.com/reel/DN3KlBA0OvE/ to LLM (gemma3:4b)...
+2025-09-08 15:48:40,382 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:48:40,384 - INFO - Successfully processed and validated recipe: 'Bratkartoffelsalat mit Röstkartoffeln und Röstzutaten'
+2025-09-08 15:48:40,389 - INFO - Generated recipe page: docs\bratkartoffelsalat-mit-roestkartoffeln-und-roestzutaten.html
+2025-09-08 15:48:40,394 - INFO - Generated index page: docs\index.html
+2025-09-08 15:48:40,394 - INFO - Updated index.html with 5 recipes
+2025-09-08 15:48:40,394 - INFO - Processing post 6/139: https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 15:48:40,394 - INFO - ====== WebDriver manager ======
+2025-09-08 15:48:42,412 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:48:42,722 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:48:43,027 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:48:45,348 - INFO - Successfully declined cookies for https://www.instagram.com/p/DHB0t-EyR4F/
+2025-09-08 15:48:47,409 - INFO - Successfully closed login popup for https://www.instagram.com/p/DHB0t-EyR4F/
+2025-09-08 15:48:50,634 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:48:50,634 - INFO - Sending caption for https://www.instagram.com/reel/DHB0t-EyR4F/ to LLM (gemma3:4b)...
+2025-09-08 15:49:53,101 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:49:53,102 - INFO - Successfully processed and validated recipe: 'Chicken Crust Pizza'
+2025-09-08 15:49:53,106 - INFO - Generated recipe page: docs\chicken-crust-pizza.html
+2025-09-08 15:49:53,109 - INFO - Generated index page: docs\index.html
+2025-09-08 15:49:53,109 - INFO - Updated index.html with 6 recipes
+2025-09-08 15:49:53,109 - INFO - Processing post 7/139: https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 15:49:53,109 - INFO - ====== WebDriver manager ======
+2025-09-08 15:49:54,935 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:49:55,227 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:49:55,522 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:49:57,660 - INFO - Successfully declined cookies for https://www.instagram.com/p/DItpPlHoJY8/
+2025-09-08 15:49:59,711 - INFO - Successfully closed login popup for https://www.instagram.com/p/DItpPlHoJY8/
+2025-09-08 15:50:02,900 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:50:02,900 - INFO - Sending caption for https://www.instagram.com/reel/DItpPlHoJY8/ to LLM (gemma3:4b)...
+2025-09-08 15:50:31,335 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:50:31,336 - INFO - Successfully processed and validated recipe: 'Proteinpancakes'
+2025-09-08 15:50:31,340 - INFO - Generated recipe page: docs\proteinpancakes.html
+2025-09-08 15:50:31,344 - INFO - Generated index page: docs\index.html
+2025-09-08 15:50:31,344 - INFO - Updated index.html with 7 recipes
+2025-09-08 15:50:31,344 - INFO - Processing post 8/139: https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 15:50:31,344 - INFO - ====== WebDriver manager ======
+2025-09-08 15:50:33,411 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:50:33,723 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:50:34,051 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:50:36,523 - INFO - Successfully declined cookies for https://www.instagram.com/p/DLXrSMiolGr/
+2025-09-08 15:50:38,581 - INFO - Successfully closed login popup for https://www.instagram.com/p/DLXrSMiolGr/
+2025-09-08 15:50:41,741 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:50:41,742 - INFO - Sending caption for https://www.instagram.com/reel/DLXrSMiolGr/ to LLM (gemma3:4b)...
+2025-09-08 15:51:18,236 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:51:18,237 - INFO - Successfully processed and validated recipe: 'Protein Sonntagsbrötchen'
+2025-09-08 15:51:18,243 - INFO - Generated recipe page: docs\protein-sonntagsbroetchen.html
+2025-09-08 15:51:18,248 - INFO - Generated index page: docs\index.html
+2025-09-08 15:51:18,248 - INFO - Updated index.html with 8 recipes
+2025-09-08 15:51:18,249 - INFO - Processing post 9/139: https://www.instagram.com/reel/DMJOyTNTq5O/
+2025-09-08 15:51:18,249 - INFO - ====== WebDriver manager ======
+2025-09-08 15:51:20,141 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:51:20,436 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:51:20,727 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:51:23,085 - INFO - Successfully declined cookies for https://www.instagram.com/p/DMJOyTNTq5O/
+2025-09-08 15:51:25,136 - INFO - Successfully closed login popup for https://www.instagram.com/p/DMJOyTNTq5O/
+2025-09-08 15:51:28,370 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:51:28,370 - INFO - Sending caption for https://www.instagram.com/reel/DMJOyTNTq5O/ to LLM (gemma3:4b)...
+2025-09-08 15:52:10,836 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:52:10,837 - INFO - Successfully processed and validated recipe: 'High Protein Gnocchi Bake'
+2025-09-08 15:52:10,844 - INFO - Generated recipe page: docs\high-protein-gnocchi-bake.html
+2025-09-08 15:52:10,851 - INFO - Generated index page: docs\index.html
+2025-09-08 15:52:10,851 - INFO - Updated index.html with 9 recipes
+2025-09-08 15:52:10,851 - INFO - Processing post 10/139: https://www.instagram.com/reel/DMspUlxoQx3/
+2025-09-08 15:52:10,851 - INFO - ====== WebDriver manager ======
+2025-09-08 15:52:12,688 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:52:12,982 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:52:13,277 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:52:15,704 - INFO - Successfully declined cookies for https://www.instagram.com/p/DMspUlxoQx3/
+2025-09-08 15:52:17,762 - INFO - Successfully closed login popup for https://www.instagram.com/p/DMspUlxoQx3/
+2025-09-08 15:52:20,982 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:52:20,983 - INFO - Sending caption for https://www.instagram.com/reel/DMspUlxoQx3/ to LLM (gemma3:4b)...
+2025-09-08 15:53:15,094 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:53:15,095 - INFO - Successfully processed and validated recipe: 'Hafer-Apfelkuchen'
+2025-09-08 15:53:15,100 - INFO - Generated recipe page: docs\hafer-apfelkuchen.html
+2025-09-08 15:53:15,105 - INFO - Generated index page: docs\index.html
+2025-09-08 15:53:15,106 - INFO - Updated index.html with 10 recipes
+2025-09-08 15:53:15,106 - INFO - Processing post 11/139: https://www.instagram.com/reel/DOEE9HsCGkn/
+2025-09-08 15:53:15,106 - INFO - ====== WebDriver manager ======
+2025-09-08 15:53:16,952 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:53:17,253 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:53:17,549 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:53:19,956 - INFO - Successfully declined cookies for https://www.instagram.com/p/DOEE9HsCGkn/
+2025-09-08 15:53:22,018 - INFO - Successfully closed login popup for https://www.instagram.com/p/DOEE9HsCGkn/
+2025-09-08 15:53:25,208 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:53:25,208 - INFO - Sending caption for https://www.instagram.com/reel/DOEE9HsCGkn/ to LLM (gemma3:4b)...
+2025-09-08 15:54:12,402 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:54:12,403 - INFO - Successfully processed and validated recipe: 'Feta Linsen Brot'
+2025-09-08 15:54:12,409 - INFO - Generated recipe page: docs\feta-linsen-brot.html
+2025-09-08 15:54:12,414 - INFO - Generated index page: docs\index.html
+2025-09-08 15:54:12,414 - INFO - Updated index.html with 11 recipes
+2025-09-08 15:54:12,414 - INFO - Processing post 12/139: https://www.instagram.com/reel/DN8XcsZCGoj/
+2025-09-08 15:54:12,415 - INFO - ====== WebDriver manager ======
+2025-09-08 15:54:14,277 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:54:14,578 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:54:14,883 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:54:17,507 - INFO - Successfully declined cookies for https://www.instagram.com/p/DN8XcsZCGoj/
+2025-09-08 15:54:19,561 - INFO - Successfully closed login popup for https://www.instagram.com/p/DN8XcsZCGoj/
+2025-09-08 15:54:22,729 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:54:22,730 - INFO - Sending caption for https://www.instagram.com/reel/DN8XcsZCGoj/ to LLM (gemma3:4b)...
+2025-09-08 15:55:11,806 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:55:11,807 - INFO - Successfully processed and validated recipe: 'Protein Lahmacun'
+2025-09-08 15:55:11,813 - INFO - Generated recipe page: docs\protein-lahmacun.html
+2025-09-08 15:55:11,817 - INFO - Generated index page: docs\index.html
+2025-09-08 15:55:11,818 - INFO - Updated index.html with 12 recipes
+2025-09-08 15:55:11,818 - INFO - Processing post 13/139: https://www.instagram.com/reel/DNQoaVMsT20/
+2025-09-08 15:55:11,818 - INFO - ====== WebDriver manager ======
+2025-09-08 15:55:13,695 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:55:14,011 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:55:14,303 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:55:16,459 - INFO - Successfully declined cookies for https://www.instagram.com/p/DNQoaVMsT20/
+2025-09-08 15:55:18,517 - INFO - Successfully closed login popup for https://www.instagram.com/p/DNQoaVMsT20/
+2025-09-08 15:55:23,274 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:55:23,274 - INFO - Sending caption for https://www.instagram.com/reel/DNQoaVMsT20/ to LLM (gemma3:4b)...
+2025-09-08 15:56:13,658 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:56:13,659 - INFO - Successfully processed and validated recipe: 'Veggie Slices'
+2025-09-08 15:56:13,667 - INFO - Generated recipe page: docs\veggie-slices.html
+2025-09-08 15:56:13,673 - INFO - Generated index page: docs\index.html
+2025-09-08 15:56:13,673 - INFO - Updated index.html with 13 recipes
+2025-09-08 15:56:13,673 - INFO - Processing post 14/139: https://www.instagram.com/reel/DLzXIjItQqb/
+2025-09-08 15:56:13,674 - INFO - ====== WebDriver manager ======
+2025-09-08 15:56:15,488 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:56:15,797 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:56:16,099 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:56:18,739 - INFO - Successfully declined cookies for https://www.instagram.com/p/DLzXIjItQqb/
+2025-09-08 15:56:20,788 - INFO - Successfully closed login popup for https://www.instagram.com/p/DLzXIjItQqb/
+2025-09-08 15:56:23,970 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:56:23,970 - INFO - Sending caption for https://www.instagram.com/reel/DLzXIjItQqb/ to LLM (gemma3:4b)...
+2025-09-08 15:56:50,539 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:56:50,540 - INFO - Successfully processed and validated recipe: 'High Protein Marmorkuchen Muffins'
+2025-09-08 15:56:50,547 - INFO - Generated recipe page: docs\high-protein-marmorkuchen-muffins.html
+2025-09-08 15:56:50,556 - INFO - Generated index page: docs\index.html
+2025-09-08 15:56:50,556 - INFO - Updated index.html with 14 recipes
+2025-09-08 15:56:50,556 - INFO - Processing post 15/139: https://www.instagram.com/reel/DMr-gpcMOo0/
+2025-09-08 15:56:50,556 - INFO - ====== WebDriver manager ======
+2025-09-08 15:56:52,388 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:56:52,695 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:56:53,007 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:56:55,135 - INFO - Successfully declined cookies for https://www.instagram.com/p/DMr-gpcMOo0/
+2025-09-08 15:56:57,185 - INFO - Successfully closed login popup for https://www.instagram.com/p/DMr-gpcMOo0/
+2025-09-08 15:57:00,370 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:57:00,370 - INFO - Sending caption for https://www.instagram.com/reel/DMr-gpcMOo0/ to LLM (gemma3:4b)...
+2025-09-08 15:57:26,216 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:57:26,216 - INFO - Successfully processed and validated recipe: 'Brokkoli Auflauf mit Strunk'
+2025-09-08 15:57:26,222 - INFO - Generated recipe page: docs\brokkoli-auflauf-mit-strunk.html
+2025-09-08 15:57:26,227 - INFO - Generated index page: docs\index.html
+2025-09-08 15:57:26,227 - INFO - Updated index.html with 15 recipes
+2025-09-08 15:57:26,227 - INFO - Processing post 16/139: https://www.instagram.com/reel/DIB_JjfM5vQ/
+2025-09-08 15:57:26,228 - INFO - ====== WebDriver manager ======
+2025-09-08 15:57:28,122 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:57:28,436 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:57:28,740 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:57:31,135 - INFO - Successfully declined cookies for https://www.instagram.com/p/DIB_JjfM5vQ/
+2025-09-08 15:57:33,194 - INFO - Successfully closed login popup for https://www.instagram.com/p/DIB_JjfM5vQ/
+2025-09-08 15:57:36,362 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:57:36,362 - INFO - Sending caption for https://www.instagram.com/reel/DIB_JjfM5vQ/ to LLM (gemma3:4b)...
+2025-09-08 15:58:11,389 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:58:11,390 - INFO - Successfully processed and validated recipe: 'Kalorienarme Spinat Lasagne'
+2025-09-08 15:58:11,396 - INFO - Generated recipe page: docs\kalorienarme-spinat-lasagne.html
+2025-09-08 15:58:11,402 - INFO - Generated index page: docs\index.html
+2025-09-08 15:58:11,402 - INFO - Updated index.html with 16 recipes
+2025-09-08 15:58:11,402 - INFO - Processing post 17/139: https://www.instagram.com/reel/DHbVQZLNR8P/
+2025-09-08 15:58:11,402 - INFO - ====== WebDriver manager ======
+2025-09-08 15:58:13,237 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:58:13,551 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:58:13,857 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:58:16,438 - INFO - Successfully declined cookies for https://www.instagram.com/p/DHbVQZLNR8P/
+2025-09-08 15:58:18,499 - INFO - Successfully closed login popup for https://www.instagram.com/p/DHbVQZLNR8P/
+2025-09-08 15:58:21,655 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:58:21,655 - INFO - Sending caption for https://www.instagram.com/reel/DHbVQZLNR8P/ to LLM (gemma3:4b)...
+2025-09-08 15:59:01,781 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:59:01,782 - INFO - Successfully processed and validated recipe: 'Mini Germknödel'
+2025-09-08 15:59:01,789 - INFO - Generated recipe page: docs\mini-germknoedel.html
+2025-09-08 15:59:01,796 - INFO - Generated index page: docs\index.html
+2025-09-08 15:59:01,796 - INFO - Updated index.html with 17 recipes
+2025-09-08 15:59:01,796 - INFO - Processing post 18/139: https://www.instagram.com/reel/DJZZE5jsmYX/
+2025-09-08 15:59:01,796 - INFO - ====== WebDriver manager ======
+2025-09-08 15:59:03,681 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:59:03,997 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:59:04,308 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:59:06,605 - INFO - Successfully declined cookies for https://www.instagram.com/p/DJZZE5jsmYX/
+2025-09-08 15:59:08,661 - INFO - Successfully closed login popup for https://www.instagram.com/p/DJZZE5jsmYX/
+2025-09-08 15:59:11,817 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:59:11,817 - INFO - Sending caption for https://www.instagram.com/reel/DJZZE5jsmYX/ to LLM (gemma3:4b)...
+2025-09-08 16:00:28,882 - INFO - Starting Instagram recipe processing...
+2025-09-08 16:00:28,882 - INFO - Loaded 0 posts from previous progress file.
+2025-09-08 16:00:28,883 - INFO - Found collection: 'Food'. Extracting posts...
+2025-09-08 16:00:28,883 - INFO - Finished extracting from 'Food'.
+2025-09-08 16:00:28,883 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:00:28,883 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:00:28,883 - INFO - Found 139 total posts. Checking against progress file...
+2025-09-08 16:00:28,883 - INFO - Processing post 1/139: https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:00:28,883 - INFO - ====== WebDriver manager ======
+2025-09-08 16:00:30,676 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:00:30,991 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:00:31,309 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:00:34,084 - INFO - Successfully declined cookies for https://www.instagram.com/p/DOBbrYSiDdF/
+2025-09-08 16:00:36,138 - INFO - Successfully closed login popup for https://www.instagram.com/p/DOBbrYSiDdF/
+2025-09-08 16:00:39,341 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:00:39,341 - INFO - Sending caption for https://www.instagram.com/reel/DOBbrYSiDdF/ to LLM (gemma3:4b)...
+2025-09-08 16:01:41,402 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:01:41,403 - INFO - Successfully processed and validated recipe: 'Döner Meal Prep'
+2025-09-08 16:01:42,110 - WARNING - No thumbnail found for https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:01:42,111 - INFO - No thumbnail found for https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:01:42,114 - INFO - Generated recipe page: docs\doener-meal-prep.html
+2025-09-08 16:01:42,116 - INFO - Generated index page: docs\index.html
+2025-09-08 16:01:42,116 - INFO - Updated index.html with 1 recipes
+2025-09-08 16:01:42,116 - INFO - Processing post 2/139: https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:01:42,116 - INFO - ====== WebDriver manager ======
+2025-09-08 16:01:43,926 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:01:44,232 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:01:44,552 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:01:47,066 - INFO - Successfully declined cookies for https://www.instagram.com/p/DMNhcepIUtM/
+2025-09-08 16:01:49,125 - INFO - Successfully closed login popup for https://www.instagram.com/p/DMNhcepIUtM/
+2025-09-08 16:01:52,306 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:01:52,306 - INFO - Sending caption for https://www.instagram.com/reel/DMNhcepIUtM/ to LLM (gemma3:4b)...
+2025-09-08 16:03:38,299 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:03:38,300 - INFO - Successfully processed and validated recipe: 'Tofu Crumble'
+2025-09-08 16:03:38,899 - WARNING - No thumbnail found for https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:03:38,900 - INFO - No thumbnail found for https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:03:38,902 - INFO - Generated recipe page: docs\tofu-crumble.html
+2025-09-08 16:03:38,904 - INFO - Generated index page: docs\index.html
+2025-09-08 16:03:38,904 - INFO - Updated index.html with 2 recipes
+2025-09-08 16:03:38,904 - INFO - Processing post 3/139: https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:03:38,904 - INFO - ====== WebDriver manager ======
+2025-09-08 16:03:40,732 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:03:41,049 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:03:41,355 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:03:43,565 - INFO - Successfully declined cookies for https://www.instagram.com/p/DOJ3AMZiOtR/
+2025-09-08 16:03:45,621 - INFO - Successfully closed login popup for https://www.instagram.com/p/DOJ3AMZiOtR/
+2025-09-08 16:03:48,791 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:03:48,791 - INFO - Sending caption for https://www.instagram.com/reel/DOJ3AMZiOtR/ to LLM (gemma3:4b)...
+2025-09-08 16:04:23,923 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:04:23,924 - INFO - Successfully processed and validated recipe: 'Super einfaches, proteinreiches Schoko-Eis'
+2025-09-08 16:04:24,697 - WARNING - No thumbnail found for https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:04:24,698 - INFO - No thumbnail found for https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:04:24,700 - INFO - Generated recipe page: docs\super-einfaches-proteinreiches-schoko-eis.html
+2025-09-08 16:04:24,702 - INFO - Generated index page: docs\index.html
+2025-09-08 16:04:24,702 - INFO - Updated index.html with 3 recipes
+2025-09-08 16:04:24,702 - INFO - Processing post 4/139: https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:04:24,702 - INFO - ====== WebDriver manager ======
+2025-09-08 16:04:26,567 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:04:26,877 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:04:27,183 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:04:29,510 - INFO - Successfully declined cookies for https://www.instagram.com/p/DNszop50FB3/
+2025-09-08 16:04:31,561 - INFO - Successfully closed login popup for https://www.instagram.com/p/DNszop50FB3/
+2025-09-08 16:04:34,763 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:04:34,763 - INFO - Sending caption for https://www.instagram.com/reel/DNszop50FB3/ to LLM (gemma3:4b)...
+2025-09-08 16:05:29,964 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:05:29,965 - INFO - Successfully processed and validated recipe: 'Protein-Paprika-Füllung'
+2025-09-08 16:05:30,807 - WARNING - No thumbnail found for https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:05:30,808 - INFO - No thumbnail found for https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:05:30,811 - INFO - Generated recipe page: docs\protein-paprika-fuellung.html
+2025-09-08 16:05:30,814 - INFO - Generated index page: docs\index.html
+2025-09-08 16:05:30,814 - INFO - Updated index.html with 4 recipes
+2025-09-08 16:05:30,814 - INFO - Processing post 5/139: https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:05:30,814 - INFO - ====== WebDriver manager ======
+2025-09-08 16:05:32,887 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:05:33,194 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:05:33,508 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:05:36,012 - INFO - Successfully declined cookies for https://www.instagram.com/p/DN3KlBA0OvE/
+2025-09-08 16:05:48,136 - WARNING - Login popup not found for https://www.instagram.com/p/DN3KlBA0OvE/. It might not have appeared.
+2025-09-08 16:05:50,302 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:05:50,302 - INFO - Sending caption for https://www.instagram.com/reel/DN3KlBA0OvE/ to LLM (gemma3:4b)...
+2025-09-08 16:08:30,251 - INFO - Starting Instagram recipe processing...
+2025-09-08 16:08:30,251 - INFO - Loaded 0 posts from previous progress file.
+2025-09-08 16:08:30,251 - INFO - Found collection: 'Food'. Extracting posts...
+2025-09-08 16:08:30,251 - INFO - Finished extracting from 'Food'.
+2025-09-08 16:08:30,251 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:08:30,251 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:08:30,252 - INFO - Found 139 total posts. Checking against progress file...
+2025-09-08 16:08:30,252 - INFO - Processing post 1/139: https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:08:30,252 - INFO - ====== WebDriver manager ======
+2025-09-08 16:08:32,078 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:08:32,395 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:08:32,705 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:08:35,511 - INFO - Successfully declined cookies for https://www.instagram.com/p/DOBbrYSiDdF/
+2025-09-08 16:08:47,622 - WARNING - Login popup not found for https://www.instagram.com/p/DOBbrYSiDdF/.
+2025-09-08 16:08:47,671 - WARNING - Could not isolate caption using primary pattern for https://www.instagram.com/reel/DOBbrYSiDdF/. Returning full description.
+2025-09-08 16:08:49,783 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:08:49,783 - INFO - Sending caption for https://www.instagram.com/reel/DOBbrYSiDdF/ to LLM (gemma3:4b)...
+2025-09-08 16:10:05,195 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:10:05,197 - INFO - Successfully processed and validated recipe: 'Döner Teller Mealprep'
+2025-09-08 16:10:06,401 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:10:06,402 - INFO - No thumbnail found for https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:10:06,404 - INFO - Generated recipe page: docs\doener-teller-mealprep.html
+2025-09-08 16:10:06,406 - INFO - Generated index page: docs\index.html
+2025-09-08 16:10:06,406 - INFO - Updated index.html with 1 recipes
+2025-09-08 16:10:06,406 - INFO - Processing post 2/139: https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:10:06,406 - INFO - ====== WebDriver manager ======
+2025-09-08 16:10:08,417 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:10:08,725 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:10:09,060 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:10:11,511 - INFO - Successfully declined cookies for https://www.instagram.com/p/DMNhcepIUtM/
+2025-09-08 16:10:23,634 - WARNING - Login popup not found for https://www.instagram.com/p/DMNhcepIUtM/.
+2025-09-08 16:10:23,684 - WARNING - Could not isolate caption using primary pattern for https://www.instagram.com/reel/DMNhcepIUtM/. Returning full description.
+2025-09-08 16:10:25,796 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:10:25,796 - INFO - Sending caption for https://www.instagram.com/reel/DMNhcepIUtM/ to LLM (gemma3:4b)...
+2025-09-08 16:11:24,025 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:11:24,026 - INFO - Successfully processed and validated recipe: 'Tofu Crumble'
+2025-09-08 16:11:24,675 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:11:24,676 - INFO - No thumbnail found for https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:11:24,679 - INFO - Generated recipe page: docs\tofu-crumble.html
+2025-09-08 16:11:24,681 - INFO - Generated index page: docs\index.html
+2025-09-08 16:11:24,681 - INFO - Updated index.html with 2 recipes
+2025-09-08 16:11:24,681 - INFO - Processing post 3/139: https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:11:24,681 - INFO - ====== WebDriver manager ======
+2025-09-08 16:11:26,513 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:11:26,817 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:11:27,136 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:11:29,291 - INFO - Successfully declined cookies for https://www.instagram.com/p/DOJ3AMZiOtR/
+2025-09-08 16:11:41,442 - WARNING - Login popup not found for https://www.instagram.com/p/DOJ3AMZiOtR/.
+2025-09-08 16:11:41,509 - WARNING - Could not isolate caption using primary pattern for https://www.instagram.com/reel/DOJ3AMZiOtR/. Returning full description.
+2025-09-08 16:11:43,614 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:11:43,615 - INFO - Sending caption for https://www.instagram.com/reel/DOJ3AMZiOtR/ to LLM (gemma3:4b)...
+2025-09-08 16:12:35,992 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:12:35,993 - INFO - Successfully processed and validated recipe: 'Super einfaches, proteinreiches Schoko-Eis'
+2025-09-08 16:12:36,596 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:12:36,598 - INFO - No thumbnail found for https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:12:36,600 - INFO - Generated recipe page: docs\super-einfaches-proteinreiches-schoko-eis.html
+2025-09-08 16:12:36,601 - INFO - Generated index page: docs\index.html
+2025-09-08 16:12:36,601 - INFO - Updated index.html with 3 recipes
+2025-09-08 16:12:36,601 - INFO - Processing post 4/139: https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:12:36,602 - INFO - ====== WebDriver manager ======
+2025-09-08 16:12:38,427 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:12:38,746 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:12:39,073 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:12:41,158 - INFO - Successfully declined cookies for https://www.instagram.com/p/DNszop50FB3/
+2025-09-08 16:12:53,465 - WARNING - Login popup not found for https://www.instagram.com/p/DNszop50FB3/.
+2025-09-08 16:12:53,523 - WARNING - Could not isolate caption using primary pattern for https://www.instagram.com/reel/DNszop50FB3/. Returning full description.
+2025-09-08 16:12:55,630 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:12:55,630 - INFO - Sending caption for https://www.instagram.com/reel/DNszop50FB3/ to LLM (gemma3:4b)...
+2025-09-08 16:13:28,521 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:13:28,522 - INFO - Successfully processed and validated recipe: 'Paprika mit Hähnchenfüllung'
+2025-09-08 16:13:29,175 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:13:29,176 - INFO - No thumbnail found for https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:13:29,179 - INFO - Generated recipe page: docs\paprika-mit-haehnchenfuellung.html
+2025-09-08 16:13:29,181 - INFO - Generated index page: docs\index.html
+2025-09-08 16:13:29,181 - INFO - Updated index.html with 4 recipes
+2025-09-08 16:13:29,181 - INFO - Processing post 5/139: https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:13:29,181 - INFO - ====== WebDriver manager ======
+2025-09-08 16:13:30,992 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:13:31,299 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:13:31,614 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:13:34,179 - INFO - Successfully declined cookies for https://www.instagram.com/p/DN3KlBA0OvE/
+2025-09-08 16:13:46,288 - WARNING - Login popup not found for https://www.instagram.com/p/DN3KlBA0OvE/.
+2025-09-08 16:13:46,358 - WARNING - Could not isolate caption using primary pattern for https://www.instagram.com/reel/DN3KlBA0OvE/. Returning full description.
+2025-09-08 16:13:48,459 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:13:48,459 - INFO - Sending caption for https://www.instagram.com/reel/DN3KlBA0OvE/ to LLM (gemma3:4b)...
+2025-09-08 16:15:59,621 - INFO - Starting Instagram recipe processing...
+2025-09-08 16:15:59,621 - INFO - Loaded 0 posts from previous progress file.
+2025-09-08 16:15:59,621 - INFO - Found collection: 'Food'. Extracting posts...
+2025-09-08 16:15:59,622 - INFO - Finished extracting from 'Food'.
+2025-09-08 16:15:59,622 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:15:59,622 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:15:59,622 - INFO - Found 139 total posts. Checking against progress file...
+2025-09-08 16:15:59,622 - INFO - Processing post 1/139: https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:15:59,622 - INFO - ====== WebDriver manager ======
+2025-09-08 16:16:01,413 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:16:01,729 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:16:02,053 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:16:04,438 - INFO - Successfully declined cookies for https://www.instagram.com/p/DOBbrYSiDdF/
+2025-09-08 16:16:16,552 - WARNING - Login popup not found for https://www.instagram.com/p/DOBbrYSiDdF/.
+2025-09-08 16:16:16,609 - INFO - Successfully extracted clean caption for https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:16:18,721 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:16:18,721 - INFO - Sending caption for https://www.instagram.com/reel/DOBbrYSiDdF/ to LLM (gemma3:4b)...
+2025-09-08 16:17:23,380 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:17:23,382 - INFO - Successfully processed and validated recipe: 'Dönerteller Mealprep'
+2025-09-08 16:17:24,058 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:17:24,059 - INFO - No thumbnail found for https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:17:24,061 - INFO - Generated recipe page: docs\doenerteller-mealprep.html
+2025-09-08 16:17:24,063 - INFO - Generated index page: docs\index.html
+2025-09-08 16:17:24,063 - INFO - Updated index.html with 1 recipes
+2025-09-08 16:17:24,063 - INFO - Processing post 2/139: https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:17:24,063 - INFO - ====== WebDriver manager ======
+2025-09-08 16:17:25,865 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:17:26,160 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:17:26,451 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:17:29,055 - INFO - Successfully declined cookies for https://www.instagram.com/p/DMNhcepIUtM/
+2025-09-08 16:17:41,191 - WARNING - Login popup not found for https://www.instagram.com/p/DMNhcepIUtM/.
+2025-09-08 16:17:41,254 - INFO - Successfully extracted clean caption for https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:17:43,371 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:17:43,371 - INFO - Sending caption for https://www.instagram.com/reel/DMNhcepIUtM/ to LLM (gemma3:4b)...
+2025-09-08 16:18:42,537 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:18:42,538 - INFO - Successfully processed and validated recipe: 'Tofu Crumble'
+2025-09-08 16:18:43,190 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:18:43,191 - INFO - No thumbnail found for https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:18:43,194 - INFO - Generated recipe page: docs\tofu-crumble.html
+2025-09-08 16:18:43,196 - INFO - Generated index page: docs\index.html
+2025-09-08 16:18:43,196 - INFO - Updated index.html with 2 recipes
+2025-09-08 16:18:43,196 - INFO - Processing post 3/139: https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:18:43,196 - INFO - ====== WebDriver manager ======
+2025-09-08 16:18:45,019 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:18:45,313 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:18:45,612 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:18:48,487 - INFO - Successfully declined cookies for https://www.instagram.com/p/DOJ3AMZiOtR/
+2025-09-08 16:19:00,596 - WARNING - Login popup not found for https://www.instagram.com/p/DOJ3AMZiOtR/.
+2025-09-08 16:19:00,673 - INFO - Successfully extracted clean caption for https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:19:02,779 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:19:02,780 - INFO - Sending caption for https://www.instagram.com/reel/DOJ3AMZiOtR/ to LLM (gemma3:4b)...
+2025-09-08 16:19:46,392 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:19:46,393 - INFO - Successfully processed and validated recipe: 'Schoko-Eis'
+2025-09-08 16:19:47,034 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:19:47,035 - INFO - No thumbnail found for https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:19:47,037 - INFO - Generated recipe page: docs\schoko-eis.html
+2025-09-08 16:19:47,039 - INFO - Generated index page: docs\index.html
+2025-09-08 16:19:47,039 - INFO - Updated index.html with 3 recipes
+2025-09-08 16:19:47,039 - INFO - Processing post 4/139: https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:19:47,039 - INFO - ====== WebDriver manager ======
+2025-09-08 16:19:48,896 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:19:49,199 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:19:49,502 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:19:51,599 - INFO - Successfully declined cookies for https://www.instagram.com/p/DNszop50FB3/
+2025-09-08 16:20:03,727 - WARNING - Login popup not found for https://www.instagram.com/p/DNszop50FB3/.
+2025-09-08 16:20:03,782 - INFO - Successfully extracted clean caption for https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:20:05,915 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:20:05,915 - INFO - Sending caption for https://www.instagram.com/reel/DNszop50FB3/ to LLM (gemma3:4b)...
+2025-09-08 16:20:42,717 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:20:42,718 - INFO - Successfully processed and validated recipe: 'Paprika-Füllungen mit Hähnchen'
+2025-09-08 16:20:43,324 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:20:43,325 - INFO - No thumbnail found for https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:20:43,327 - INFO - Generated recipe page: docs\paprika-fuellungen-mit-haehnchen.html
+2025-09-08 16:20:43,329 - INFO - Generated index page: docs\index.html
+2025-09-08 16:20:43,329 - INFO - Updated index.html with 4 recipes
+2025-09-08 16:20:43,329 - INFO - Processing post 5/139: https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:20:43,329 - INFO - ====== WebDriver manager ======
+2025-09-08 16:20:45,139 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:20:45,447 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:20:45,752 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:20:48,212 - INFO - Successfully declined cookies for https://www.instagram.com/p/DN3KlBA0OvE/
+2025-09-08 16:21:00,323 - WARNING - Login popup not found for https://www.instagram.com/p/DN3KlBA0OvE/.
+2025-09-08 16:21:00,391 - INFO - Successfully extracted clean caption for https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:21:02,492 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:21:02,493 - INFO - Sending caption for https://www.instagram.com/reel/DN3KlBA0OvE/ to LLM (gemma3:4b)...
+2025-09-08 16:22:47,759 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:22:47,760 - INFO - Successfully processed and validated recipe: 'Bratkartoffelsalat mit Räuchertofu'
+2025-09-08 16:22:48,400 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:22:48,401 - INFO - No thumbnail found for https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:22:48,403 - INFO - Generated recipe page: docs\bratkartoffelsalat-mit-raeuchertofu.html
+2025-09-08 16:22:48,406 - INFO - Generated index page: docs\index.html
+2025-09-08 16:22:48,406 - INFO - Updated index.html with 5 recipes
+2025-09-08 16:22:48,406 - INFO - Processing post 6/139: https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:22:48,406 - INFO - ====== WebDriver manager ======
+2025-09-08 16:22:50,248 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:22:50,545 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:22:50,842 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:22:53,166 - INFO - Successfully declined cookies for https://www.instagram.com/p/DHB0t-EyR4F/
+2025-09-08 16:22:55,226 - INFO - Successfully closed login popup for https://www.instagram.com/p/DHB0t-EyR4F/
+2025-09-08 16:22:56,310 - INFO - Successfully extracted clean caption for https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:22:58,428 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:22:58,428 - INFO - Sending caption for https://www.instagram.com/reel/DHB0t-EyR4F/ to LLM (gemma3:4b)...
+2025-09-08 16:24:08,217 - INFO - Starting Instagram recipe processing...
+2025-09-08 16:24:08,218 - INFO - Loaded 139 posts from previous progress file.
+2025-09-08 16:24:08,219 - INFO - Found collection: 'Food'. Extracting posts...
+2025-09-08 16:24:08,219 - INFO - Finished extracting from 'Food'.
+2025-09-08 16:24:08,219 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:24:08,219 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:24:08,219 - INFO - Found 139 total posts. Checking against progress file...
+2025-09-08 16:24:08,219 - INFO - Processing post 1/139: https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:24:08,219 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:08,219 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:24:08,219 - INFO - Processing post 2/139: https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:24:08,219 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:08,219 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:24:08,219 - INFO - Processing post 3/139: https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:24:08,219 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:08,219 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:24:08,220 - INFO - Processing post 4/139: https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:24:08,220 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:08,220 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:24:08,220 - INFO - Processing post 5/139: https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:24:08,220 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:08,220 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:24:08,220 - INFO - Processing post 6/139: https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:24:08,220 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:08,220 - INFO - Sending caption for https://www.instagram.com/reel/DHB0t-EyR4F/ to LLM (gemma3:4b)...
+2025-09-08 16:24:33,211 - INFO - Starting Instagram recipe processing...
+2025-09-08 16:24:33,212 - INFO - Loaded 139 posts from previous progress file.
+2025-09-08 16:24:33,212 - INFO - Found collection: 'Food'. Extracting posts...
+2025-09-08 16:24:33,213 - INFO - Finished extracting from 'Food'.
+2025-09-08 16:24:33,213 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:24:33,213 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:24:33,213 - INFO - Found 139 total posts. Checking against progress file...
+2025-09-08 16:24:33,213 - INFO - Processing post 1/139: https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:24:33,213 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:33,213 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:24:33,213 - INFO - Processing post 2/139: https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:24:33,213 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:33,213 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:24:33,213 - INFO - Processing post 3/139: https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:24:33,213 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:33,213 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:24:33,213 - INFO - Processing post 4/139: https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:24:33,213 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:33,213 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:24:33,213 - INFO - Processing post 5/139: https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:24:33,213 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:33,214 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:24:33,214 - INFO - Processing post 6/139: https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:24:33,214 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:24:33,214 - INFO - Sending caption for https://www.instagram.com/reel/DHB0t-EyR4F/ to LLM (gemma3:4b)...
+2025-09-08 16:25:33,805 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:25:33,807 - INFO - Successfully processed and validated recipe: 'Chicken Crust Pizza'
+2025-09-08 16:25:33,807 - INFO - Force re-extract enabled. Re-extracting thumbnail for https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:25:34,522 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:25:34,523 - INFO - No thumbnail found for https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:25:34,524 - INFO - Force regenerate HTML enabled. Regenerating page for https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:25:34,524 - INFO - Generated recipe page: docs\chicken-crust-pizza.html
+2025-09-08 16:25:34,527 - INFO - Generated index page: docs\index.html
+2025-09-08 16:25:34,527 - INFO - Updated index.html with 6 recipes
+2025-09-08 16:25:34,527 - INFO - Processing post 7/139: https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 16:25:34,527 - INFO - ====== WebDriver manager ======
+2025-09-08 16:25:36,383 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:25:36,679 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:25:36,971 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:25:39,360 - INFO - Successfully declined cookies for https://www.instagram.com/p/DItpPlHoJY8/
+2025-09-08 16:25:51,478 - WARNING - Login popup not found for https://www.instagram.com/p/DItpPlHoJY8/.
+2025-09-08 16:25:51,544 - INFO - Successfully extracted clean caption for https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 16:25:53,674 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:25:53,675 - INFO - Sending caption for https://www.instagram.com/reel/DItpPlHoJY8/ to LLM (gemma3:4b)...
+2025-09-08 16:26:34,363 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:26:34,364 - INFO - Successfully processed and validated recipe: 'Proteinpancakes'
+2025-09-08 16:26:34,365 - INFO - Force re-extract enabled. Re-extracting thumbnail for https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 16:26:34,960 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 16:26:34,961 - INFO - No thumbnail found for https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 16:26:34,961 - INFO - Force regenerate HTML enabled. Regenerating page for https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 16:26:34,961 - INFO - Generated recipe page: docs\proteinpancakes.html
+2025-09-08 16:26:34,964 - INFO - Generated index page: docs\index.html
+2025-09-08 16:26:34,964 - INFO - Updated index.html with 7 recipes
+2025-09-08 16:26:34,964 - INFO - Processing post 8/139: https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 16:26:34,964 - INFO - ====== WebDriver manager ======
+2025-09-08 16:26:36,765 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:26:37,065 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:26:37,369 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:26:39,696 - INFO - Successfully declined cookies for https://www.instagram.com/p/DLXrSMiolGr/
+2025-09-08 16:26:51,810 - WARNING - Login popup not found for https://www.instagram.com/p/DLXrSMiolGr/.
+2025-09-08 16:26:51,881 - INFO - Successfully extracted clean caption for https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 16:26:54,002 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:26:54,002 - INFO - Sending caption for https://www.instagram.com/reel/DLXrSMiolGr/ to LLM (gemma3:4b)...
+2025-09-08 16:27:57,442 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 16:27:57,443 - INFO - Successfully processed and validated recipe: 'Protein Sonntagsbrötchen'
+2025-09-08 16:27:57,444 - INFO - Force re-extract enabled. Re-extracting thumbnail for https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 16:27:58,137 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 16:27:58,138 - INFO - No thumbnail found for https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 16:27:58,138 - INFO - Force regenerate HTML enabled. Regenerating page for https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 16:27:58,139 - INFO - Generated recipe page: docs\protein-sonntagsbroetchen.html
+2025-09-08 16:27:58,141 - INFO - Generated index page: docs\index.html
+2025-09-08 16:27:58,142 - INFO - Updated index.html with 8 recipes
+2025-09-08 16:27:58,142 - INFO - Processing post 9/139: https://www.instagram.com/reel/DMJOyTNTq5O/
+2025-09-08 16:27:58,142 - INFO - ====== WebDriver manager ======
+2025-09-08 16:27:59,987 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:28:00,290 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:28:00,585 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:28:03,251 - INFO - Successfully declined cookies for https://www.instagram.com/p/DMJOyTNTq5O/
+2025-09-08 16:28:11,927 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)': /session/b239bfa4c5b2a3e6d42d0a28a9d4171f
+2025-09-08 16:28:33,150 - INFO - Starting Instagram recipe processing...
+2025-09-08 16:28:33,151 - INFO - Loaded 139 posts from previous progress file.
+2025-09-08 16:28:33,151 - INFO - Found collection: 'Food'. Extracting posts...
+2025-09-08 16:28:33,152 - INFO - Finished extracting from 'Food'.
+2025-09-08 16:28:33,152 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:28:33,152 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 16:28:33,152 - INFO - Found 139 total posts. Checking against progress file...
+2025-09-08 16:28:33,152 - INFO - Processing post 1/139: https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:28:33,152 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:28:33,152 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:28:33,152 - INFO - Force re-extract enabled. Re-extracting thumbnail for https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:28:33,818 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:28:33,819 - INFO - No thumbnail found for https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:28:33,819 - INFO - Force regenerate HTML enabled. Regenerating page for https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 16:28:33,820 - INFO - Generated recipe page: docs\doenerteller-mealprep.html
+2025-09-08 16:28:33,822 - INFO - Generated index page: docs\index.html
+2025-09-08 16:28:33,822 - INFO - Updated index.html with 8 recipes
+2025-09-08 16:28:33,822 - INFO - Processing post 2/139: https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:28:33,822 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:28:33,822 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:28:33,822 - INFO - Force re-extract enabled. Re-extracting thumbnail for https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:28:34,430 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:28:34,431 - INFO - No thumbnail found for https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:28:34,431 - INFO - Force regenerate HTML enabled. Regenerating page for https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 16:28:34,432 - INFO - Generated recipe page: docs\tofu-crumble.html
+2025-09-08 16:28:34,435 - INFO - Generated index page: docs\index.html
+2025-09-08 16:28:34,435 - INFO - Updated index.html with 8 recipes
+2025-09-08 16:28:34,435 - INFO - Processing post 3/139: https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:28:34,435 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:28:34,435 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:28:34,435 - INFO - Force re-extract enabled. Re-extracting thumbnail for https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:28:35,080 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:28:35,082 - INFO - No thumbnail found for https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:28:35,082 - INFO - Force regenerate HTML enabled. Regenerating page for https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 16:28:35,082 - INFO - Generated recipe page: docs\schoko-eis.html
+2025-09-08 16:28:35,085 - INFO - Generated index page: docs\index.html
+2025-09-08 16:28:35,085 - INFO - Updated index.html with 8 recipes
+2025-09-08 16:28:35,085 - INFO - Processing post 4/139: https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:28:35,085 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:28:35,085 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:28:35,085 - INFO - Force re-extract enabled. Re-extracting thumbnail for https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:28:36,056 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:28:36,057 - INFO - No thumbnail found for https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:28:36,057 - INFO - Force regenerate HTML enabled. Regenerating page for https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 16:28:36,057 - INFO - Generated recipe page: docs\paprika-fuellungen-mit-haehnchen.html
+2025-09-08 16:28:36,060 - INFO - Generated index page: docs\index.html
+2025-09-08 16:28:36,060 - INFO - Updated index.html with 8 recipes
+2025-09-08 16:28:36,060 - INFO - Processing post 5/139: https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:28:36,060 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:28:36,060 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:28:36,060 - INFO - Force re-extract enabled. Re-extracting thumbnail for https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:28:36,571 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:28:36,572 - INFO - No thumbnail found for https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:28:36,572 - INFO - Force regenerate HTML enabled. Regenerating page for https://www.instagram.com/reel/DN3KlBA0OvE/
+2025-09-08 16:28:36,573 - INFO - Generated recipe page: docs\bratkartoffelsalat-mit-raeuchertofu.html
+2025-09-08 16:28:36,576 - INFO - Generated index page: docs\index.html
+2025-09-08 16:28:36,576 - INFO - Updated index.html with 8 recipes
+2025-09-08 16:28:36,576 - INFO - Processing post 6/139: https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:28:36,576 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:28:36,576 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:28:36,576 - INFO - Force re-extract enabled. Re-extracting thumbnail for https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:28:37,190 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:28:37,192 - INFO - No thumbnail found for https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:28:37,192 - INFO - Force regenerate HTML enabled. Regenerating page for https://www.instagram.com/reel/DHB0t-EyR4F/
+2025-09-08 16:28:37,192 - INFO - Generated recipe page: docs\chicken-crust-pizza.html
+2025-09-08 16:28:37,195 - INFO - Generated index page: docs\index.html
+2025-09-08 16:28:37,195 - INFO - Updated index.html with 8 recipes
+2025-09-08 16:28:37,195 - INFO - Processing post 7/139: https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 16:28:37,195 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:28:37,195 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:28:37,195 - INFO - Force re-extract enabled. Re-extracting thumbnail for https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 16:28:37,801 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 16:28:37,802 - INFO - No thumbnail found for https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 16:28:37,803 - INFO - Force regenerate HTML enabled. Regenerating page for https://www.instagram.com/reel/DItpPlHoJY8/
+2025-09-08 16:28:37,803 - INFO - Generated recipe page: docs\proteinpancakes.html
+2025-09-08 16:28:37,806 - INFO - Generated index page: docs\index.html
+2025-09-08 16:28:37,806 - INFO - Updated index.html with 8 recipes
+2025-09-08 16:28:37,806 - INFO - Processing post 8/139: https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 16:28:37,806 - INFO - --> Caption found in cache. Skipping fetch.
+2025-09-08 16:28:37,806 - INFO - --> Recipe found in cache. Skipping LLM processing.
+2025-09-08 16:28:37,806 - INFO - Force re-extract enabled. Re-extracting thumbnail for https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 16:28:38,431 - WARNING - No thumbnail meta tag found for https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 16:28:38,432 - INFO - No thumbnail found for https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 16:28:38,432 - INFO - Force regenerate HTML enabled. Regenerating page for https://www.instagram.com/reel/DLXrSMiolGr/
+2025-09-08 16:28:38,433 - INFO - Generated recipe page: docs\protein-sonntagsbroetchen.html
+2025-09-08 16:28:38,435 - INFO - Generated index page: docs\index.html
+2025-09-08 16:28:38,435 - INFO - Updated index.html with 8 recipes
+2025-09-08 16:28:38,435 - INFO - Processing post 9/139: https://www.instagram.com/reel/DMJOyTNTq5O/
+2025-09-08 16:28:38,436 - INFO - ====== WebDriver manager ======
+2025-09-08 16:28:40,299 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:28:40,600 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 16:28:40,894 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 16:28:43,139 - INFO - Successfully declined cookies for https://www.instagram.com/p/DMJOyTNTq5O/
+2025-09-08 16:28:55,270 - WARNING - Login popup not found for https://www.instagram.com/p/DMJOyTNTq5O/.
+2025-09-08 16:28:55,377 - INFO - Successfully extracted clean caption for https://www.instagram.com/reel/DMJOyTNTq5O/
+2025-09-08 16:28:57,497 - INFO - --> Caption fetched and progress saved.
+2025-09-08 16:28:57,497 - INFO - Sending caption for https://www.instagram.com/reel/DMJOyTNTq5O/ to LLM (gemma3:4b)...

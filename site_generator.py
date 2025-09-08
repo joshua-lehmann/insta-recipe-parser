@@ -8,8 +8,10 @@
 import logging
 import os
 import re
+import json
 from typing import List
 from datetime import datetime
+from urllib.parse import quote
 
 from models import Recipe
 
@@ -17,80 +19,50 @@ from models import Recipe
 def sanitize_title(title: str) -> str:
     """
     Sanitizes the recipe title for safe filename usage.
-    Replaces German umlauts with their ASCII equivalents and handles special characters.
-
-    Args:
-        title: The original recipe title
-
-    Returns:
-        A sanitized version of the title suitable for filenames
     """
-    # Replace German umlauts with their ASCII equivalents
     replacements = {
         'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss',
         'Ä': 'Ae', 'Ö': 'Oe', 'Ü': 'Ue',
         'é': 'e', 'è': 'e', 'ê': 'e', 'à': 'a', 'ç': 'c'
     }
-
     for umlaut, replacement in replacements.items():
         title = title.replace(umlaut, replacement)
 
-    # Remove or replace special characters
     title = re.sub(r'[^\w\s-]', '', title)
-    # Replace spaces with hyphens and convert to lowercase
     title = re.sub(r'[-\s]+', '-', title).strip('-').lower()
-
     return title
 
 
 def convert_time_to_iso8601(time_str: str) -> str:
     """
     Convert German time format to ISO 8601 duration format.
-
-    Args:
-        time_str: Time string like "15 Minuten", "1 Stunde", "30 Min"
-
-    Returns:
-        ISO 8601 duration format like "PT15M", "PT1H", "PT30M"
     """
-    if not time_str:
+    if not time_str or time_str == "Nicht angegeben":
         return ""
 
     time_str = time_str.lower()
-
-    # Extract numbers and time units
-    hours = 0
-    minutes = 0
-
-    # Match hours
+    hours, minutes = 0, 0
     hour_match = re.search(r'(\d+)\s*(?:stunden?|h)', time_str)
     if hour_match:
         hours = int(hour_match.group(1))
-
-    # Match minutes
     minute_match = re.search(r'(\d+)\s*(?:minuten?|min|m)', time_str)
     if minute_match:
         minutes = int(minute_match.group(1))
 
-    # Build ISO 8601 duration
+    if hours == 0 and minutes == 0:
+        return ""
+
     duration = "PT"
     if hours > 0:
         duration += f"{hours}H"
     if minutes > 0:
         duration += f"{minutes}M"
-
-    return duration if len(duration) > 2 else ""
+    return duration
 
 
 def create_json_ld(recipe: Recipe) -> dict:
     """
     Create schema.org compliant JSON-LD structured data for a recipe.
-
-    Args:
-        recipe: The recipe object
-
-    Returns:
-        Dictionary containing the JSON-LD structured data
     """
     json_ld = {
         "@context": "https://schema.org/",
@@ -98,97 +70,103 @@ def create_json_ld(recipe: Recipe) -> dict:
         "name": recipe.title
     }
 
-    # Add optional fields if available
     if recipe.servings:
         json_ld["recipeYield"] = recipe.servings
-
     if recipe.prep_time:
         prep_iso = convert_time_to_iso8601(recipe.prep_time)
-        if prep_iso:
-            json_ld["prepTime"] = prep_iso
-
+        if prep_iso: json_ld["prepTime"] = prep_iso
     if recipe.cook_time:
         cook_iso = convert_time_to_iso8601(recipe.cook_time)
-        if cook_iso:
-            json_ld["cookTime"] = cook_iso
+        if cook_iso: json_ld["cookTime"] = cook_iso
 
-    # Add ingredients
-    ingredients_list = []
-    for group in recipe.ingredients:
-        for ingredient in group.ingredients:
-            if ingredient.quantity:
-                ingredients_list.append(f"{ingredient.quantity} {ingredient.name}")
-            else:
-                ingredients_list.append(ingredient.name)
-
+    ingredients_list = [f"{ing.quantity} {ing.name}".strip() for group in recipe.ingredients for ing in
+                        group.ingredients]
     if ingredients_list:
         json_ld["recipeIngredient"] = ingredients_list
 
-    # Add instructions as HowToStep
     if recipe.steps:
-        instructions = []
-        for step in recipe.steps:
-            instructions.append({
-                "@type": "HowToStep",
-                "text": step
-            })
-        json_ld["recipeInstructions"] = instructions
+        json_ld["recipeInstructions"] = [{"@type": "HowToStep", "text": step} for step in recipe.steps]
 
-    # Add nutrition information
     if recipe.nutrition:
         nutrition_info = {"@type": "NutritionInformation"}
+        if recipe.nutrition.calories: nutrition_info["calories"] = recipe.nutrition.calories
+        if recipe.nutrition.protein: nutrition_info["proteinContent"] = recipe.nutrition.protein
+        if recipe.nutrition.carbs: nutrition_info["carbohydrateContent"] = recipe.nutrition.carbs
+        if recipe.nutrition.fat: nutrition_info["fatContent"] = recipe.nutrition.fat
+        if len(nutrition_info) > 1: json_ld["nutrition"] = nutrition_info
 
-        if recipe.nutrition.calories:
-            nutrition_info["calories"] = recipe.nutrition.calories
-        if recipe.nutrition.protein:
-            nutrition_info["proteinContent"] = recipe.nutrition.protein
-        if recipe.nutrition.carbs:
-            nutrition_info["carbohydrateContent"] = recipe.nutrition.carbs
-        if recipe.nutrition.fat:
-            nutrition_info["fatContent"] = recipe.nutrition.fat
-
-        if len(nutrition_info) > 1:  # More than just @type
-            json_ld["nutrition"] = nutrition_info
-
-    # Add categories as keywords
     if recipe.categories:
         json_ld["keywords"] = ", ".join(recipe.categories)
+
+    if recipe.thumbnail_url and recipe.thumbnail_url.startswith('http'):
+        json_ld["image"] = [recipe.thumbnail_url]
 
     return json_ld
 
 
-def ensure_output_directory(path: str):
+def clean_caption_text(caption: str) -> str:
     """
-    Ensure the output directory exists.
+    Formats the raw caption text for safe HTML display by converting newlines.
+    """
+    if not caption:
+        return ""
+    formatted_caption = caption.replace('\\n', '\n').strip()
+    return formatted_caption.replace('\n', '<br>')
 
-    Args:
-        path: Directory path to create
+
+def extract_thumbnail_from_instagram(url: str) -> str:
     """
+    Extract thumbnail URL from Instagram reel/post.
+    """
+    try:
+        import requests
+        from bs4 import BeautifulSoup
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+        response = requests.get(url, headers=headers, timeout=10)
+        if response.status_code != 200:
+            logging.warning(f"Failed to fetch Instagram page ({response.status_code}): {url}")
+            return ""
+        soup = BeautifulSoup(response.content, 'html.parser')
+        og_image = soup.find('meta', property='og:image')
+        if og_image and og_image.get('content'):
+            return og_image['content']
+        logging.warning(f"No thumbnail meta tag found for {url}")
+        return ""
+    except Exception as e:
+        logging.error(f"Error extracting thumbnail from {url}: {e}")
+        return ""
+
+
+def ensure_output_directory(path: str):
     os.makedirs(path, exist_ok=True)
 
 
 def generate_recipe_page(recipe: Recipe, output_dir: str) -> str:
-    """
-    Generate an individual HTML page for a recipe.
-
-    Args:
-        recipe: The recipe object
-        output_dir: Directory to save the HTML file
-
-    Returns:
-        The filename of the generated HTML file
-    """
+    """Generate an individual HTML page for a recipe."""
     ensure_output_directory(output_dir)
-
-    # Create safe filename
     sanitized_title = sanitize_title(recipe.title)
     filename = f"{sanitized_title}.html"
     filepath = os.path.join(output_dir, filename)
 
-    # Generate JSON-LD structured data
     json_ld = create_json_ld(recipe)
 
-    # Create HTML content
+    # Prepare the source and caption box HTML
+    source_box_html = ''
+    if recipe.source_url or recipe.original_caption:
+        source_box_html = '<div class="source-link-box">'
+        source_box_html += '<h3 style="margin: 0 0 10px 0;">📱 Original auf Instagram</h3>'
+        if recipe.source_url:
+            source_box_html += f'<p style="margin: 0 0 15px 0;"><a href="{recipe.source_url}" target="_blank" rel="noopener">🔗 Link zum Reel</a></p>'
+        if recipe.original_caption:
+            cleaned_caption = clean_caption_text(recipe.original_caption)
+            source_box_html += f"""
+        <button type="button" class="collapsible">📝 Original Caption anzeigen</button>
+        <div class="caption-content">
+            <p>{cleaned_caption}</p>
+        </div>"""
+        source_box_html += '</div>'
+
     html_content = f"""<!DOCTYPE html>
 <html lang="de">
 <head>
@@ -196,84 +174,31 @@ def generate_recipe_page(recipe: Recipe, output_dir: str) -> str:
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{recipe.title}</title>
     <script type="application/ld+json">
-{_format_json_ld(json_ld)}
+{json.dumps(json_ld, ensure_ascii=False, indent=8)}
     </script>
     <style>
-        body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #333;
-        }}
-        .recipe-header {{
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }}
-        .recipe-meta {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin: 15px 0;
-            color: #666;
-        }}
-        .recipe-meta span {{
-            background: #f5f5f5;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9em;
-        }}
-        .ingredients-section, .instructions-section {{
-            margin: 30px 0;
-        }}
-        .ingredient-group {{
-            margin: 20px 0;
-        }}
-        .ingredient-group h3 {{
-            color: #2c3e50;
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }}
-        ul, ol {{
-            padding-left: 20px;
-        }}
-        li {{
-            margin: 8px 0;
-        }}
-        .nutrition-section {{
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 30px 0;
-        }}
-        .nutrition-grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 10px;
-        }}
-        .nutrition-item {{
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-        }}
-        .back-link {{
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #3498db;
-            text-decoration: none;
-        }}
-        .back-link:hover {{
-            text-decoration: underline;
-        }}
-        @media (max-width: 600px) {{
-            body {{ padding: 15px; }}
-            .recipe-meta {{ gap: 10px; }}
-            .nutrition-grid {{ grid-template-columns: 1fr 1fr; }}
-        }}
+        body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; color: #333; background-color: #fdfdfd; }}
+        .recipe-header {{ padding-bottom: 20px; margin-bottom: 20px; }}
+        h1 {{ font-size: 2.5em; margin-bottom: 10px; text-align: center;}}
+        h2 {{ border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 40px; color: #2c3e50; }}
+        .recipe-meta {{ display: flex; flex-wrap: wrap; gap: 15px; margin: 15px 0; color: #666; justify-content: center; }}
+        .recipe-meta span {{ background: #f5f5f5; padding: 6px 12px; border-radius: 20px; font-size: 0.9em; }}
+        ul, ol {{ padding-left: 20px; }}
+        li {{ margin: 10px 0; }}
+        .ingredient-group h3 {{ color: #2c3e50; font-size: 1.1em; margin: 20px 0 10px 0; }}
+        .nutrition-section {{ background: #f9f9f9; padding: 20px; border-radius: 12px; margin-top: 40px; }}
+        .nutrition-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-top: 10px; }}
+        .nutrition-item {{ background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }}
+        .back-link {{ display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; font-weight: bold; }}
+        .back-link:hover {{ text-decoration: underline; }}
+        .source-link-box {{ margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 12px; border-left: 5px solid #e91e63; }}
+        .source-link-box a {{ color: #e91e63; text-decoration: none; font-weight: bold; font-size: 1.1em; }}
+        .collapsible {{ background-color: #eee; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: left; outline: none; font-size: 1.0em; border-radius: 8px; font-weight: bold; }}
+        .collapsible:hover {{ background-color: #ddd; }}
+        .collapsible.active {{ border-bottom-left-radius: 0; border-bottom-right-radius: 0; }}
+        .caption-content {{ padding: 0 18px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background-color: #f1f1f1; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }}
+        .caption-content p {{ margin: 18px 0; }}
+        @media (max-width: 600px) {{ body {{ padding: 15px; }} h1 {{ font-size: 2em; }} .nutrition-grid {{ grid-template-columns: 1fr 1fr; }} }}
     </style>
 </head>
 <body>
@@ -281,92 +206,59 @@ def generate_recipe_page(recipe: Recipe, output_dir: str) -> str:
 
     <div class="recipe-header">
         <h1>{recipe.title}</h1>
-        <div class="recipe-meta">"""
-
-    if recipe.servings:
-        html_content += f'<span>🍽️ {recipe.servings}</span>'
-    if recipe.prep_time:
-        html_content += f'<span>⏱️ Vorbereitung: {recipe.prep_time}</span>'
-    if recipe.cook_time:
-        html_content += f'<span>🔥 Kochzeit: {recipe.cook_time}</span>'
-
-    html_content += """
+        <div class="recipe-meta">
+            {f'<span>🍽️ {recipe.servings}</span>' if recipe.servings else ''}
+            {f'<span>⏱️ {recipe.prep_time}</span>' if recipe.prep_time and recipe.prep_time != "Nicht angegeben" else ''}
+            {f'<span>🔥 {recipe.cook_time}</span>' if recipe.cook_time and recipe.cook_time != "Nicht angegeben" else ''}
         </div>
     </div>
 
     <div class="ingredients-section">
-        <h2>Zutaten</h2>"""
-
-    for group in recipe.ingredients:
-        if group.group_title and group.group_title.lower() != "zutaten":
-            html_content += f'<div class="ingredient-group"><h3>{group.group_title}</h3>'
-        else:
-            html_content += '<div class="ingredient-group">'
-
-        html_content += '<ul>'
-        for ingredient in group.ingredients:
-            quantity = ingredient.quantity + " " if ingredient.quantity else ""
-            html_content += f'<li>{quantity}{ingredient.name}</li>'
-        html_content += '</ul></div>'
-
-    html_content += """
+        <h2>Zutaten</h2>
+        {''.join([f'''<div class="ingredient-group">
+            {'<h3>' + group.group_title + '</h3>' if group.group_title and group.group_title.lower() != "zutaten" else ''}
+            <ul>{''.join([f'<li>{ing.quantity or ""} {ing.name}</li>' for ing in group.ingredients])}</ul>
+        </div>''' for group in recipe.ingredients])}
     </div>
 
     <div class="instructions-section">
         <h2>Zubereitung</h2>
-        <ol>"""
+        <ol>{''.join([f'<li>{step}</li>' for step in recipe.steps])}</ol>
+    </div>
 
-    for step in recipe.steps:
-        html_content += f'<li>{step}</li>'
-
-    html_content += '</ol></div>'
-
-    if recipe.notes:
-        html_content += """
-    <div class="notes-section">
+    {f'''<div class="notes-section">
         <h2>Notizen & Tipps</h2>
-        <ul>"""
-        for note in recipe.notes:
-            html_content += f'<li>{note}</li>'
-        html_content += '</ul></div>'
+        <ul>{''.join([f'<li>{note}</li>' for note in recipe.notes])}</ul>
+    </div>''' if recipe.notes else ''}
 
-    if recipe.nutrition:
-        html_content += """
-    <div class="nutrition-section">
+    {f'''<div class="nutrition-section">
         <h2>Nährwerte pro Portion</h2>
-        <div class="nutrition-grid">"""
+        <div class="nutrition-grid">
+            {f'<div class="nutrition-item"><strong>{recipe.nutrition.calories}</strong><br>Kalorien</div>' if recipe.nutrition.calories else ''}
+            {f'<div class="nutrition-item"><strong>{recipe.nutrition.protein}</strong><br>Protein</div>' if recipe.nutrition.protein else ''}
+            {f'<div class="nutrition-item"><strong>{recipe.nutrition.carbs}</strong><br>Kohlenhydrate</div>' if recipe.nutrition.carbs else ''}
+            {f'<div class="nutrition-item"><strong>{recipe.nutrition.fat}</strong><br>Fett</div>' if recipe.nutrition.fat else ''}
+        </div>
+    </div>''' if recipe.nutrition and any([recipe.nutrition.calories, recipe.nutrition.protein, recipe.nutrition.carbs, recipe.nutrition.fat]) else ''}
 
-        if recipe.nutrition.calories:
-            html_content += f'<div class="nutrition-item"><strong>{recipe.nutrition.calories}</strong><br>Kalorien</div>'
-        if recipe.nutrition.protein:
-            html_content += f'<div class="nutrition-item"><strong>{recipe.nutrition.protein}</strong><br>Protein</div>'
-        if recipe.nutrition.carbs:
-            html_content += f'<div class="nutrition-item"><strong>{recipe.nutrition.carbs}</strong><br>Kohlenhydrate</div>'
-        if recipe.nutrition.fat:
-            html_content += f'<div class="nutrition-item"><strong>{recipe.nutrition.fat}</strong><br>Fett</div>'
+    {source_box_html}
 
-        html_content += '</div></div>'
-
-    if recipe.source_url:
-        html_content += f"""
-    <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #e91e63;">
-        <h3 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 1.1em;">📱 Original Instagram Reel</h3>
-        <p style="margin: 0;">
-            <a href="{recipe.source_url}" target="_blank" rel="noopener" 
-               style="color: #e91e63; text-decoration: none; font-weight: bold; font-size: 1.1em;">
-                🔗 Original Reel ansehen
-            </a>
-        </p>
-        <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9em;">
-            Klicken Sie hier, um das ursprüngliche Instagram-Video zu sehen
-        </p>
-    </div>"""
-
-    html_content += """
+    <script>
+        document.querySelectorAll('.collapsible').forEach(button => {{
+            button.addEventListener('click', function() {{
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight) {{
+                    content.style.maxHeight = null;
+                }} else {{
+                    content.style.maxHeight = content.scrollHeight + 36 + 'px';
+                }}
+            }});
+        }});
+    </script>
 </body>
 </html>"""
 
-    # Write HTML file
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(html_content)
 
@@ -375,17 +267,25 @@ def generate_recipe_page(recipe: Recipe, output_dir: str) -> str:
 
 
 def generate_index_page(recipes: List[Recipe], output_dir: str):
-    """
-    Generate an index page listing all recipes.
-
-    Args:
-        recipes: List of recipe objects
-        output_dir: Directory to save the index.html file
-    """
+    """Generate an index page listing all recipes."""
     ensure_output_directory(output_dir)
-
     filepath = os.path.join(output_dir, "index.html")
     current_date = datetime.now().strftime("%d.%m.%Y")
+
+    recipe_cards_html = []
+    for recipe in sorted(recipes, key=lambda r: r.title):
+        filename = sanitize_title(recipe.title) + ".html"
+
+        card = f"""
+        <a href="{filename}" class="recipe-card" data-title="{recipe.title.lower()}">
+            <div class="card-content">
+                <div class="recipe-title">{recipe.title}</div>
+                <div class="recipe-meta">
+                    {''.join([f'<span class="category-tag">{cat}</span>' for cat in recipe.categories[:3]])}
+                </div>
+            </div>
+        </a>"""
+        recipe_cards_html.append(card)
 
     html_content = f"""<!DOCTYPE html>
 <html lang="de">
@@ -394,182 +294,39 @@ def generate_index_page(recipes: List[Recipe], output_dir: str):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rezeptsammlung</title>
     <style>
-        body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #333;
-            background: #fafafa;
-        }}
-        .header {{
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px 0;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }}
-        .recipe-grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }}
-        .recipe-card {{
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-            text-decoration: none;
-            color: inherit;
-        }}
-        .recipe-card:hover {{
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            text-decoration: none;
-            color: inherit;
-        }}
-        .recipe-title {{
-            font-size: 1.3em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }}
-        .recipe-meta {{
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-        }}
-        .recipe-categories {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }}
-        .category-tag {{
-            background: #e8f4fd;
-            color: #2c3e50;
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.8em;
-        }}
-        .stats {{
-            text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }}
-        .filter-section {{
-            margin-bottom: 30px;
-            text-align: center;
-        }}
-        #searchInput {{
-            padding: 10px 15px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 25px;
-            width: 300px;
-            max-width: 100%;
-        }}
-        @media (max-width: 600px) {{
-            body {{ padding: 15px; }}
-            .recipe-grid {{ grid-template-columns: 1fr; }}
-            #searchInput {{ width: 100%; }}
-        }}
+        body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; line-height: 1.6; color: #333; background: #f4f7f6; }}
+        .header {{ text-align: center; margin-bottom: 40px; }}
+        h1 {{ font-size: 3em; color: #2c3e50; }}
+        .recipe-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }}
+        .recipe-card {{ background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: all 0.2s ease-in-out; text-decoration: none; color: inherit; overflow: hidden; display: flex; flex-direction: column; }}
+        .recipe-card:hover {{ transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }}
+        .card-content {{ padding: 20px; flex-grow: 1; }}
+        .recipe-title {{ font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #2c3e50; }}
+        .recipe-meta {{ display: flex; flex-wrap: wrap; gap: 5px; }}
+        .category-tag {{ background: #e8f4fd; color: #2c3e50; padding: 4px 10px; border-radius: 15px; font-size: 0.8em; }}
+        #searchInput {{ padding: 12px 20px; font-size: 16px; border: 2px solid #ddd; border-radius: 25px; width: 100%; max-width: 400px; display: block; margin: 0 auto 40px auto; box-sizing: border-box; }}
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🍽️ Rezeptsammlung</h1>
-        <p>Automatisch generiert aus Instagram-Posts • {len(recipes)} Rezepte • Stand: {current_date}</p>
+        <h1>🍽️ Meine Rezeptsammlung</h1>
+        <p>{len(recipes)} Rezepte • Stand: {current_date}</p>
     </div>
-
-    <div class="filter-section">
-        <input type="text" id="searchInput" placeholder="Rezepte suchen..." onkeyup="filterRecipes()">
-    </div>
-
-    <div class="stats">
-        <p><strong>{len(recipes)}</strong> Rezepte verfügbar</p>
-    </div>
-
-    <div class="recipe-grid" id="recipeGrid">"""
-
-    for recipe in recipes:
-        sanitized_title = sanitize_title(recipe.title)
-        filename = f"{sanitized_title}.html"
-
-        html_content += f"""
-        <a href="{filename}" class="recipe-card" data-title="{recipe.title.lower()}">
-            <div class="recipe-title">{recipe.title}</div>
-            <div class="recipe-meta">"""
-
-        meta_info = []
-        if recipe.servings:
-            meta_info.append(f"🍽️ {recipe.servings}")
-        if recipe.prep_time:
-            meta_info.append(f"⏱️ {recipe.prep_time}")
-        if recipe.cook_time:
-            meta_info.append(f"🔥 {recipe.cook_time}")
-
-        html_content += " • ".join(meta_info)
-
-        html_content += """
-            </div>
-            <div class="recipe-categories">"""
-
-        for category in recipe.categories[:3]:  # Show max 3 categories
-            html_content += f'<span class="category-tag">{category}</span>'
-
-        html_content += """
-            </div>
-        </a>"""
-
-    html_content += """
-    </div>
-
+    <input type="text" id="searchInput" placeholder="Rezepte suchen..." onkeyup="filterRecipes()">
+    <div class="recipe-grid" id="recipeGrid">{''.join(recipe_cards_html)}</div>
     <script>
-        function filterRecipes() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toLowerCase();
-            const cards = document.getElementsByClassName('recipe-card');
-
-            for (let i = 0; i < cards.length; i++) {
-                const title = cards[i].getAttribute('data-title');
-                if (title.includes(filter)) {
-                    cards[i].style.display = '';
-                } else {
-                    cards[i].style.display = 'none';
-                }
-            }
-        }
+        function filterRecipes() {{
+            const filter = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.recipe-card').forEach(card => {{
+                const title = card.getAttribute('data-title');
+                card.style.display = title.includes(filter) ? '' : 'none';
+            }});
+        }}
     </script>
 </body>
 </html>"""
 
-    # Write index file
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(html_content)
-
     logging.info(f"Generated index page: {filepath}")
 
-
-def _format_json_ld(data: dict, indent: int = 8) -> str:
-    """
-    Format JSON-LD data with proper indentation for HTML embedding.
-
-    Args:
-        data: JSON-LD data dictionary
-        indent: Number of spaces for indentation
-
-    Returns:
-        Formatted JSON-LD string
-    """
-    import json
-    json_str = json.dumps(data, ensure_ascii=False, indent=2)
-    # Add proper indentation for HTML
-    lines = json_str.split('\n')
-    indented_lines = [' ' * indent + line if line.strip() else line for line in lines]
-    return '\n'.join(indented_lines)

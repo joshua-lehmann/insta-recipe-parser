@@ -38,4 +38,6 @@ class Recipe(BaseModel):
     nutrition: Optional[Nutrition] = Field(None, description="Die Nährwertangaben pro Portion.")
     source_url: Optional[str] = Field(None, description="Die ursprüngliche Instagram-URL des Rezepts.")
     local_file: Optional[str] = Field(None, description="Der Dateiname der generierten HTML-Seite.")
+    original_caption: Optional[str] = Field(None, description="Der ursprüngliche Instagram-Caption als Backup.")
+    thumbnail_url: Optional[str] = Field(None, description="URL des Vorschaubildes vom Instagram-Reel.")
 
