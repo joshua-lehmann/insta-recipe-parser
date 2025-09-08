@@ -548,16 +548,148 @@
     "https://www.instagram.com/reel/DMJOyTNTq5O/": {
         "url": "https://www.instagram.com/reel/DMJOyTNTq5O/",
         "caption": "High protein gnocchi bake that hits the spot 👌\n\nInterested in my upcoming recipe ebook? My discount priority list is getting full! You can join it by the link on my profile!\n\nMacros\n• 526 calories\n• 59g carbs\n• 14g fat\n• 42g protein\n\nHere’s what’s in it:\n• 125g extra lean beef mince\n• 150g gnocchi\n• 150g tomato passata\n• 50g finely diced carrot (optional)\n• 1 tsp minced garlic\n• 25g mozzarella\n• Salt, pepper, garlic powder, oregano\n\nBake at 180°C for 45 minutes.\nBowl size: 750ml ( $6.50ea from Kmart)\n\nFollow for more ✅\n\nVideo stitch: @jessespt\".",
-        "recipe": null
+        "recipe": {
+            "title": "High Protein Gnocchi Bake",
+            "servings": null,
+            "prep_time": null,
+            "cook_time": null,
+            "categories": [],
+            "ingredients": [
+                {
+                    "group_title": null,
+                    "ingredients": [
+                        {
+                            "name": "extra lean beef mince",
+                            "quantity": "125g"
+                        },
+                        {
+                            "name": "gnocchi",
+                            "quantity": "150g"
+                        },
+                        {
+                            "name": "tomato passata",
+                            "quantity": "150g"
+                        },
+                        {
+                            "name": "carrot",
+                            "quantity": "50g (finely diced, optional)"
+                        },
+                        {
+                            "name": "garlic",
+                            "quantity": "1 tsp (minced)"
+                        },
+                        {
+                            "name": "mozzarella",
+                            "quantity": "25g"
+                        },
+                        {
+                            "name": "salt",
+                            "quantity": "to taste"
+                        },
+                        {
+                            "name": "pepper",
+                            "quantity": "to taste"
+                        },
+                        {
+                            "name": "garlic powder",
+                            "quantity": "to taste"
+                        },
+                        {
+                            "name": "oregano",
+                            "quantity": "to taste"
+                        }
+                    ]
+                }
+            ],
+            "steps": [
+                "Bake at 180°C for 45 minutes.",
+                "Bowl size: 750ml ( $6.50ea from Kmart)"
+            ],
+            "notes": null,
+            "nutrition": {
+                "calories": "526 kcal",
+                "protein": "42g",
+                "carbs": "59g",
+                "fat": "14g"
+            },
+            "source_url": "https://www.instagram.com/reel/DMJOyTNTq5O/",
+            "local_file": "high-protein-gnocchi-bake.html",
+            "original_caption": "High protein gnocchi bake that hits the spot 👌\n\nInterested in my upcoming recipe ebook? My discount priority list is getting full! You can join it by the link on my profile!\n\nMacros\n• 526 calories\n• 59g carbs\n• 14g fat\n• 42g protein\n\nHere’s what’s in it:\n• 125g extra lean beef mince\n• 150g gnocchi\n• 150g tomato passata\n• 50g finely diced carrot (optional)\n• 1 tsp minced garlic\n• 25g mozzarella\n• Salt, pepper, garlic powder, oregano\n\nBake at 180°C for 45 minutes.\nBowl size: 750ml ( $6.50ea from Kmart)\n\nFollow for more ✅\n\nVideo stitch: @jessespt\".",
+            "thumbnail_url": null
+        }
     },
     "https://www.instagram.com/reel/DMspUlxoQx3/": {
         "url": "https://www.instagram.com/reel/DMspUlxoQx3/",
-        "caption": null,
-        "recipe": null
+        "caption": "Anzeige | Rezept & Nährwerte ⤵️\nHafer- Apfelkuchen 🥧🍎 \n\nZutaten:\n- 100g Haferflocken \n- 40g Proteinpulver (bei mir EVO Whey Vanilleeis) \n- 200g ungesüßte Mandelmilch\n- 1 Prise Salz \n- 3g Backpulver \n- 1/3 TL Zimt\n- 1 Apfel \n- ggf. weitere Süße deiner Wahl (z.B. 1. Scoop Flavup Vanillacream)\n\nMit dem Code „Jasmin“ gibt es bei @evosportsfuel.de immer den aktuell größten Rabatt 🫶🏼😊\n\nNährwerte GANZER Kuchen:\n669 Kalorien\n93g KH \n12g F \n48g EW\n\nZubereitung:\nAlle Zutaten, außer dem Apfel, mixen oder glatt pürieren. Den Apfel schälen und klein schnibbeln. Apfelstücke in eine ausgelegte- oder Silikonbackform legen. Den Teig darüber verteilen, so das alles bedeckt ist. Bei 175 Grad Umluft backen bis der Kuchen oben goldig ist. (Ca. 30 Min.) Abkühlen lassen und erst dann schneiden und genießen. Auch sehr lecker mit gehacktenMandeln oder Haselnüssen im Teig oder darauf 😊🫶🏼\".",
+        "recipe": {
+            "title": "Hafer-Apfelkuchen",
+            "servings": null,
+            "prep_time": null,
+            "cook_time": null,
+            "categories": [],
+            "ingredients": [
+                {
+                    "group_title": "Zutaten",
+                    "ingredients": [
+                        {
+                            "name": "Haferflocken",
+                            "quantity": "100g"
+                        },
+                        {
+                            "name": "Proteinpulver",
+                            "quantity": "40g"
+                        },
+                        {
+                            "name": "ungesüßte Mandelmilch",
+                            "quantity": "200g"
+                        },
+                        {
+                            "name": "Salz",
+                            "quantity": "1 Prise"
+                        },
+                        {
+                            "name": "Backpulver",
+                            "quantity": "3g"
+                        },
+                        {
+                            "name": "Zimt",
+                            "quantity": "1/3 TL"
+                        },
+                        {
+                            "name": "Apfel",
+                            "quantity": "1"
+                        },
+                        {
+                            "name": "Süße (z.B. Flavup Vanillacream)",
+                            "quantity": "1 Scoop"
+                        }
+                    ]
+                }
+            ],
+            "steps": [
+                "Alle Zutaten, außer dem Apfel, mixen oder glatt pürieren.",
+                "Den Apfel schälen und klein schnibbeln.",
+                "Apfelstücke in eine ausgelegte oder Silikonbackform legen.",
+                "Den Teig darüber verteilen, so dass alles bedeckt ist.",
+                "Bei 175 Grad Umluft backen, bis der Kuchen oben goldig ist (ca. 30 Min).",
+                "Abkühlen lassen und erst dann schneiden und genießen."
+            ],
+            "notes": null,
+            "nutrition": {
+                "calories": "",
+                "protein": "",
+                "carbs": null,
+                "fat": "12g KH 93g F EW 669 kcal"
+            },
+            "source_url": "https://www.instagram.com/reel/DMspUlxoQx3/",
+            "local_file": "hafer-apfelkuchen.html",
+            "original_caption": "Anzeige | Rezept & Nährwerte ⤵️\nHafer- Apfelkuchen 🥧🍎 \n\nZutaten:\n- 100g Haferflocken \n- 40g Proteinpulver (bei mir EVO Whey Vanilleeis) \n- 200g ungesüßte Mandelmilch\n- 1 Prise Salz \n- 3g Backpulver \n- 1/3 TL Zimt\n- 1 Apfel \n- ggf. weitere Süße deiner Wahl (z.B. 1. Scoop Flavup Vanillacream)\n\nMit dem Code „Jasmin“ gibt es bei @evosportsfuel.de immer den aktuell größten Rabatt 🫶🏼😊\n\nNährwerte GANZER Kuchen:\n669 Kalorien\n93g KH \n12g F \n48g EW\n\nZubereitung:\nAlle Zutaten, außer dem Apfel, mixen oder glatt pürieren. Den Apfel schälen und klein schnibbeln. Apfelstücke in eine ausgelegte- oder Silikonbackform legen. Den Teig darüber verteilen, so das alles bedeckt ist. Bei 175 Grad Umluft backen bis der Kuchen oben goldig ist. (Ca. 30 Min.) Abkühlen lassen und erst dann schneiden und genießen. Auch sehr lecker mit gehacktenMandeln oder Haselnüssen im Teig oder darauf 😊🫶🏼\".",
+            "thumbnail_url": null
+        }
     },
     "https://www.instagram.com/reel/DOEE9HsCGkn/": {
         "url": "https://www.instagram.com/reel/DOEE9HsCGkn/",
-        "caption": null,
+        "caption": "🍃Feta Linsen Brot🍃\n\nMacros pro Stück:\n125 Kcal 12g Protein 12g Carbs 3,5g Fett\n\nMacros für das ganze Brot (10 Stück):\n1250 Kcal 120g Protein 120g Carbs 35g Fett\n\nZutaten:\n🍃200g rote Linsen\n🍃2 Eier (100g)\n🍃30g Mandelmehl\n🍃180g Feta light (Salakis light)\n🍃Gewürze (Vegeta, Italienische Kräuter)\n🍃Petersilie (Frisch oder TK)\n\nZubereitung:\n1. Die Linsen für 2-3 Stunden in Wasser einweichen \n2. Danach zusammen mit den Eiern und dem Mandelmehl pürieren oder durchmixen bis ein glatter Teig entsteht \n3. Den Feta kleinbröseln und zusammen mit den Gewürzen und Petersilie im Teig unterheben\n4. Den Teig in eine Backform geben\n5. Backen bei 180°C für 40-50 Minuten, danach vor dem anschneiden abkühlen lassen \nGuten Appetit ♥️\n\n#gymfood #mealprep #mealonthego #foodinspo #foodinsta #proteinreich #proteinfood #highprotein #highproteinrecipes #muskelaufbau\".",
         "recipe": null
     },
     "https://www.instagram.com/reel/DN8XcsZCGoj/": {

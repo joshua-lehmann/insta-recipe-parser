@@ -41,7 +41,7 @@ FORCE_REFETCH_CAPTIONS = False
 FORCE_REPROCESS_LLM = False
 
 # Force re-extract thumbnails (useful when thumbnail extraction logic changes) 
-FORCE_REEXTRACT_THUMBNAILS = True
+FORCE_REEXTRACT_THUMBNAILS = False
 
 # Force regenerate HTML pages (useful when template or styling changes)
 FORCE_REGENERATE_HTML = True
