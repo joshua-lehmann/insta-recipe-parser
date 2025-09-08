@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezeptsammlung</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+            background: #fafafa;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .recipe-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            text-decoration: none;
+            color: inherit;
+        }
+        .recipe-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .recipe-meta {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        .recipe-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .category-tag {
+            background: #e8f4fd;
+            color: #2c3e50;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        .stats {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .filter-section {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        #searchInput {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            width: 300px;
+            max-width: 100%;
+        }
+        @media (max-width: 600px) {
+            body { padding: 15px; }
+            .recipe-grid { grid-template-columns: 1fr; }
+            #searchInput { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🍽️ Rezeptsammlung</h1>
+        <p>Automatisch generiert aus Instagram-Posts • 3 Rezepte • Stand: 08.09.2025</p>
+    </div>
+
+    <div class="filter-section">
+        <input type="text" id="searchInput" placeholder="Rezepte suchen..." onkeyup="filterRecipes()">
+    </div>
+
+    <div class="stats">
+        <p><strong>3</strong> Rezepte verfügbar</p>
+    </div>
+
+    <div class="recipe-grid" id="recipeGrid">
+        <a href="doener-mealprep.html" class="recipe-card" data-title="döner mealprep">
+            <div class="recipe-title">Döner Mealprep</div>
+            <div class="recipe-meta">
+            </div>
+            <div class="recipe-categories">
+            </div>
+        </a>
+        <a href="tofu-crumble.html" class="recipe-card" data-title="tofu crumble">
+            <div class="recipe-title">Tofu Crumble</div>
+            <div class="recipe-meta">
+            </div>
+            <div class="recipe-categories">
+            </div>
+        </a>
+        <a href="super-einfaches-proteinreiches-schoko-eis.html" class="recipe-card" data-title="super einfaches, proteinreiches schoko-eis">
+            <div class="recipe-title">Super einfaches, proteinreiches Schoko-Eis</div>
+            <div class="recipe-meta">
+            </div>
+            <div class="recipe-categories">
+            </div>
+        </a>
+    </div>
+
+    <script>
+        function filterRecipes() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const cards = document.getElementsByClassName('recipe-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                const title = cards[i].getAttribute('data-title');
+                if (title.includes(filter)) {
+                    cards[i].style.display = '';
+                } else {
+                    cards[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

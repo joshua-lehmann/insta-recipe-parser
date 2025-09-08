@@ -1,21 +1,58 @@
-2025-09-08 12:36:02,268 - INFO - Starting Instagram recipe processing...
-2025-09-08 12:36:02,269 - INFO - Loaded 0 posts from previous progress file.
-2025-09-08 12:36:02,270 - INFO - Found collection: 'Food'. Extracting posts...
-2025-09-08 12:36:02,270 - INFO - Finished extracting from 'Food'.
-2025-09-08 12:36:02,270 - INFO - Extracted 139 posts from the 'Food' collection.
-2025-09-08 12:36:02,271 - INFO - Found 139 total posts. Checking against progress file...
-2025-09-08 12:36:02,271 - INFO - Processing post 1/139: https://www.instagram.com/reel/DOBbrYSiDdF/
-2025-09-08 12:36:02,271 - INFO - ====== WebDriver manager ======
-2025-09-08 12:36:03,448 - INFO - Get LATEST chromedriver version for google-chrome
-2025-09-08 12:36:03,890 - INFO - Get LATEST chromedriver version for google-chrome
-2025-09-08 12:36:04,254 - INFO - Driver [C:\Users\jolehm\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
-2025-09-08 12:36:07,144 - INFO - Successfully declined cookies for https://www.instagram.com/p/DOBbrYSiDdF/
-2025-09-08 12:36:09,197 - INFO - Successfully closed login popup for https://www.instagram.com/p/DOBbrYSiDdF/
-2025-09-08 12:36:12,416 - INFO - --> Caption fetched and progress saved.
-2025-09-08 12:36:13,417 - INFO - Sending caption for https://www.instagram.com/reel/DOBbrYSiDdF/ to LLM (llama3)...
-2025-09-08 12:37:20,376 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
-2025-09-08 12:37:20,377 - INFO - Successfully processed and validated recipe: 'Döner-Teller Mealprep'
-2025-09-08 12:44:42,539 - INFO - Starting Instagram recipe processing...
-2025-09-08 12:44:42,539 - INFO - Loaded 0 posts from previous progress file.
-2025-09-08 12:46:00,341 - INFO - Starting Instagram recipe processing...
-2025-09-08 12:46:00,341 - INFO - Loaded 0 posts from previous progress file.
+2025-09-08 15:43:41,774 - INFO - Starting Instagram recipe processing...
+2025-09-08 15:43:41,774 - INFO - Loaded 0 posts from previous progress file.
+2025-09-08 15:43:41,775 - INFO - Found collection: 'Food'. Extracting posts...
+2025-09-08 15:43:41,775 - INFO - Finished extracting from 'Food'.
+2025-09-08 15:43:41,775 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 15:43:41,775 - INFO - Extracted 139 posts from the 'Food' collection.
+2025-09-08 15:43:41,775 - INFO - Found 139 total posts. Checking against progress file...
+2025-09-08 15:43:41,775 - INFO - Processing post 1/139: https://www.instagram.com/reel/DOBbrYSiDdF/
+2025-09-08 15:43:41,775 - INFO - ====== WebDriver manager ======
+2025-09-08 15:43:43,615 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:43:43,918 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:43:44,207 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:43:47,004 - INFO - Successfully declined cookies for https://www.instagram.com/p/DOBbrYSiDdF/
+2025-09-08 15:43:49,053 - INFO - Successfully closed login popup for https://www.instagram.com/p/DOBbrYSiDdF/
+2025-09-08 15:43:52,242 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:43:52,243 - INFO - Sending caption for https://www.instagram.com/reel/DOBbrYSiDdF/ to LLM (gemma3:4b)...
+2025-09-08 15:44:33,314 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:44:33,315 - INFO - Successfully processed and validated recipe: 'DÃ¶ner Mealprep'
+2025-09-08 15:44:33,320 - INFO - Generated recipe page: docs\doener-mealprep.html
+2025-09-08 15:44:33,323 - INFO - Generated index page: docs\index.html
+2025-09-08 15:44:33,324 - INFO - Updated index.html with 1 recipes
+2025-09-08 15:44:33,324 - INFO - Processing post 2/139: https://www.instagram.com/reel/DMNhcepIUtM/
+2025-09-08 15:44:33,324 - INFO - ====== WebDriver manager ======
+2025-09-08 15:44:35,129 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:44:35,424 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:44:35,715 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:44:38,258 - INFO - Successfully declined cookies for https://www.instagram.com/p/DMNhcepIUtM/
+2025-09-08 15:44:40,314 - INFO - Successfully closed login popup for https://www.instagram.com/p/DMNhcepIUtM/
+2025-09-08 15:44:43,481 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:44:43,481 - INFO - Sending caption for https://www.instagram.com/reel/DMNhcepIUtM/ to LLM (gemma3:4b)...
+2025-09-08 15:45:39,975 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:45:39,976 - INFO - Successfully processed and validated recipe: 'Tofu Crumble'
+2025-09-08 15:45:39,979 - INFO - Generated recipe page: docs\tofu-crumble.html
+2025-09-08 15:45:39,982 - INFO - Generated index page: docs\index.html
+2025-09-08 15:45:39,982 - INFO - Updated index.html with 2 recipes
+2025-09-08 15:45:39,982 - INFO - Processing post 3/139: https://www.instagram.com/reel/DOJ3AMZiOtR/
+2025-09-08 15:45:39,982 - INFO - ====== WebDriver manager ======
+2025-09-08 15:45:41,837 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:45:42,137 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:45:42,429 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:45:44,601 - INFO - Successfully declined cookies for https://www.instagram.com/p/DOJ3AMZiOtR/
+2025-09-08 15:45:46,652 - INFO - Successfully closed login popup for https://www.instagram.com/p/DOJ3AMZiOtR/
+2025-09-08 15:45:49,828 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:45:49,828 - INFO - Sending caption for https://www.instagram.com/reel/DOJ3AMZiOtR/ to LLM (gemma3:4b)...
+2025-09-08 15:46:27,857 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2025-09-08 15:46:27,858 - INFO - Successfully processed and validated recipe: 'Super einfaches, proteinreiches Schoko-Eis'
+2025-09-08 15:46:27,863 - INFO - Generated recipe page: docs\super-einfaches-proteinreiches-schoko-eis.html
+2025-09-08 15:46:27,867 - INFO - Generated index page: docs\index.html
+2025-09-08 15:46:27,867 - INFO - Updated index.html with 3 recipes
+2025-09-08 15:46:27,867 - INFO - Processing post 4/139: https://www.instagram.com/reel/DNszop50FB3/
+2025-09-08 15:46:27,868 - INFO - ====== WebDriver manager ======
+2025-09-08 15:46:29,800 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:46:30,107 - INFO - Get LATEST chromedriver version for google-chrome
+2025-09-08 15:46:30,400 - INFO - Driver [C:\Users\Joshua\.wdm\drivers\chromedriver\win64\139.0.7258.154\chromedriver-win32/chromedriver.exe] found in cache
+2025-09-08 15:46:32,824 - INFO - Successfully declined cookies for https://www.instagram.com/p/DNszop50FB3/
+2025-09-08 15:46:34,877 - INFO - Successfully closed login popup for https://www.instagram.com/p/DNszop50FB3/
+2025-09-08 15:46:38,047 - INFO - --> Caption fetched and progress saved.
+2025-09-08 15:46:38,047 - INFO - Sending caption for https://www.instagram.com/reel/DNszop50FB3/ to LLM (gemma3:4b)...

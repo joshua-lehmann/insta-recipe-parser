@@ -1,67 +1,79 @@
-# **Instagram to Samsung Food Recipe Parser**
+# **Instagram Recipe Parser**
 
-This project provides a complete Python solution to process your Instagram saved collections, extract food-related posts, structure them into detailed recipes using a local LLM, and generate public web pages for easy import into services like Samsung Food.
+This project provides a complete Python solution to parse your saved Instagram collections, extract food-related posts, use a local LLM to structure them as recipes, and generate public URLs for easy import into services like Samsung Food.
 
 ## **Features**
 
-* **Modular Codebase**: The project is split into logical modules for configuration, parsing, data fetching, LLM interaction, and page generation.  
-* **Structured Data Extraction**: Uses a local LLM (like Llama 3 or Gemma 3\) with Pydantic to enforce a strict, detailed JSON schema for recipes.  
-* **Samsung Food Optimized**: The schema includes optional fields for prep time, cook time, servings, notes, and grouped ingredients, based on Samsung Food's best practices.  
-* **Automatic Page Generation**: Creates a clean, public Telegra.ph page for each recipe, providing a URL perfect for Samsung Food's "import from website" feature.  
-* **Resumable Progress**: Automatically saves progress after each major step. If the script is interrupted, it will resume where it left off, avoiding redundant work.  
-* **Robust Error Handling**: Logs failures and skips problematic posts, ensuring the script can run through large collections.
+* **Modular Code**: The project is split into logical modules for configuration, parsing, caption fetching, LLM interaction, and page generation.  
+* **Intelligent Caption Scraping**: Uses Selenium to automate a web browser, successfully bypassing cookie and login popups for reliable caption fetching.  
+* **Structured LLM Output**: Leverages Pydantic and the ollama library to enforce a strict JSON schema, ensuring clean and predictable recipe data from the LLM.  
+* **Automated Progress Saving**: Creates a processing\_progress.json file to track fetched captions, processed recipes, and generated URLs. If the script is stopped, it resumes exactly where it left off, avoiding redundant work.  
+* **Public URL Generation**: Automatically creates a public, shareable webpage for each recipe using Telegra.ph, making it easy to import into services that require a URL.  
+* **Robust Error Handling**: Includes comprehensive logging to track progress and diagnose issues. Failed posts are logged to failed.log.
 
-## **Project Structure**
+## **Setup and Installation**
 
-The project is organized into several Python modules for clarity and maintainability:
+### **1\. Install Python**
 
-* main.py: The main entry point that orchestrates the entire process.  
-* config.py: Contains all user-configurable settings like file paths and model names.  
-* models.py: Defines the Pydantic data models that enforce the recipe schema.  
-* instagram\_parser.py: Handles loading and parsing your saved\_collections.json file.  
-* caption\_fetcher.py: Manages the web scraping logic to get post captions.  
-* llm\_processor.py: Contains the logic for interacting with the Ollama LLM.  
-* page\_generator.py: Creates the public recipe pages using the Telegra.ph API.  
-* utils.py: Provides helper functions for file I/O and progress management.  
-* requirements.txt: Lists all the necessary Python packages.
+Ensure you have Python 3.11 or newer installed on your system.
 
-## **Setup**
+### **2\. Install Dependencies**
 
-### **1\. Install Ollama and a Model**
+Navigate to the project directory in your terminal and install the required Python libraries using the requirements.txt file. It's highly recommended to do this within a virtual environment.
 
-Follow the guide below to install Ollama on your machine and download a powerful language model. llama3 is highly recommended for its excellent ability to follow JSON formatting instructions.
+\# Create a virtual environment (optional but recommended)  
+python \-m venv .venv  
+source .venv/bin/activate  \# On Windows use \` .venv\\Scripts\\activate \`
 
-* **Install Ollama**: Download and install from [ollama.com](https://ollama.com/).  
-* **Pull a Model**: Open your terminal or command prompt and run:  
+\# Install dependencies  
+pip install \-r requirements.txt
+
+The webdriver-manager library will automatically download and manage the correct browser driver (e.g., chromedriver) for you.
+
+### **3\. Set Up a Local LLM with Ollama**
+
+This script requires a local language model to be running and accessible via the Ollama API.
+
+**a. Install Ollama:**
+
+* Go to [ollama.com](https://ollama.com/) and download the installer for your operating system (Windows, macOS, or Linux).  
+* Run the installer. Ollama will run as a background service.
+
+**b. Download a Model:**
+
+* For this recipe parsing task, **Llama 3** is highly recommended due to its excellent ability to follow formatting instructions.  
+* Open your terminal or command prompt and pull the model:  
   ollama pull llama3
 
-* **Ensure Ollama is Running**: The Ollama application must be running in the background for the script to connect to it.
+* This will download the model (several gigabytes). You can also try other models like gemma3:12b if you prefer.
 
-### **2\. Set Up the Python Environment**
+**c. Verify the Model is Running:**
 
-* **Prerequisites**: Python 3.11+ is required.  
-* **Project Files**: Place all the project files (main.py, config.py, etc.) into a single folder.  
-* **Install Dependencies**: Open a terminal in your project folder and run the following command to install the required Python packages:  
-  pip install \-r requirements.txt
+* After pulling, ensure the Ollama service is running. You can test it by running ollama list in your terminal to see the downloaded models.
 
-## **How to Use**
+## **How to Use the Script**
 
-1. **Get Your Instagram Data**:  
-   * Request your data download from Instagram (Settings \-\> Accounts Center \-\> Your information and permissions \-\> Download your information).  
-   * Choose the **JSON** format.  
-   * Once downloaded, find the saved\_collections.json file inside the saved directory and place it in your project folder.  
+1. **Place Your Instagram Data**:  
+   * Find the saved\_collections.json file from your official Instagram data export.  
+   * Place this file in the root directory of the project.  
 2. **Configure the Script**:  
-   * Open config.py.  
-   * Verify the COLLECTION\_NAME. The default is "Food". Change it if your collection has a different name.  
-   * Ensure the INPUT\_JSON\_PATH points to your Instagram data file.  
-3. **Run the Script**:  
-   * Execute the main script from your terminal:  
+   * Open the config.py file.  
+   * Change COLLECTION\_NAME to the exact name of your food collection (e.g., "Food", "Recipes").  
+   * Ensure LLM\_MODEL matches the model you downloaded with Ollama (e.g., "llama3").  
+3. **Run the Main Script**:  
+   * Execute the main.py script from your terminal:  
      python main.py
 
-The script will now begin processing. You will see progress updates in the console.
+4. **Check the Output**:  
+   * **processing\_progress.json**: This file will be created and updated in real-time as the script works.  
+   * **samsung\_food\_recipes.json**: Once the script is finished, this file will contain the final list of all successfully parsed recipes, including their public Telegra.ph URLs.  
+   * **failed.log**: Any posts that could not be processed will be logged here for review.  
+   * **Terminal**: The script will print its progress, so you can monitor it as it runs.
 
-## **Output Files**
+## **Samsung Food Import**
 
-* **samsung\_food\_recipes.json**: The final, structured JSON file containing all successfully processed recipes, including their new public Telegra.ph URL.  
-* **processing\_progress.json**: A cache file that stores the state of the script. You can safely delete this to start the process from scratch.  
-* **failed.log**: A log of any posts that could not be processed, with details about the error.
+Since Samsung Food does not offer a batch import feature, you can use the generated Telegra.ph URLs for manual import:
+
+1. Open the final samsung\_food\_recipes.json file.  
+2. For each recipe, copy the public\_url.  
+3. In Samsung Food, choose the option to add a recipe from a URL and paste the link.

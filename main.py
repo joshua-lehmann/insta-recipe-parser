@@ -19,7 +19,7 @@ from utils import (
 from instagram_parser import extract_food_posts
 from caption_fetcher import fetch_caption_from_web
 from llm_processor import process_caption_with_llm
-from page_generator import create_telegraph_page
+from site_generator import generate_recipe_page, generate_index_page
 
 
 def main():
@@ -30,10 +30,15 @@ def main():
     progress_data = load_progress(config.PROGRESS_JSON_PATH)
     logging.info(f"Loaded {len(progress_data)} posts from previous progress file.")
 
-    # 1. Extract all post URLs from the specified collection
-    all_posts = extract_food_posts(
-        config.INSTAGRAM_JSON_PATH, config.COLLECTION_NAME
-    )
+    # 1. Load the Instagram data and extract all post URLs from the specified collection
+    from instagram_parser import load_saved_collections
+
+    json_data = load_saved_collections(config.INSTAGRAM_JSON_PATH)
+    if not json_data:
+        logging.error("Failed to load Instagram data. Exiting.")
+        return
+
+    all_posts = extract_food_posts(json_data)
     if not all_posts:
         logging.warning("No posts found in the specified collection. Exiting.")
         return
@@ -76,14 +81,25 @@ def main():
                 progress_data[url]['recipe'] = recipe_data.model_dump()
                 save_progress(progress_data, config.PROGRESS_JSON_PATH)
 
-                # 4. Generate Telegra.ph page (if recipe was successfully created)
-                telegraph_url = create_telegraph_page(recipe_data)
-                if telegraph_url:
+                # 4. Generate HTML page (if recipe was successfully created)
+                html_filename = generate_recipe_page(recipe_data, "docs")
+                if html_filename:
                     # Update the original object for the final export list
-                    recipe_data.telegraph_url = telegraph_url
+                    recipe_data.local_file = html_filename
                     # And also update the dictionary version in the progress file
                     progress_data[url]['recipe'] = recipe_data.model_dump()
                     save_progress(progress_data, config.PROGRESS_JSON_PATH)
+
+                    # 5. Update index page with current recipes
+                    current_recipes = [
+                        item['recipe'] for item in progress_data.values()
+                        if 'recipe' in item and item.get('recipe') is not None
+                    ]
+                    if current_recipes:
+                        from models import Recipe
+                        recipe_objects = [Recipe(**recipe_dict) for recipe_dict in current_recipes]
+                        generate_index_page(recipe_objects, "docs")
+                        logging.info(f"Updated index.html with {len(recipe_objects)} recipes")
             else:
                 logging.warning(f"Failed to structure recipe from: {url}")
                 continue
@@ -99,6 +115,12 @@ def main():
     if recipes_to_export:
         export_to_json(recipes_to_export, config.FINAL_JSON_PATH)
         logging.info(f"Successfully exported {len(recipes_to_export)} recipes to {config.FINAL_JSON_PATH}")
+
+        # Final index page generation (in case no new recipes were processed this run)
+        from models import Recipe
+        recipe_objects = [Recipe(**recipe_dict) for recipe_dict in recipes_to_export]
+        generate_index_page(recipe_objects, "docs")
+        logging.info("Final index.html generation completed")
     else:
         logging.info("No recipes were successfully processed to export.")
 
