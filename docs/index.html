@@ -5,145 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rezeptsammlung</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #333;
-            background: #fafafa;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px 0;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .recipe-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .recipe-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-            text-decoration: none;
-            color: inherit;
-        }
-        .recipe-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            text-decoration: none;
-            color: inherit;
-        }
-        .recipe-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-        .recipe-meta {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-        }
-        .recipe-categories {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        .category-tag {
-            background: #e8f4fd;
-            color: #2c3e50;
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.8em;
-        }
-        .stats {
-            text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .filter-section {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        #searchInput {
-            padding: 10px 15px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 25px;
-            width: 300px;
-            max-width: 100%;
-        }
-        @media (max-width: 600px) {
-            body { padding: 15px; }
-            .recipe-grid { grid-template-columns: 1fr; }
-            #searchInput { width: 100%; }
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; line-height: 1.6; color: #333; background: #f4f7f6; }
+        .header { text-align: center; margin-bottom: 40px; }
+        h1 { font-size: 3em; color: #2c3e50; }
+        .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .recipe-card { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: all 0.2s ease-in-out; text-decoration: none; color: inherit; overflow: hidden; display: flex; flex-direction: column; }
+        .recipe-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+        .card-content { padding: 20px; flex-grow: 1; }
+        .recipe-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #2c3e50; }
+        .recipe-meta { display: flex; flex-wrap: wrap; gap: 5px; }
+        .category-tag { background: #e8f4fd; color: #2c3e50; padding: 4px 10px; border-radius: 15px; font-size: 0.8em; }
+        #searchInput { padding: 12px 20px; font-size: 16px; border: 2px solid #ddd; border-radius: 25px; width: 100%; max-width: 400px; display: block; margin: 0 auto 40px auto; box-sizing: border-box; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🍽️ Rezeptsammlung</h1>
-        <p>Automatisch generiert aus Instagram-Posts • 3 Rezepte • Stand: 08.09.2025</p>
+        <h1>🍽️ Meine Rezeptsammlung</h1>
+        <p>8 Rezepte • Stand: 08.09.2025</p>
     </div>
-
-    <div class="filter-section">
-        <input type="text" id="searchInput" placeholder="Rezepte suchen..." onkeyup="filterRecipes()">
-    </div>
-
-    <div class="stats">
-        <p><strong>3</strong> Rezepte verfügbar</p>
-    </div>
-
+    <input type="text" id="searchInput" placeholder="Rezepte suchen..." onkeyup="filterRecipes()">
     <div class="recipe-grid" id="recipeGrid">
-        <a href="doener-mealprep.html" class="recipe-card" data-title="döner mealprep">
-            <div class="recipe-title">Döner Mealprep</div>
-            <div class="recipe-meta">
+        <a href="bratkartoffelsalat-mit-raeuchertofu.html" class="recipe-card" data-title="bratkartoffelsalat mit räuchertofu">
+            <div class="card-content">
+                <div class="recipe-title">Bratkartoffelsalat mit Räuchertofu</div>
+                <div class="recipe-meta">
+                    
+                </div>
             </div>
-            <div class="recipe-categories">
+        </a>
+        <a href="chicken-crust-pizza.html" class="recipe-card" data-title="chicken crust pizza">
+            <div class="card-content">
+                <div class="recipe-title">Chicken Crust Pizza</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="doenerteller-mealprep.html" class="recipe-card" data-title="dönerteller mealprep">
+            <div class="card-content">
+                <div class="recipe-title">Dönerteller Mealprep</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="paprika-fuellungen-mit-haehnchen.html" class="recipe-card" data-title="paprika-füllungen mit hähnchen">
+            <div class="card-content">
+                <div class="recipe-title">Paprika-Füllungen mit Hähnchen</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="protein-sonntagsbroetchen.html" class="recipe-card" data-title="protein sonntagsbrötchen">
+            <div class="card-content">
+                <div class="recipe-title">Protein Sonntagsbrötchen</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="proteinpancakes.html" class="recipe-card" data-title="proteinpancakes">
+            <div class="card-content">
+                <div class="recipe-title">Proteinpancakes</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="schoko-eis.html" class="recipe-card" data-title="schoko-eis">
+            <div class="card-content">
+                <div class="recipe-title">Schoko-Eis</div>
+                <div class="recipe-meta">
+                    
+                </div>
             </div>
         </a>
         <a href="tofu-crumble.html" class="recipe-card" data-title="tofu crumble">
-            <div class="recipe-title">Tofu Crumble</div>
-            <div class="recipe-meta">
+            <div class="card-content">
+                <div class="recipe-title">Tofu Crumble</div>
+                <div class="recipe-meta">
+                    
+                </div>
             </div>
-            <div class="recipe-categories">
-            </div>
-        </a>
-        <a href="super-einfaches-proteinreiches-schoko-eis.html" class="recipe-card" data-title="super einfaches, proteinreiches schoko-eis">
-            <div class="recipe-title">Super einfaches, proteinreiches Schoko-Eis</div>
-            <div class="recipe-meta">
-            </div>
-            <div class="recipe-categories">
-            </div>
-        </a>
-    </div>
-
+        </a></div>
     <script>
         function filterRecipes() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toLowerCase();
-            const cards = document.getElementsByClassName('recipe-card');
-
-            for (let i = 0; i < cards.length; i++) {
-                const title = cards[i].getAttribute('data-title');
-                if (title.includes(filter)) {
-                    cards[i].style.display = '';
-                } else {
-                    cards[i].style.display = 'none';
-                }
-            }
+            const filter = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.recipe-card').forEach(card => {
+                const title = card.getAttribute('data-title');
+                card.style.display = title.includes(filter) ? '' : 'none';
+            });
         }
     </script>
 </body>
