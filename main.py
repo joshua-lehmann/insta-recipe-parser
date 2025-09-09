@@ -2,24 +2,34 @@
 #
 # Description:
 # This is the main entry point for the Instagram Recipe Parser application.
-# It orchestrates the entire process:
-# 1. Loads configuration and previous progress.
-# 2. Parses the Instagram data export to find recipe posts.
-# 3. For each post, it fetches the caption (using Selenium to handle popups).
-# 4. Sends the caption to a local LLM for structuring into a recipe format.
-# 5. Generates a public Telegra.ph page for easy importing.
-# 6. Saves progress incrementally and exports the final structured data.
+# It orchestrates the entire process, dynamically choosing between local (Ollama)
+# and cloud (Google Gemini) LLM providers based on the configuration.
 
 import logging
+import time
+import random
 
 import config
 from utils import (
     setup_logging, load_progress, save_progress, export_to_json
 )
 from instagram_parser import extract_food_posts
-from caption_fetcher import fetch_caption_from_web
-from llm_processor import process_caption_with_llm
-from site_generator import generate_recipe_page, generate_index_page, extract_thumbnail_from_instagram
+from instagram_fetcher import fetch_post_details
+from site_generator import generate_recipe_page, generate_index_page
+
+# --- Dynamic LLM Processor Import ---
+# Based on the config, we import the correct processing function and alias it
+# for consistent use throughout the script.
+if config.LLM_PROVIDER == "google":
+    from llm_processor_gemini import process_caption_with_gemini as process_caption_with_llm
+
+    logging.info("Using Google Gemini as the LLM provider.")
+elif config.LLM_PROVIDER == "local":
+    from llm_processor import process_caption_with_llm
+
+    logging.info("Using local Ollama as the LLM provider.")
+else:
+    raise ValueError(f"Invalid LLM_PROVIDER in config: '{config.LLM_PROVIDER}'. Choose 'local' or 'google'.")
 
 
 def main():
@@ -30,9 +40,7 @@ def main():
     progress_data = load_progress(config.PROGRESS_JSON_PATH)
     logging.info(f"Loaded {len(progress_data)} posts from previous progress file.")
 
-    # 1. Load the Instagram data and extract all post URLs from the specified collection
     from instagram_parser import load_saved_collections
-
     json_data = load_saved_collections(config.INSTAGRAM_JSON_PATH)
     if not json_data:
         logging.error("Failed to load Instagram data. Exiting.")
@@ -43,131 +51,109 @@ def main():
         logging.warning("No posts found in the specified collection. Exiting.")
         return
 
-    logging.info(f"Extracted {len(all_posts)} posts from the '{config.COLLECTION_NAME}' collection.")
+    logging.info(f"Extracted {len(all_posts)} total posts from the '{config.COLLECTION_NAME}' collection.")
 
-    # Initialize progress data for new posts
     for post in all_posts:
         if post['url'] not in progress_data:
-            progress_data[post['url']] = {'url': post['url'], 'caption': None, 'recipe': None}
+            progress_data[post['url']] = {'url': post['url'], 'caption': None, 'thumbnail_url': None, 'recipes': {}}
 
-    logging.info(f"Found {len(progress_data)} total posts. Checking against progress file...")
+    models_to_run = config.LLM_MODELS.get(config.LLM_PROVIDER, [])
+    if not models_to_run:
+        logging.error(f"No models defined for the '{config.LLM_PROVIDER}' provider in config.py.")
+        return
+    logging.info(f"Will process recipes with the following models: {models_to_run}")
 
     total_posts = len(all_posts)
     for i, post in enumerate(all_posts):
         url = post['url']
         logging.info(f"Processing post {i + 1}/{total_posts}: {url}")
 
-        # 2. Fetch Caption (if not already cached or force refetch is enabled)
-        if progress_data[url].get('caption') and not config.FORCE_REFETCH_CAPTIONS:
-            logging.info("--> Caption found in cache. Skipping fetch.")
-            caption = progress_data[url]['caption']
+        post_progress = progress_data[url]
+
+        # 1. Fetch Caption and Thumbnail
+        if post_progress.get('caption') and not config.FORCE_REFETCH_CAPTIONS:
+            logging.info("--> Caption and Thumbnail found in cache. Skipping fetch.")
+            caption = post_progress['caption']
         else:
-            if config.FORCE_REFETCH_CAPTIONS and progress_data[url].get('caption'):
-                logging.info("--> Force refetch enabled. Refetching caption despite cache.")
-            caption = fetch_caption_from_web(url)
+            sleep_duration = random.uniform(2, 5)
+            logging.info(f"Waiting for {sleep_duration:.1f} seconds before fetching...")
+            time.sleep(sleep_duration)
+
+            caption, thumbnail_url = fetch_post_details(url)
             if caption:
-                progress_data[url]['caption'] = caption
+                post_progress['caption'] = caption
+                post_progress['thumbnail_url'] = thumbnail_url
                 save_progress(progress_data, config.PROGRESS_JSON_PATH)
-                logging.info("--> Caption fetched and progress saved.")
             else:
-                logging.warning(f"Skipping post due to failed caption fetch: {url}")
+                logging.warning(f"Skipping post due to failed details fetch: {url}")
                 continue
 
-        # 3. Process with LLM (if not already processed or force reprocess is enabled)
-        recipe_data = None
-        if progress_data[url].get('recipe') and not config.FORCE_REPROCESS_LLM:
-            logging.info("--> Recipe found in cache. Skipping LLM processing.")
-            # Load the recipe data for potential HTML regeneration
-            from models import Recipe
-            recipe_data = Recipe(**progress_data[url]['recipe'])
-        else:
-            if config.FORCE_REPROCESS_LLM and progress_data[url].get('recipe'):
-                logging.info("--> Force reprocess enabled. Reprocessing with LLM despite cache.")
-            recipe_data = process_caption_with_llm(caption, url)
-            if not recipe_data:
-                logging.warning(f"Failed to structure recipe from: {url}")
-                continue
-
-        # At this point, recipe_data should contain either cached or newly processed recipe
-        if recipe_data:
-            # Add original caption (always set this, even when loading from cache)
-            recipe_data.original_caption = caption
-
-            # Handle thumbnail extraction based on force flag or missing thumbnail
-            should_extract_thumbnail = (
-                config.FORCE_REEXTRACT_THUMBNAILS or 
-                not getattr(recipe_data, 'thumbnail_url', None) or
-                config.FORCE_REPROCESS_LLM  # If we reprocessed with LLM, also re-extract thumbnail
-            )
-
-            if should_extract_thumbnail:
-                # Try to extract thumbnail (non-blocking)
-                try:
-                    if config.FORCE_REEXTRACT_THUMBNAILS:
-                        logging.info(f"Force re-extract enabled. Re-extracting thumbnail for {url}")
-                    thumbnail_url = extract_thumbnail_from_instagram(url)
-                    if thumbnail_url:
-                        recipe_data.thumbnail_url = thumbnail_url
-                        logging.info(f"Extracted thumbnail for {url}")
-                    else:
-                        logging.info(f"No thumbnail found for {url}")
-                except Exception as e:
-                    logging.warning(f"Failed to extract thumbnail for {url}: {e}")
-
-            # Handle HTML generation based on force flag or new recipe
-            should_generate_html = (
-                config.FORCE_REGENERATE_HTML or
-                config.FORCE_REPROCESS_LLM or
-                not progress_data[url].get('recipe')  # New recipe
-            )
-
-            if should_generate_html:
-                if config.FORCE_REGENERATE_HTML:
-                    logging.info(f"Force regenerate HTML enabled. Regenerating page for {url}")
-                # 4. Generate HTML page 
-                html_filename = generate_recipe_page(recipe_data, "docs")
-                if html_filename:
-                    # Update the original object for the final export list
-                    recipe_data.local_file = html_filename
-
-            # Convert the Pydantic object to a dictionary before saving to JSON
-            progress_data[url]['recipe'] = recipe_data.model_dump()
-            save_progress(progress_data, config.PROGRESS_JSON_PATH)
-
-            # 5. Update index page with current recipes (if any HTML was generated or forced)
-            if should_generate_html:
-                current_recipes = [
-                    item['recipe'] for item in progress_data.values()
-                    if 'recipe' in item and item.get('recipe') is not None
-                ]
-                if current_recipes:
-                    from models import Recipe
-                    recipe_objects = [Recipe(**recipe_dict) for recipe_dict in current_recipes]
-                    generate_index_page(recipe_objects, "docs")
-                    logging.info(f"Updated index.html with {len(recipe_objects)} recipes")
-        else:
-            logging.warning(f"No recipe data available for: {url}")
+        if not caption:
+            logging.warning(f"No caption available for {url}, skipping LLM processing.")
             continue
+
+        # 2. Process with each configured LLM for the selected provider
+        new_recipe_generated = False
+        for model_name in models_to_run:
+            logging.info(f"--- Processing with model: {model_name} ---")
+
+            post_progress.setdefault('recipes', {})
+
+            if model_name in post_progress['recipes'] and not config.FORCE_REPROCESS_LLM:
+                logging.info(f"--> Recipe from {model_name} found in cache. Skipping.")
+                continue
+
+            max_retries = 3
+            retry_delay = 5
+            recipe_data, processing_time = None, None
+            for attempt in range(max_retries):
+                # This function call is now dynamic (either local or gemini)
+                recipe_data, processing_time = process_caption_with_llm(caption, url, model_name)
+                if recipe_data:
+                    break
+                logging.warning(f"LLM processing failed for {model_name}. Retrying... (Attempt {attempt + 1})")
+                time.sleep(retry_delay)
+
+            if recipe_data and processing_time is not None:
+                post_progress['recipes'][model_name] = {
+                    'data': recipe_data.model_dump(),
+                    'processing_time': processing_time
+                }
+                new_recipe_generated = True
+            else:
+                logging.error(f"Failed to structure recipe from {url} with {model_name} after {max_retries} attempts.")
+
+        save_progress(progress_data, config.PROGRESS_JSON_PATH)
+
+        # 3. Generate HTML page and update index if needed
+        should_generate_html = config.FORCE_REGENERATE_HTML or new_recipe_generated
+        if should_generate_html and post_progress.get('recipes'):
+            logging.info(f"Generating HTML page for {url}")
+            generate_recipe_page(
+                recipes_by_model=post_progress['recipes'],
+                output_dir=config.DOCS_DIR,
+                post_data=post_progress
+            )
+
+            logging.info("Updating index.html with current progress...")
+            all_processed_posts = {k: v for k, v in progress_data.items() if v.get('recipes')}
+            if all_processed_posts:
+                generate_index_page(all_processed_posts, config.DOCS_DIR)
+        else:
+            logging.info("No new recipes generated and not forcing HTML regen. Skipping page generation.")
 
     logging.info("All posts have been processed.")
 
-    # 5. Final export of all successfully structured recipes
-    recipes_to_export = [
-        item['recipe'] for item in progress_data.values()
-        if 'recipe' in item and item.get('recipe') is not None
-    ]
+    # 4. Final export and final index page generation
+    all_processed_posts = {k: v for k, v in progress_data.items() if v.get('recipes')}
+    if all_processed_posts:
+        export_to_json(list(all_processed_posts.values()), config.FINAL_JSON_PATH)
+        logging.info(
+            f"Successfully exported full data for {len(all_processed_posts)} recipes to {config.FINAL_JSON_PATH}")
 
-    if recipes_to_export:
-        export_to_json(recipes_to_export, config.FINAL_JSON_PATH)
-        logging.info(f"Successfully exported {len(recipes_to_export)} recipes to {config.FINAL_JSON_PATH}")
-
-        # Final index page generation (in case no new recipes were processed this run or if forced)
-        from models import Recipe
-        recipe_objects = [Recipe(**recipe_dict) for recipe_dict in recipes_to_export]
-        if config.FORCE_REGENERATE_HTML:
-            logging.info("Force regenerate HTML enabled. Regenerating final index page.")
-        generate_index_page(recipe_objects, "docs")
-        logging.info("Final index.html generation completed")
+        logging.info("Generating final index.html...")
+        generate_index_page(all_processed_posts, config.DOCS_DIR)
+        logging.info("Final index.html generation completed.")
     else:
         logging.info("No recipes were successfully processed to export.")
 

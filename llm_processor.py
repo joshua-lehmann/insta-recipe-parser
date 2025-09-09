@@ -7,10 +7,10 @@
 
 import ollama
 import logging
+import time
 from pydantic import ValidationError
 
 from models import Recipe
-from config import LLM_MODEL
 
 # Updated system prompt to match the simplified Ingredient model
 LLM_PROMPT_TEMPLATE = """
@@ -36,17 +36,19 @@ Anweisungen:
 """
 
 
-def process_caption_with_llm(caption: str, url: str) -> Recipe | None:
+def process_caption_with_llm(caption: str, url: str, model_name: str) -> tuple[Recipe | None, float | None]:
     """
     Sends the caption to the local LLM and attempts to parse the response
     into a structured Recipe object using a Pydantic model.
+    Returns a tuple of (Recipe object, processing_time_in_seconds).
     """
     response_content = ""
+    start_time = time.time()
     try:
-        logging.info(f"Sending caption for {url} to LLM ({LLM_MODEL})...")
+        logging.info(f"Sending caption for {url} to LLM ({model_name})...")
 
         response = ollama.chat(
-            model=LLM_MODEL,
+            model=model_name,
             messages=[
                 {
                     'role': 'system',
@@ -65,14 +67,16 @@ def process_caption_with_llm(caption: str, url: str) -> Recipe | None:
         recipe_data = Recipe.model_validate_json(response_content)
         recipe_data.source_url = url
 
-        logging.info(f"Successfully processed and validated recipe: '{recipe_data.title}'")
-        return recipe_data
+        end_time = time.time()
+        processing_time = end_time - start_time
+
+        logging.info(f"Successfully processed with {model_name} in {processing_time:.2f}s: '{recipe_data.title}'")
+        return recipe_data, processing_time
 
     except ValidationError as e:
-        logging.error(f"LLM output failed validation for url {url}: {e}")
-        logging.debug(f"Invalid JSON received: {response_content}")
-        return None
+        logging.error(f"LLM output failed validation for url {url} with model {model_name}: {e}")
+        logging.debug(f"Invalid JSON received from {model_name}: {response_content}")
+        return None, None
     except Exception as e:
-        logging.error(f"An unexpected error occurred while processing with LLM for url {url}: {e}")
-        return None
-
+        logging.error(f"An unexpected error occurred while processing with LLM {model_name} for url {url}: {e}")
+        return None, None

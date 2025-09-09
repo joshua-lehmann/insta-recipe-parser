@@ -35,7 +35,6 @@ def extract_food_posts(data: Dict[str, Any]) -> List[Dict[str, str]]:
             collection_name = item.get('string_map_data', {}).get('Name', {}).get('value')
             if collection_name == config.COLLECTION_NAME:
                 in_target_collection = True
-                logging.info(f"Found collection: '{config.COLLECTION_NAME}'. Extracting posts...")
             elif in_target_collection:
                 logging.info(f"Finished extracting from '{config.COLLECTION_NAME}'.")
                 break

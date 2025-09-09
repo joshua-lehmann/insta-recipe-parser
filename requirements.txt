@@ -2,5 +2,5 @@ requests
 pydantic
 ollama
 beautifulsoup4
-selenium
-webdriver-manager
+instaloader
+google-genai
