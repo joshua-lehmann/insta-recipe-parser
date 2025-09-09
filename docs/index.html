@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezeptsammlung</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; line-height: 1.6; color: #333; background: #f4f7f6; }
+        .header { text-align: center; margin-bottom: 40px; }
+        h1 { font-size: 3em; color: #2c3e50; }
+        .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .recipe-card { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: all 0.2s ease-in-out; text-decoration: none; color: inherit; overflow: hidden; display: flex; flex-direction: column; }
+        .recipe-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+        .card-content { padding: 20px; flex-grow: 1; }
+        .recipe-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #2c3e50; }
+        .recipe-meta { display: flex; flex-wrap: wrap; gap: 5px; }
+        .category-tag { background: #e8f4fd; color: #2c3e50; padding: 4px 10px; border-radius: 15px; font-size: 0.8em; }
+        #searchInput { padding: 12px 20px; font-size: 16px; border: 2px solid #ddd; border-radius: 25px; width: 100%; max-width: 400px; display: block; margin: 0 auto 40px auto; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🍽️ Meine Rezeptsammlung</h1>
+        <p>20 Rezepte • Stand: 08.09.2025</p>
+    </div>
+    <input type="text" id="searchInput" placeholder="Rezepte suchen..." onkeyup="filterRecipes()">
+    <div class="recipe-grid" id="recipeGrid">
+        <a href="bratkartoffelsalat-mit-raeuchertofu.html" class="recipe-card" data-title="bratkartoffelsalat mit räuchertofu">
+            <div class="card-content">
+                <div class="recipe-title">Bratkartoffelsalat mit Räuchertofu</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="brokkoli-auflauf-mit-strunk.html" class="recipe-card" data-title="brokkoli auflauf mit strunk">
+            <div class="card-content">
+                <div class="recipe-title">Brokkoli Auflauf mit Strunk</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="chicken-crust-pizza.html" class="recipe-card" data-title="chicken crust pizza">
+            <div class="card-content">
+                <div class="recipe-title">Chicken Crust Pizza</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="doenerteller-mealprep.html" class="recipe-card" data-title="dönerteller mealprep">
+            <div class="card-content">
+                <div class="recipe-title">Dönerteller Mealprep</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="feta-linsen-brot.html" class="recipe-card" data-title="feta linsen brot">
+            <div class="card-content">
+                <div class="recipe-title">Feta Linsen Brot</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="hafer-apfelkuchen.html" class="recipe-card" data-title="hafer-apfelkuchen">
+            <div class="card-content">
+                <div class="recipe-title">Hafer-Apfelkuchen</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="high-protein-gnocchi-bake.html" class="recipe-card" data-title="high protein gnocchi bake">
+            <div class="card-content">
+                <div class="recipe-title">High Protein Gnocchi Bake</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="high-protein-marmorkuchen-muffins.html" class="recipe-card" data-title="high protein marmorkuchen muffins">
+            <div class="card-content">
+                <div class="recipe-title">High Protein Marmorkuchen Muffins</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="haehnchen-brokkoli-nudeln-mit-magerquark.html" class="recipe-card" data-title="hähnchen-brokkoli-nudeln mit magerquark">
+            <div class="card-content">
+                <div class="recipe-title">Hähnchen-Brokkoli-Nudeln mit Magerquark</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="kalorienarme-spinat-lasagne.html" class="recipe-card" data-title="kalorienarme spinat lasagne">
+            <div class="card-content">
+                <div class="recipe-title">Kalorienarme Spinat Lasagne</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="kraeuter-baellchen.html" class="recipe-card" data-title="kräuter bällchen">
+            <div class="card-content">
+                <div class="recipe-title">Kräuter Bällchen</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="mini-germknoedel.html" class="recipe-card" data-title="mini germknödel">
+            <div class="card-content">
+                <div class="recipe-title">Mini Germknödel</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="paprika-fuellungen-mit-haehnchen.html" class="recipe-card" data-title="paprika-füllungen mit hähnchen">
+            <div class="card-content">
+                <div class="recipe-title">Paprika-Füllungen mit Hähnchen</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="perfekt-gekochte-haehnchenbrust-airfryer.html" class="recipe-card" data-title="perfekt gekochte hähnchenbrust (airfryer)">
+            <div class="card-content">
+                <div class="recipe-title">Perfekt Gekochte Hähnchenbrust (Airfryer)</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="protein-lahmacun.html" class="recipe-card" data-title="protein lahmacun">
+            <div class="card-content">
+                <div class="recipe-title">Protein Lahmacun</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="protein-sonntagsbroetchen.html" class="recipe-card" data-title="protein sonntagsbrötchen">
+            <div class="card-content">
+                <div class="recipe-title">Protein Sonntagsbrötchen</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="proteinpancakes.html" class="recipe-card" data-title="proteinpancakes">
+            <div class="card-content">
+                <div class="recipe-title">Proteinpancakes</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="schoko-eis.html" class="recipe-card" data-title="schoko-eis">
+            <div class="card-content">
+                <div class="recipe-title">Schoko-Eis</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="tofu-crumble.html" class="recipe-card" data-title="tofu crumble">
+            <div class="card-content">
+                <div class="recipe-title">Tofu Crumble</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a>
+        <a href="veggie-slices.html" class="recipe-card" data-title="veggie slices">
+            <div class="card-content">
+                <div class="recipe-title">Veggie Slices</div>
+                <div class="recipe-meta">
+                    
+                </div>
+            </div>
+        </a></div>
+    <script>
+        function filterRecipes() {
+            const filter = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.recipe-card').forEach(card => {
+                const title = card.getAttribute('data-title');
+                card.style.display = title.includes(filter) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

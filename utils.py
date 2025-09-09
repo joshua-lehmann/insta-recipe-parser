@@ -7,7 +7,7 @@
 
 import json
 import logging
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 def setup_logging():
     """Configures the logging for the application."""
@@ -15,8 +15,8 @@ def setup_logging():
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s",
         handlers=[
-            logging.StreamHandler(),  # Log to console
-            logging.FileHandler("failed.log", mode='a', encoding='utf-8') # Log to file
+            logging.StreamHandler(),
+            logging.FileHandler("failed.log", mode='a', encoding='utf-8')
         ]
     )
 
@@ -25,10 +25,7 @@ def load_progress(path: str) -> Dict[str, Any]:
     try:
         with open(path, 'r', encoding='utf-8') as f:
             return json.load(f)
-    except FileNotFoundError:
-        return {}
-    except json.JSONDecodeError:
-        logging.warning(f"Could not decode JSON from {path}. Starting fresh.")
+    except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
 def save_progress(data: Dict[str, Any], path: str):
@@ -46,4 +43,21 @@ def export_to_json(data: list, path: str):
             json.dump(data, f, indent=4, ensure_ascii=False)
     except Exception as e:
         logging.error(f"Failed to export final JSON to {path}: {e}")
+
+def load_token(path: str) -> Optional[str]:
+    """Loads a token from a JSON file."""
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            return data.get("access_token")
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+
+def save_token(token: str, path: str):
+    """Saves a token to a JSON file."""
+    try:
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump({"access_token": token}, f, indent=4)
+    except Exception as e:
+        logging.error(f"Failed to save token to {path}: {e}")
 

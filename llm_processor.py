@@ -9,12 +9,10 @@ import ollama
 import logging
 from pydantic import ValidationError
 
-from models import Recipe  # Corrected: Removed ValidationError, as it's not in models.py
+from models import Recipe
 from config import LLM_MODEL
 
-# The system prompt that instructs the LLM on how to behave and what format to use.
-# It is designed to be clear and specific to maximize the chances of getting a
-# valid, well-structured JSON output.
+# Updated system prompt to match the simplified Ingredient model
 LLM_PROMPT_TEMPLATE = """
 Du bist ein präziser Rezept-Parser, der Social-Media-Captions in strukturiertes JSON umwandelt.
 Deine Antwort MUSS ausschliesslich ein valides JSON-Objekt sein, das dem vorgegebenen Schema entspricht.
@@ -27,7 +25,7 @@ Anweisungen:
 4.  **Zutaten**:
     -   Gruppiere Zutaten logisch (z.B. "Für den Teig", "Für die Füllung").
     -   Wenn es keine logischen Gruppen gibt, erstelle eine einzige Gruppe mit dem Titel "Zutaten".
-    -   Standardisiere Mengeneinheiten auf Deutsch: `g`, `ml`, `Stk.`, `TL`, `EL`.
+    -   Extrahiere den Namen der Zutat und die **vollständige Mengenangabe** (z.B. "300g", "1/2", "1 TL") in das `quantity`-Feld.
 5.  **Zubereitungsschritte**: Liste die Anweisungen als eine klare, nummerierte Liste von Schritten auf. Jeder Schritt sollte ein vollständiger Satz sein.
 6.  **Nährwerte**:
     -   Suche nach einem Abschnitt "Nährwerte".
@@ -59,17 +57,12 @@ def process_caption_with_llm(caption: str, url: str) -> Recipe | None:
                     'content': f"Hier ist der Caption-Text:\n\n---\n{caption}\n---",
                 }
             ],
-            # Corrected: Pass the actual Pydantic schema to enforce the structure.
             format=Recipe.model_json_schema()
         )
 
         response_content = response['message']['content']
 
-        # Validate the JSON response against our Pydantic model.
-        # This will raise a ValidationError if the LLM's output does not match the schema.
         recipe_data = Recipe.model_validate_json(response_content)
-
-        # Manually add the source URL, as the LLM does not have this context.
         recipe_data.source_url = url
 
         logging.info(f"Successfully processed and validated recipe: '{recipe_data.title}'")
