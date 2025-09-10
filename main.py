@@ -11,34 +11,46 @@ import random
 
 import config
 from utils import (
-    setup_logging, load_progress, save_progress, export_to_json
+    setup_logging, load_progress, save_progress, export_to_json,
+    create_validation_benchmarks
 )
 from instagram_parser import extract_food_posts
 from instagram_fetcher import fetch_post_details
 from site_generator import generate_recipe_page, generate_index_page
 
 # --- Dynamic LLM Processor Import ---
-# Based on the config, we import the correct processing function and alias it
-# for consistent use throughout the script.
 if config.LLM_PROVIDER == "google":
     from llm_processor_gemini import process_caption_with_gemini as process_caption_with_llm
-
     logging.info("Using Google Gemini as the LLM provider.")
 elif config.LLM_PROVIDER == "local":
     from llm_processor import process_caption_with_llm
-
     logging.info("Using local Ollama as the LLM provider.")
+elif config.LLM_PROVIDER == "lmstudio":
+    from llm_processor_lmstudio import process_caption_with_llm
+    logging.info("Using LM Studio as the LLM provider.")
 else:
-    raise ValueError(f"Invalid LLM_PROVIDER in config: '{config.LLM_PROVIDER}'. Choose 'local' or 'google'.")
-
+    raise ValueError(f"Invalid LLM_PROVIDER in config: '{config.LLM_PROVIDER}'. Choose 'local', 'google', or 'lmstudio'.")
 
 def main():
     """Main function to run the recipe processing pipeline."""
     setup_logging()
+
     logging.info("Starting Instagram recipe processing...")
 
+    # Check for Instagram credentials before starting
+    if not hasattr(config, 'INSTAGRAM_USERNAME') or not config.INSTAGRAM_USERNAME:
+        logging.warning("No Instagram username configured in environment variables.")
+        # Give user a chance to abort
+        try:
+            input("Press Enter to continue without authentication (or Ctrl+C to abort)...")
+        except KeyboardInterrupt:
+            logging.info("Process aborted by user")
+            return
+    elif not hasattr(config, 'INSTAGRAM_PASSWORD') or not config.INSTAGRAM_PASSWORD:
+        logging.warning("Instagram username is set but password is missing.")
+
     progress_data = load_progress(config.PROGRESS_JSON_PATH)
-    logging.info(f"Loaded {len(progress_data)} posts from previous progress file.")
+    logging.debug(f"Loaded {len(progress_data)} posts from previous progress file.")
 
     from instagram_parser import load_saved_collections
     json_data = load_saved_collections(config.INSTAGRAM_JSON_PATH)
@@ -61,7 +73,7 @@ def main():
     if not models_to_run:
         logging.error(f"No models defined for the '{config.LLM_PROVIDER}' provider in config.py.")
         return
-    logging.info(f"Will process recipes with the following models: {models_to_run}")
+    logging.debug(f"Will process recipes with the following models: {models_to_run}")
 
     total_posts = len(all_posts)
     for i, post in enumerate(all_posts):
@@ -72,11 +84,11 @@ def main():
 
         # 1. Fetch Caption and Thumbnail
         if post_progress.get('caption') and not config.FORCE_REFETCH_CAPTIONS:
-            logging.info("--> Caption and Thumbnail found in cache. Skipping fetch.")
+            logging.debug("--> Caption and Thumbnail found in cache. Skipping fetch.")
             caption = post_progress['caption']
         else:
-            sleep_duration = random.uniform(2, 5)
-            logging.info(f"Waiting for {sleep_duration:.1f} seconds before fetching...")
+            sleep_duration = random.uniform(10, 15)
+            logging.debug(f"Waiting for {sleep_duration:.1f} seconds before fetching Instagram post...")
             time.sleep(sleep_duration)
 
             caption, thumbnail_url = fetch_post_details(url)
@@ -95,19 +107,18 @@ def main():
         # 2. Process with each configured LLM for the selected provider
         new_recipe_generated = False
         for model_name in models_to_run:
-            logging.info(f"--- Processing with model: {model_name} ---")
+            logging.debug(f"--- Processing with model: {model_name} ---")
 
             post_progress.setdefault('recipes', {})
 
             if model_name in post_progress['recipes'] and not config.FORCE_REPROCESS_LLM:
-                logging.info(f"--> Recipe from {model_name} found in cache. Skipping.")
+                logging.debug(f"--> Recipe from {model_name} found in cache. Skipping.")
                 continue
 
             max_retries = 3
             retry_delay = 5
             recipe_data, processing_time = None, None
             for attempt in range(max_retries):
-                # This function call is now dynamic (either local or gemini)
                 recipe_data, processing_time = process_caption_with_llm(caption, url, model_name)
                 if recipe_data:
                     break
@@ -128,19 +139,19 @@ def main():
         # 3. Generate HTML page and update index if needed
         should_generate_html = config.FORCE_REGENERATE_HTML or new_recipe_generated
         if should_generate_html and post_progress.get('recipes'):
-            logging.info(f"Generating HTML page for {url}")
+            logging.debug(f"Generating HTML page for {url}")
             generate_recipe_page(
                 recipes_by_model=post_progress['recipes'],
                 output_dir=config.DOCS_DIR,
                 post_data=post_progress
             )
 
-            logging.info("Updating index.html with current progress...")
+            logging.debug("Updating index.html with current progress...")
             all_processed_posts = {k: v for k, v in progress_data.items() if v.get('recipes')}
             if all_processed_posts:
                 generate_index_page(all_processed_posts, config.DOCS_DIR)
         else:
-            logging.info("No new recipes generated and not forcing HTML regen. Skipping page generation.")
+            logging.debug("No new recipes generated and not forcing HTML regen. Skipping page generation.")
 
     logging.info("All posts have been processed.")
 
@@ -154,10 +165,14 @@ def main():
         logging.info("Generating final index.html...")
         generate_index_page(all_processed_posts, config.DOCS_DIR)
         logging.info("Final index.html generation completed.")
+
+        # Create validation benchmarks
+        logging.info("Creating validation benchmarks for LLM model comparison...")
+        create_validation_benchmarks(all_processed_posts)
+
     else:
         logging.info("No recipes were successfully processed to export.")
 
 
 if __name__ == "__main__":
     main()
-

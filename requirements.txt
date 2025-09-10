@@ -4,3 +4,4 @@ ollama
 beautifulsoup4
 instaloader
 google-genai
+lmstudio

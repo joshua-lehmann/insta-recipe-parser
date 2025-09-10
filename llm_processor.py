@@ -45,7 +45,7 @@ def process_caption_with_llm(caption: str, url: str, model_name: str) -> tuple[R
     response_content = ""
     start_time = time.time()
     try:
-        logging.info(f"Sending caption for {url} to LLM ({model_name})...")
+        logging.info(f"Sending caption to LLM ({model_name})...")
 
         response = ollama.chat(
             model=model_name,
@@ -59,7 +59,10 @@ def process_caption_with_llm(caption: str, url: str, model_name: str) -> tuple[R
                     'content': f"Hier ist der Caption-Text:\n\n---\n{caption}\n---",
                 }
             ],
-            format=Recipe.model_json_schema()
+            options={
+                "temperature": 0.0
+            },
+            format='json'
         )
 
         response_content = response['message']['content']

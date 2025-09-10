@@ -55,7 +55,7 @@ def process_caption_with_gemini(caption: str, url: str, model_name: str) -> tupl
 
     start_time = time.time()
     try:
-        logging.info(f"Sending caption for {url} to Google Gemini ({model_name})...")
+        logging.info(f"Sending caption to Google Gemini ({model_name})...")
 
         full_prompt = f"{GEMINI_PROMPT_TEMPLATE}\n\n---\nHere is the caption text:\n{caption}\n---"
 
@@ -94,4 +94,3 @@ def process_caption_with_gemini(caption: str, url: str, model_name: str) -> tupl
         logging.error(
             f"An unexpected error occurred while processing with Gemini model {model_name} for url {url}: {e}")
         return None, None
-

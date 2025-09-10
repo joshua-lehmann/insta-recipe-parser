@@ -10,6 +10,7 @@ from typing import List, Dict, Any, Optional
 
 import config
 
+
 def load_saved_collections(path: str) -> Optional[Dict[str, Any]]:
     """Loads the saved collections JSON file from the given path."""
     try:
@@ -25,6 +26,7 @@ def load_saved_collections(path: str) -> Optional[Dict[str, Any]]:
         logging.error(f"An unexpected error occurred while reading {path}: {e}")
         return None
 
+
 def extract_food_posts(data: Dict[str, Any]) -> List[Dict[str, str]]:
     """Extracts posts from the specified food collection based on the export file structure."""
     food_posts = []
@@ -36,14 +38,14 @@ def extract_food_posts(data: Dict[str, Any]) -> List[Dict[str, str]]:
             if collection_name == config.COLLECTION_NAME:
                 in_target_collection = True
             elif in_target_collection:
-                logging.info(f"Finished extracting from '{config.COLLECTION_NAME}'.")
+                logging.debug(f"Finished extracting from '{config.COLLECTION_NAME}'.")
                 break
         elif in_target_collection:
             post_data = item.get('string_map_data', {})
             name_data = post_data.get('Name', {})
             url = name_data.get('href')
 
-            if url and ("/reel/" in url or "/p/" in url):
+            if url and ("/reel/" in url or "/p/" in url or "/reels/" in url):
                 food_posts.append({
                     "url": url,
                     "username": name_data.get('value'),
@@ -52,7 +54,5 @@ def extract_food_posts(data: Dict[str, Any]) -> List[Dict[str, str]]:
 
     if not food_posts:
         logging.warning(f"Could not find collection '{config.COLLECTION_NAME}' or it contains no posts.")
-    else:
-        logging.info(f"Extracted {len(food_posts)} posts from the '{config.COLLECTION_NAME}' collection.")
 
     return food_posts

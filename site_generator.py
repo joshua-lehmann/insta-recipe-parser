@@ -102,7 +102,7 @@ def download_image(url: str, output_dir: str, filename_base: str) -> str | None:
         local_image_ref = f"images/{image_filename}"
         os.makedirs(os.path.join(output_dir, "images"), exist_ok=True)
         if os.path.exists(image_path):
-            logging.info(f"Image already exists for {filename_base}, skipping download.")
+            logging.debug(f"Image already exists for {filename_base}, skipping download.")
             return local_image_ref
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
@@ -110,7 +110,7 @@ def download_image(url: str, output_dir: str, filename_base: str) -> str | None:
         response.raise_for_status()
         with open(image_path, 'wb') as f:
             for chunk in response.iter_content(chunk_size=8192): f.write(chunk)
-        logging.info(f"Successfully downloaded image to {image_path}")
+        logging.debug(f"Successfully downloaded image to {image_path}")
         return local_image_ref
     except requests.exceptions.RequestException as e:
         logging.warning(f"Failed to download image from {url}: {e}")
@@ -234,7 +234,7 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
         .nutrition-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin-top: 8px; }}
         .nutrition-item {{ background: white; padding: 12px; border-radius: 6px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }}
         .back-link {{ display: inline-block; margin-bottom: 15px; color: #3498db; text-decoration: none; font-weight: bold; }}
-        .source-link-box {{ margin-top: 25px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #e91e63; }}
+        .source-link-box {{ margin-top: 25px; padding: 15px; background: #f8f9fa; border-left: 4px solid #e91e63; border-radius: 10px;}}
         .collapsible {{ background-color: #eee; cursor: pointer; padding: 12px; width: 100%; border: none; text-align: left; font-size: 0.95em; border-radius: 6px; font-weight: bold; }}
         .caption-content {{ padding: 0 15px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background-color: #f1f1f1; }}
     </style>
@@ -349,4 +349,3 @@ def generate_index_page(all_progress_data: Dict[str, Any], output_dir: str):
     with open(os.path.join(output_dir, "index.html"), 'w', encoding='utf-8') as f:
         f.write(html_content)
     logging.info(f"Generated index page: {os.path.join(output_dir, 'index.html')}")
-

@@ -14,10 +14,17 @@ FINAL_JSON_PATH = "samsung_food_recipes.json"
 
 # --- Instagram Settings ---
 COLLECTION_NAME = "Food"
+# Instagram login credentials
+# Set these directly or preferably via environment variables for security
+# How to set environment variables:
+# Windows: set INSTAGRAM_USERNAME=your_username
+# macOS/Linux: export INSTAGRAM_USERNAME=your_username
+INSTAGRAM_USERNAME = os.environ.get("INSTAGRAM_USERNAME", "_josh_99_")
+INSTAGRAM_PASSWORD = os.environ.get("INSTAGRAM_PASSWORD", "")  # Not needed if session is saved
 
 # --- LLM Provider Settings ---
-# Choose your LLM provider: "local" for Ollama or "google" for Gemini API.
-LLM_PROVIDER = "google" # Options: "local", "google"
+# Choose your LLM provider: "local", "google", or "lmstudio".
+LLM_PROVIDER = "lmstudio"  # Options: "local", "google", "lmstudio"
 
 # --- Google Gemini API Settings ---
 # IMPORTANT: It's recommended to set your Google API key as an environment
@@ -33,14 +40,18 @@ GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 # list corresponding to the selected LLM_PROVIDER.
 LLM_MODELS = {
     "local": [
-        "deepseek-r1:1.5b",
         "phi3:mini",
         "llama3"
     ],
     "google": [
-        "gemini-2.5-flash",
-        # "gemma-3-12b-it",
-        "gemini-2.5-flash-lite"
+        "gemini-1.5-flash-latest",
+    ],
+    "lmstudio": [
+        "google/gemma-3-4b",
+        "google/gemma-3n-e4b",
+        "phi-4-mini-instruct",
+        "phi-3-mini-4k-instruct",
+        "microsoft/phi-4-mini-reasoning",
     ]
 }
 
@@ -49,6 +60,5 @@ DOCS_DIR = "docs"
 
 # --- Force Rerun Settings ---
 FORCE_REFETCH_CAPTIONS = False
-FORCE_REPROCESS_LLM = False
+FORCE_REPROCESS_LLM = True
 FORCE_REGENERATE_HTML = True
-

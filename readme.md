@@ -1,14 +1,23 @@
-Instagram Recipe ParserThis project provides a complete Python solution to parse your saved Instagram collections, extract food-related posts, use local LLMs to structure them as recipes, and generate a static website to host and compare the results.FeaturesMulti-LLM Comparison: Specify multiple Ollama models in the config and the script will process each recipe with every model.Performance Benchmarking: Automatically times each LLM request and displays the average processing speed on the main page.Tabbed Recipe Views: Each recipe page features a tabbed interface, allowing for a direct, side-by-side comparison of the output quality from each model.Intelligent Caption Scraping: Uses Selenium to automate a web browser, successfully bypassing cookie and login popups for reliable caption fetching.Structured LLM Output: Leverages Pydantic and the ollama library to enforce a strict JSON schema, ensuring clean and predictable recipe data from the LLM.Automated Progress Saving: Creates a processing_progress.json file to track fetched captions and all model-specific recipe results. If the script is stopped, it resumes where it left off.Static Site Generation: Creates a clean, searchable, and responsive website in the docs/ folder, ready for hosting on GitHub Pages.Setup and Installation1. Install PythonEnsure you have Python 3.11 or newer installed.2. Install DependenciesIt's highly recommended to use a virtual environment.# Create a virtual environment
-python -m venv .venv
-# Activate it (macOS/Linux)
-source .venv/bin/activate
-# Or on Windows
-# .venv\Scripts\activate
 
-# Install dependencies
-pip install -r requirements.txt
-3. Set Up Local LLMs with Ollamaa. Install Ollama:Go to ollama.com and install the application for your OS.b. Download Models:You can download multiple models to compare. Open your terminal and pull the desired models. llama3 is a great baseline, and phi3:mini is a good choice for a faster, smaller model.ollama pull llama3
-ollama pull phi3:mini
-ollama pull deepseek-coder:1.3b
-How to Use the ScriptPlace Your Instagram Data:Place your saved_collections.json file in the root directory.Configure the Script:Open config.py.Set COLLECTION_NAME to the exact name of your food collection.Modify the LLM_MODELS list to include the names of the models you downloaded with Ollama and want to compare.Run the Main Script:Execute main.py from your terminal:python main.py
-Check the Output:The docs/ folder will be created, containing the generated HTML files. Open docs/index.html in your browser to see the results.processing_progress.json: This file will be updated in real-time with the outputs from all models.failed.log: Any posts that could not be processed will be logged here.
+# Instagram-Recipe Scraper & Web Publisher
+
+A Python 3.12 utility that fetches recipe posts from Instagram, extracts structured cooking data with an LLM, and publishes beautiful recipe cards to a static website.  
+It is designed for food bloggers, meal-prep enthusiasts, and anyone who wants to turn social-media food posts into a searchable, shareable recipe library.
+
+---
+
+## 🌟 Core Features
+* **Instagram Fetcher** – downloads media & captions from specified accounts or hashtags.  
+* **LLM Processor** – converts unstructured captions into JSON-based recipe objects (ingredients, steps, nutrition, etc.).  
+* **Site Generator** – builds a static site with SEO-friendly pages and Open Graph previews.  
+* **Retry & Caching Logic** – resilient to rate limits and flaky network calls.  
+* **Pluggable Models** – switch between local (`llm_processor_lmstudio.py`) or cloud (`llm_processor_gemini.py`) models via config.
+
+---
+
+## 🚀 Quick Start
+
+## Troubleshooting & FAQ
+* **Chromedriver errors** – ensure the driver version matches your local Chrome build.
+* **Rate-limits / timeouts** – tweak `max_retries` and `retry_delay` in `main.py`.
+* **Model X is slow** – use the performance cards to spot bottlenecks; try `phi3:mini` for speed.
