@@ -123,7 +123,7 @@ def get_instaloader_instance() -> instaloader.Instaloader:
 
 def fetch_post_details(url: str) -> Tuple[Optional[str], Optional[str]]:
     """Fetches both caption and thumbnail URL from an Instagram post."""
-    logging.info(f"Fetching post details from {url}")
+    logging.debug(f"Fetching post details from {url}")
 
     try:
         L = get_instaloader_instance()

@@ -5,14 +5,15 @@
 # It generates individual recipe pages with a tabbed interface to compare model outputs
 # and creates an index page listing all recipes with model performance statistics.
 
+import json
 import logging
 import os
 import re
-import json
-import requests
-from typing import List, Dict, Any
 from datetime import datetime
+from typing import Dict, Any
 from urllib.parse import urlparse
+
+import requests
 
 from models import Recipe
 
@@ -40,6 +41,7 @@ def sanitize_title(title: str) -> str:
         'Ä': 'Ae', 'Ö': 'Oe', 'Ü': 'Ue',
         'é': 'e', 'è': 'e', 'ê': 'e', 'à': 'a', 'ç': 'c'
     }
+
     for umlaut, replacement in replacements.items():
         title = title.replace(umlaut, replacement)
     title = re.sub(r'[^\w\s-]', '', title).strip()
@@ -117,8 +119,70 @@ def download_image(url: str, output_dir: str, filename_base: str) -> str | None:
         return None
 
 
-def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dict):
-    """Generate an individual HTML page for a recipe with tabs for each model."""
+def get_recipe_data(recipe_info, version='current'):
+    """Extract recipe data from versioned or legacy format."""
+    # Debug the structure of the recipe_info to understand what we're working with
+    if isinstance(recipe_info, dict):
+        keys = list(recipe_info.keys())
+        if 'current' in keys:
+            logging.debug(f"Recipe info has versioned format with keys: {keys}")
+            if 'history' in keys:
+                history_length = len(recipe_info.get('history', []))
+                logging.debug(f"History has {history_length} items")
+                if history_length > 0:
+                    # Log timestamps of historical versions
+                    timestamps = [item.get('timestamp') for item in recipe_info['history'] if item.get('timestamp')]
+                    logging.debug(f"Available timestamps in history: {timestamps}")
+        else:
+            logging.debug(f"Recipe info has keys {keys} but no 'current' key")
+
+    if isinstance(recipe_info, dict) and 'current' in recipe_info:
+        # New versioned format
+        if version == 'current':
+            return recipe_info['current']
+        else:
+            # Look for specific version in history
+            for hist_item in recipe_info.get('history', []):
+                if hist_item.get('timestamp') == version:
+                    logging.debug(f"Found version {version} in history")
+                    return hist_item
+            # Fallback to current if the specific version wasn't found
+            logging.debug(f"Version {version} not found in history, using current")
+            return recipe_info['current']
+    else:
+        # Legacy format
+        logging.debug("Using legacy format (not versioned)")
+        return recipe_info
+
+
+def get_available_versions(recipe_info):
+    """Get a list of all available versions for a recipe."""
+    versions = []
+
+    if isinstance(recipe_info, dict) and 'current' in recipe_info:
+        # Always include current
+        current_version = recipe_info['current'].get('timestamp')
+        if current_version:
+            versions.append(('current', current_version))
+
+        # Add all historical versions
+        for hist_item in recipe_info.get('history', []):
+            if timestamp := hist_item.get('timestamp'):
+                versions.append((timestamp, timestamp))
+
+    return versions
+
+
+def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dict, requested_version: str = 'current'):
+    """
+    Generate an individual HTML page for a recipe with tabs for each model.
+
+    Args:
+        recipes_by_model: Dictionary mapping model names to recipe data
+        output_dir: Directory to save the HTML file
+        post_data: Data about the Instagram post
+        requested_version: Version to display (timestamp or 'current')
+    """
     if not recipes_by_model:
         logging.warning(f"No recipes provided for HTML generation of {post_data['url']}.")
         return
@@ -127,7 +191,8 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
 
     # Use the first recipe for common metadata, but a stable ID for the filename
     first_model_name = next(iter(recipes_by_model))
-    recipe_for_meta = Recipe(**recipes_by_model[first_model_name]['data'])
+    first_recipe_data = get_recipe_data(recipes_by_model[first_model_name], requested_version)
+    recipe_for_meta = Recipe(**first_recipe_data['data'])
 
     filename_base = get_stable_filename_base(post_data['url'])
     filename = f"{filename_base}.html"
@@ -138,13 +203,59 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
 
     json_ld = create_json_ld(recipe_for_meta)
 
+    # Check if any model has multiple versions and collect all timestamps
+    has_versions = False
+    all_versions = set(['current'])  # Always include 'current'
+
+    # Debug information
+    logging.debug(f"Checking for multiple versions in {len(recipes_by_model)} models")
+
+    for model_name, model_info in recipes_by_model.items():
+        # Debug the structure of each model's data
+        if isinstance(model_info, dict):
+            history_length = len(model_info.get('history', []))
+            logging.debug(
+                f"Model {model_name}: has 'history' key: {('history' in model_info)}, history length: {history_length}")
+
+            if 'history' in model_info and history_length > 0:
+                has_versions = True
+                # Add all version timestamps from this model's history
+                for hist_item in model_info.get('history', []):
+                    if timestamp := hist_item.get('timestamp'):
+                        all_versions.add(timestamp)
+                        logging.debug(f"Added timestamp {timestamp} from model {model_name}")
+
+    # Generate version selector if needed
+    version_selector_html = ''
+    sorted_versions = sorted([v for v in all_versions if v != 'current'], reverse=True)
+    logging.debug(f"Found {len(sorted_versions)} historical versions: {sorted_versions}")
+
+    # Always include the version selector, even if there's just one option
+    # This will make it clear to users that versioning is supported
+    if True:  # was: has_versions or getattr(config, 'FORCE_REPROCESS_LLM', False)
+        options_html = '<option value="current">Latest (Current)</option>'
+        # Add options for all historical versions, sorted chronologically (newest first)
+        for version in sorted_versions:
+            options_html += f'<option value="{version}">{version}</option>'
+
+        version_selector_html = f'''
+        <div class="version-selector">
+            <label for="versionSelect">Version: </label>
+            <select id="versionSelect" onchange="changeVersion()">
+                {options_html}
+            </select>
+        </div>
+        '''
+
     # --- Tab Generation ---
     tab_links_html = ''
     tab_contents_html = ''
     is_first_tab = True
-    for model_name, result in recipes_by_model.items():
-        recipe = Recipe(**result['data'])
-        processing_time = result.get('processing_time')
+    for model_name, model_info in recipes_by_model.items():
+        # Get data for the requested version (or current if that version doesn't exist for this model)
+        recipe_data = get_recipe_data(model_info, requested_version)
+        recipe = Recipe(**recipe_data['data'])
+        processing_time = recipe_data.get('processing_time')
 
         active_class = "active" if is_first_tab else ""
         tab_id = sanitize_title(model_name)
@@ -152,8 +263,22 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
 
         display_style = "display: block;" if is_first_tab else ""
 
+        # Generate content for current version
+        # Add data attributes for all versions of this model
+        version_data_attrs = ''
+        if isinstance(model_info, dict) and 'current' in model_info:
+            # Current version timestamp
+            current_timestamp = recipe_data.get('timestamp', '')
+            if current_timestamp:
+                version_data_attrs += f' data-version-current="{current_timestamp}"'
+
+            # Add data attributes for historical versions
+            for i, hist_item in enumerate(model_info.get('history', [])):
+                if timestamp := hist_item.get('timestamp'):
+                    version_data_attrs += f' data-version-{timestamp}="true"'
+
         tab_contents_html += f"""
-        <div id="{tab_id}" class="tab-content" style="{display_style}">
+        <div id="{tab_id}" class="tab-content" style="{display_style}" data-model="{model_name}"{version_data_attrs}>
             <div class="recipe-header">
                 <h1>{recipe.title}</h1>
                 <div class="recipe-meta">
@@ -161,6 +286,7 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
                     {f'<span>⏱️ {recipe.prep_time}</span>' if recipe.prep_time and recipe.prep_time != "Nicht angegeben" else ''}
                     {f'<span>🔥 {recipe.cook_time}</span>' if recipe.cook_time and recipe.cook_time != "Nicht angegeben" else ''}
                     {f'<span><strong>🤖 Zeit:</strong> {processing_time:.2f}s</span>' if processing_time is not None else ''}
+                    {f'<span><strong>📅 Version:</strong> {recipe_data.get("timestamp", "N/A")}</span>' if recipe_data.get("timestamp") else ''}
                 </div>
             </div>
             <div class="content-wrapper">
@@ -184,10 +310,10 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
             {f'''<div class="nutrition-section">
                 <h2>Nährwerte pro Portion</h2>
                 <div class="nutrition-grid">
-                    {f'<div class="nutrition-item"><strong>{recipe.nutrition.calories}</strong><br>Kalorien</div>' if recipe.nutrition.calories else ''}
-                    {f'<div class="nutrition-item"><strong>{recipe.nutrition.protein}</strong><br>Protein</div>' if recipe.nutrition.protein else ''}
-                    {f'<div class="nutrition-item"><strong>{recipe.nutrition.carbs}</strong><br>Kohlenhydrate</div>' if recipe.nutrition.carbs else ''}
-                    {f'<div class="nutrition-item"><strong>{recipe.nutrition.fat}</strong><br>Fett</div>' if recipe.nutrition.fat else ''}
+                    {f'<div class="nutrition-item"><strong>{recipe.nutrition.calories}</strong><br>Kalorien</div>' if recipe.nutrition and recipe.nutrition.calories else ''}
+                    {f'<div class="nutrition-item"><strong>{recipe.nutrition.protein}</strong><br>Protein</div>' if recipe.nutrition and recipe.nutrition.protein else ''}
+                    {f'<div class="nutrition-item"><strong>{recipe.nutrition.carbs}</strong><br>Kohlenhydrate</div>' if recipe.nutrition and recipe.nutrition.carbs else ''}
+                    {f'<div class="nutrition-item"><strong>{recipe.nutrition.fat}</strong><br>Fett</div>' if recipe.nutrition and recipe.nutrition.fat else ''}
                 </div>
             </div>''' if recipe.nutrition and any([recipe.nutrition.calories, recipe.nutrition.protein, recipe.nutrition.carbs, recipe.nutrition.fat]) else ''}
         </div>
@@ -200,10 +326,45 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
         source_box_html = '<div class="source-link-box"><h3 style="margin: 0 0 10px 0;">📱 Original auf Instagram</h3>'
         if post_data.get('url'):
             source_box_html += f'<p style="margin: 0 0 15px 0;"><a href="{post_data["url"]}" target="_blank" rel="noopener">🔗 Link zum Reel</a></p>'
+
+        # Original caption with emojis
         if post_data.get('caption'):
-            cleaned_caption = clean_caption_text(post_data['caption'])
-            source_box_html += f'<button type="button" class="collapsible">📝 Original Caption</button><div class="caption-content"><p>{cleaned_caption}</p></div>'
+            original_caption_html = clean_caption_text(post_data['caption'])
+            source_box_html += f'<button type="button" class="collapsible">📝 Original Caption</button><div class="caption-content"><p>{original_caption_html}</p></div>'
+
+        # Cleaned caption without emojis (if available)
+        if post_data.get('cleaned_caption'):
+            cleaned_caption_html = clean_caption_text(post_data['cleaned_caption'])
+            source_box_html += f'<button type="button" class="collapsible">🧹 Cleaned Caption (Used for Processing)</button><div class="caption-content"><p>{cleaned_caption_html}</p></div>'
+
         source_box_html += '</div>'
+
+    # --- Prepare Version Data for JavaScript ---
+    version_data_json = {}
+    for model_name, model_info in recipes_by_model.items():
+        model_versions = {}
+
+        # Current version
+        current_data = get_recipe_data(model_info, 'current')
+        if current_data:
+            model_versions['current'] = {
+                'timestamp': current_data.get('timestamp', ''),
+                'title': Recipe(**current_data['data']).title,
+                'processing_time': current_data.get('processing_time')
+            }
+
+        # Historical versions
+        if isinstance(model_info, dict) and 'history' in model_info:
+            for hist_item in model_info.get('history', []):
+                if timestamp := hist_item.get('timestamp'):
+                    model_versions[timestamp] = {
+                        'timestamp': timestamp,
+                        'title': Recipe(**hist_item['data']).title,
+                        'processing_time': hist_item.get('processing_time')
+                    }
+
+        if model_versions:
+            version_data_json[model_name] = model_versions
 
     # --- Final HTML Assembly ---
     html_content = f"""<!DOCTYPE html>
@@ -213,6 +374,10 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{recipe_for_meta.title}</title>
     <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False, indent=4)}</script>
+    <script>
+        // Store version data for JavaScript usage
+        const versionData = {json.dumps(version_data_json, ensure_ascii=False)};
+    </script>
     <style>
         body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; color: #333; background-color: #fdfdfd; }}
         h1 {{ font-size: 2.2em; margin-bottom: 8px; text-align: center;}} h2 {{ border-bottom: 2px solid #eee; padding-bottom: 8px; margin-top: 25px; }}
@@ -237,10 +402,14 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
         .source-link-box {{ margin-top: 25px; padding: 15px; background: #f8f9fa; border-left: 4px solid #e91e63; border-radius: 10px;}}
         .collapsible {{ background-color: #eee; cursor: pointer; padding: 12px; width: 100%; border: none; text-align: left; font-size: 0.95em; border-radius: 6px; font-weight: bold; }}
         .caption-content {{ padding: 0 15px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background-color: #f1f1f1; }}
+        .version-selector {{ text-align: center; margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px; }}
+        .version-selector label {{ font-weight: bold; margin-right: 10px; }}
+        .version-selector select {{ padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; }}
     </style>
 </head>
 <body>
     <a href="index.html" class="back-link">← Zurück zur Rezeptliste</a>
+    {version_selector_html}
     <div class="tabs">{tab_links_html}</div>
     {tab_contents_html}
     {source_box_html}
@@ -251,6 +420,40 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
             document.getElementById(tabId).style.display = "block";
             evt.currentTarget.classList.add('active');
         }}
+
+        function changeVersion() {{
+            const selectedVersion = document.getElementById('versionSelect').value;
+            const currentUrl = new URL(window.location.href);
+
+            // Update URL parameter
+            if (selectedVersion === 'current') {{
+                currentUrl.searchParams.delete('version');
+            }} else {{
+                currentUrl.searchParams.set('version', selectedVersion);
+            }}
+
+            // Reload the page with the new version parameter
+            window.location.href = currentUrl.toString();
+        }}
+
+        // Initialize version selection on page load
+        document.addEventListener('DOMContentLoaded', function() {{
+            const urlParams = new URLSearchParams(window.location.search);
+            const versionParam = urlParams.get('version');
+
+            if (versionParam) {{
+                const select = document.getElementById('versionSelect');
+                if (select) {{
+                    for (let i = 0; i < select.options.length; i++) {{
+                        if (select.options[i].value === versionParam) {{
+                            select.selectedIndex = i;
+                            break;
+                        }}
+                    }}
+                }}
+            }}
+        }});
+
         document.querySelectorAll('.collapsible').forEach(btn => {{
             btn.addEventListener('click', function() {{
                 this.classList.toggle('active');
@@ -263,7 +466,18 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
 </html>"""
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(html_content)
-    logging.info(f"Generated comparison recipe page: {filepath}")
+
+    # Log more detailed information for debugging
+    version_info = f" (version: {requested_version})" if requested_version != 'current' else ""
+    available_versions = len(sorted_versions) + 1  # +1 for current
+    logging.info(
+        f"Generated comparison recipe page: {filepath}{version_info} with {available_versions} versions available")
+
+    # Print console message about versions to make debugging easier
+    if sorted_versions:
+        logging.debug(f"Recipe {filepath} has {len(sorted_versions)} historical versions: {sorted_versions}")
+    else:
+        logging.debug(f"Recipe {filepath} has no historical versions")
 
 
 def generate_index_page(all_progress_data: Dict[str, Any], output_dir: str):
@@ -273,10 +487,11 @@ def generate_index_page(all_progress_data: Dict[str, Any], output_dir: str):
     # --- Calculate Model Stats ---
     model_stats = {}
     for post_data in all_progress_data.values():
-        for model_name, result in post_data.get('recipes', {}).items():
-            if 'processing_time' in result:
+        for model_name, model_info in post_data.get('recipes', {}).items():
+            current_data = get_recipe_data(model_info, 'current')
+            if 'processing_time' in current_data:
                 stats = model_stats.setdefault(model_name, {'total_time': 0, 'count': 0})
-                stats['total_time'] += result['processing_time']
+                stats['total_time'] += current_data['processing_time']
                 stats['count'] += 1
 
     stats_html = '<div class="stats-grid">'
@@ -290,14 +505,15 @@ def generate_index_page(all_progress_data: Dict[str, Any], output_dir: str):
 
     # Sort recipes by title alphabetically
     sorted_posts = sorted(all_progress_data.values(),
-                          key=lambda p: next(iter(p.get('recipes', {}).values()), {}).get('data', {}).get('title',
-                                                                                                          'Z').lower())
+                          key=lambda p: get_recipe_data(next(iter(p.get('recipes', {}).values()), {}))['data'].get(
+                              'title', 'Z').lower())
 
     for post_data in sorted_posts:
         if not post_data.get('recipes'): continue
 
         # Use the first available model's data for the card
-        first_recipe_data = next(iter(post_data['recipes'].values()))['data']
+        first_model_info = next(iter(post_data['recipes'].values()))
+        first_recipe_data = get_recipe_data(first_model_info, 'current')['data']
         recipe = Recipe(**first_recipe_data)
 
         filename = get_stable_filename_base(post_data['url']) + ".html"

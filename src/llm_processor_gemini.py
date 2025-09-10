@@ -6,7 +6,6 @@
 # and leverages the structured output feature to get clean, parsed Pydantic
 # objects directly from the response.
 
-import os
 import logging
 import time
 from google import genai
