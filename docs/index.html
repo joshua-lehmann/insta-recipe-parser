@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezeptsammlung</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f4f7f6; }
+        .header, .stats-section { text-align: center; margin-bottom: 40px; }
+        h1 { font-size: 3em; color: #2c3e50; } h2 { color: #34495e; }
+        .stats-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); min-width: 200px; }
+        .stat-card h3 { margin: 0 0 10px; } .stat-card p { font-size: 1.5em; margin: 0; } .stat-card span { font-size: 0.9em; color: #7f8c8d; }
+        .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .recipe-card { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: all 0.2s; text-decoration: none; color: inherit; display: flex; flex-direction: column; overflow: hidden; }
+        .recipe-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+        .card-content { padding: 20px; flex-grow: 1; }
+        .card-thumbnail { width: 100%; height: 160px; overflow: hidden; }
+        .card-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+        .recipe-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #2c3e50; }
+        .recipe-meta { display: flex; flex-wrap: wrap; gap: 5px; }
+        .category-tag { background: #e8f4fd; color: #2c3e50; padding: 4px 10px; border-radius: 15px; font-size: 0.8em; }
+        #searchInput { padding: 12px 20px; font-size: 16px; border: 2px solid #ddd; border-radius: 25px; width: 100%; max-width: 400px; display: block; margin: 40px auto; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+    <div class="header"><h1>🍽️ Meine Rezeptsammlung</h1><p>139 Rezepte • Stand: 11.09.2025</p></div>
+    <div class="stats-section"><h2>🤖 LLM Performance</h2><div class="stats-grid"><div class="stat-card"><h3>gemini-2.5-flash</h3><p><strong>8.84s</strong> / Rezept</p><span>(139 Rezepte)</span></div><div class="stat-card"><h3>gemini-2.5-flash-lite</h3><p><strong>2.11s</strong> / Rezept</p><span>(139 Rezepte)</span></div></div></div>
+    <input type="text" id="searchInput" placeholder="Rezepte suchen..." onkeyup="filterRecipes()">
+    <div class="recipe-grid" id="recipeGrid"><a href="recipe-DNk-BFaoxC_.html" class="recipe-card" data-title="100g protein sandwich ohne brot">
+            <div class="card-thumbnail"><img src="images/DNk-BFaoxC_.jpg" alt="100g Protein Sandwich ohne Brot" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">100g Protein Sandwich ohne Brot</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLU0ppmg5cd.html" class="recipe-card" data-title="130-calorie protein cinnamon rolls">
+            <div class="card-thumbnail"><img src="images/DLU0ppmg5cd.jpg" alt="130-Calorie Protein Cinnamon Rolls" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">130-Calorie Protein Cinnamon Rolls</div>
+                <div class="recipe-meta"><span class="category-tag">Dessert</span><span class="category-tag">Breakfast</span></div>
+            </div>
+        </a><a href="recipe-DEhzBzqo67J.html" class="recipe-card" data-title="3 zutaten pancakes">
+            <div class="card-thumbnail"><img src="images/DEhzBzqo67J.jpg" alt="3 Zutaten Pancakes" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">3 Zutaten Pancakes</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DItpPlHoJY8.html" class="recipe-card" data-title="3 zutaten proteinpancakes">
+            <div class="card-thumbnail"><img src="images/DItpPlHoJY8.jpg" alt="3 Zutaten Proteinpancakes" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">3 Zutaten Proteinpancakes</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DKxMfuiIjFr.html" class="recipe-card" data-title="5 minuten süßes rezept">
+            <div class="card-thumbnail"><img src="images/DKxMfuiIjFr.jpg" alt="5 Minuten Süßes Rezept" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">5 Minuten Süßes Rezept</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DH86hBTMRud.html" class="recipe-card" data-title="airfryer-döner">
+            <div class="card-thumbnail"><img src="images/DH86hBTMRud.jpg" alt="Airfryer-Döner" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Airfryer-Döner</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DNTON2TspSj.html" class="recipe-card" data-title="apfelkuchen mit 3 zutaten">
+            <div class="card-thumbnail"><img src="images/DNTON2TspSj.jpg" alt="Apfelkuchen mit 3 Zutaten" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Apfelkuchen mit 3 Zutaten</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DN3KlBA0OvE.html" class="recipe-card" data-title="bratkartoffelsalat">
+            <div class="card-thumbnail"><img src="images/DN3KlBA0OvE.jpg" alt="Bratkartoffelsalat" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Bratkartoffelsalat</div>
+                <div class="recipe-meta"><span class="category-tag">vegan</span><span class="category-tag">high protein</span></div>
+            </div>
+        </a><a href="recipe-DMr-gpcMOo0.html" class="recipe-card" data-title="brokkoli in rahm auflauf">
+            <div class="card-thumbnail"><img src="images/DMr-gpcMOo0.jpg" alt="Brokkoli in Rahm Auflauf" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Brokkoli in Rahm Auflauf</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C5gR75nNWSl.html" class="recipe-card" data-title="brokkoli schnecken">
+            <div class="card-thumbnail"><img src="images/C5gR75nNWSl.jpg" alt="Brokkoli Schnecken" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Brokkoli Schnecken</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DI09TVTNoQG.html" class="recipe-card" data-title="chicken burger bowl">
+            <div class="card-thumbnail"><img src="images/DI09TVTNoQG.jpg" alt="Chicken Burger Bowl" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Chicken Burger Bowl</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DHB0t-EyR4F.html" class="recipe-card" data-title="chicken crust pizza">
+            <div class="card-thumbnail"><img src="images/DHB0t-EyR4F.jpg" alt="Chicken Crust Pizza" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Chicken Crust Pizza</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C7ul8ZhJjbZ.html" class="recipe-card" data-title="chicken tikka masala burritos">
+            <div class="card-thumbnail"><img src="images/C7ul8ZhJjbZ.jpg" alt="Chicken Tikka Masala Burritos" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Chicken Tikka Masala Burritos</div>
+                <div class="recipe-meta"><span class="category-tag">High Protein</span><span class="category-tag">Frozen Burrito Meal Prep</span></div>
+            </div>
+        </a><a href="recipe-C4-9URhtS7u.html" class="recipe-card" data-title="chilli cheese taschen">
+            <div class="card-thumbnail"><img src="images/C4-9URhtS7u.jpg" alt="Chilli Cheese Taschen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Chilli Cheese Taschen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C8Wo8lWvdNh.html" class="recipe-card" data-title="creamy garlic chicken & crispy potatoes">
+            <div class="card-thumbnail"><img src="images/C8Wo8lWvdNh.jpg" alt="Creamy Garlic Chicken & Crispy Potatoes" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Creamy Garlic Chicken & Crispy Potatoes</div>
+                <div class="recipe-meta"><span class="category-tag">High Protein Meal Prep</span></div>
+            </div>
+        </a><a href="recipe-C8XnM6HqcWW.html" class="recipe-card" data-title="creamy garlic chicken & crispy potatoes">
+            <div class="card-thumbnail"><img src="images/C8XnM6HqcWW.jpg" alt="Creamy Garlic Chicken & Crispy Potatoes" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Creamy Garlic Chicken & Crispy Potatoes</div>
+                <div class="recipe-meta"><span class="category-tag">High Protein Meal Prep</span></div>
+            </div>
+        </a><a href="recipe-DJ9PetwM-iN.html" class="recipe-card" data-title="cremige tomaten paprika nudeln">
+            <div class="card-thumbnail"><img src="images/DJ9PetwM-iN.jpg" alt="Cremige Tomaten Paprika Nudeln" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Cremige Tomaten Paprika Nudeln</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DE4c5VUscwp.html" class="recipe-card" data-title="cremige tomaten paprika nudeln">
+            <div class="card-thumbnail"><img src="images/DE4c5VUscwp.jpg" alt="Cremige Tomaten Paprika Nudeln" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Cremige Tomaten Paprika Nudeln</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DE5JnGvsqsn.html" class="recipe-card" data-title="crispy kartoffelsalat">
+            <div class="card-thumbnail"><img src="images/DE5JnGvsqsn.jpg" alt="Crispy Kartoffelsalat" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Crispy Kartoffelsalat</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLH3p_VqQoK.html" class="recipe-card" data-title="crunchy & creamy pasta protein salat">
+            <div class="card-thumbnail"><img src="images/DLH3p_VqQoK.jpg" alt="Crunchy & Creamy Pasta Protein Salat" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Crunchy & Creamy Pasta Protein Salat</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLIbgJKNfLt.html" class="recipe-card" data-title="crunchy kartoffeln carbonara style">
+            <div class="card-thumbnail"><img src="images/DLIbgJKNfLt.jpg" alt="Crunchy Kartoffeln Carbonara Style" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Crunchy Kartoffeln Carbonara Style</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLG24Dtv5tB.html" class="recipe-card" data-title="cucumber chicken salad">
+            <div class="card-thumbnail"><img src="images/DLG24Dtv5tB.jpg" alt="Cucumber Chicken Salad" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Cucumber Chicken Salad</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DIZBUqWNtmG.html" class="recipe-card" data-title="dark chocolate cookie dough">
+            <div class="card-thumbnail"><img src="images/DIZBUqWNtmG.jpg" alt="Dark Chocolate Cookie Dough" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Dark Chocolate Cookie Dough</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DMNUWtaIkfd.html" class="recipe-card" data-title="die besten pancakes der welt">
+            <div class="card-thumbnail"><img src="images/DMNUWtaIkfd.jpg" alt="Die besten Pancakes der Welt" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Die besten Pancakes der Welt</div>
+                <div class="recipe-meta"><span class="category-tag">Snack</span><span class="category-tag">Muskelaufbau</span><span class="category-tag">Diät</span></div>
+            </div>
+        </a><a href="recipe-C-5FV37MItG.html" class="recipe-card" data-title="diätretter">
+            <div class="card-thumbnail"><img src="images/C-5FV37MItG.jpg" alt="Diätretter" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Diätretter</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C_s53dEofYK.html" class="recipe-card" data-title="döner rolle zum abnehmen">
+            <div class="card-thumbnail"><img src="images/C_s53dEofYK.jpg" alt="Döner Rolle zum Abnehmen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Döner Rolle zum Abnehmen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DOBbrYSiDdF.html" class="recipe-card" data-title="dönerteller mealprep">
+            <div class="card-thumbnail"><img src="images/DOBbrYSiDdF.jpg" alt="Dönerteller Mealprep" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Dönerteller Mealprep</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DFuo24Tof9i.html" class="recipe-card" data-title="eigenes eiweißbrot">
+            <div class="card-thumbnail"><img src="images/DFuo24Tof9i.jpg" alt="Eigenes Eiweißbrot" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Eigenes Eiweißbrot</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLbtB4kovBN.html" class="recipe-card" data-title="feta auflauf low carb">
+            <div class="card-thumbnail"><img src="images/DLbtB4kovBN.jpg" alt="Feta Auflauf Low Carb" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Feta Auflauf Low Carb</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DOEE9HsCGkn.html" class="recipe-card" data-title="feta linsen brot">
+            <div class="card-thumbnail"><img src="images/DOEE9HsCGkn.jpg" alt="Feta Linsen Brot" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Feta Linsen Brot</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DFLOr7pMcW6.html" class="recipe-card" data-title="fitness kartoffelgratin">
+            <div class="card-thumbnail"><img src="images/DFLOr7pMcW6.jpg" alt="Fitness Kartoffelgratin" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Fitness Kartoffelgratin</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C7p5XKnpZMV.html" class="recipe-card" data-title="french toast cloud">
+            <div class="card-thumbnail"><img src="images/C7p5XKnpZMV.jpg" alt="French Toast Cloud" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">French Toast Cloud</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DHl6G44MlmC.html" class="recipe-card" data-title="frühstück in weniger als 10 minuten">
+            <div class="card-thumbnail"><img src="images/DHl6G44MlmC.jpg" alt="Frühstück in weniger als 10 Minuten" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Frühstück in weniger als 10 Minuten</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DNszop50FB3.html" class="recipe-card" data-title="gefüllte paprika">
+            <div class="card-thumbnail"><img src="images/DNszop50FB3.jpg" alt="Gefüllte Paprika" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Gefüllte Paprika</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJrgP2Bsb4G.html" class="recipe-card" data-title="gesundes brot">
+            <div class="card-thumbnail"><img src="images/DJrgP2Bsb4G.jpg" alt="Gesundes Brot" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Gesundes Brot</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJ2CNBfoe_-.html" class="recipe-card" data-title="gurkensalat im döner-style mit hähnchen">
+            <div class="card-thumbnail"><img src="images/DJ2CNBfoe_-.jpg" alt="Gurkensalat im Döner-Style mit Hähnchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Gurkensalat im Döner-Style mit Hähnchen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DI1xeV2qkx9.html" class="recipe-card" data-title="günstig essen in bern">
+            <div class="card-thumbnail"><img src="images/DI1xeV2qkx9.jpg" alt="Günstig essen in Bern" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Günstig essen in Bern</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJuixvCMpn9.html" class="recipe-card" data-title="hackfleisch-kartoffel-bowl">
+            <div class="card-thumbnail"><img src="images/DJuixvCMpn9.jpg" alt="Hackfleisch-Kartoffel-Bowl" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Hackfleisch-Kartoffel-Bowl</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DMspUlxoQx3.html" class="recipe-card" data-title="hafer- apfelkuchen">
+            <div class="card-thumbnail"><img src="images/DMspUlxoQx3.jpg" alt="Hafer- Apfelkuchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Hafer- Apfelkuchen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DEMd_YfIzTl.html" class="recipe-card" data-title="herzhafter frischkäse-snack">
+            <div class="card-thumbnail"><img src="images/DEMd_YfIzTl.jpg" alt="Herzhafter Frischkäse-Snack" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Herzhafter Frischkäse-Snack</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DL3azrTzbpX.html" class="recipe-card" data-title="high protein baked pancake bowl">
+            <div class="card-thumbnail"><img src="images/DL3azrTzbpX.jpg" alt="High Protein Baked Pancake Bowl" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Baked Pancake Bowl</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DIqEJ6WNmBR.html" class="recipe-card" data-title="high protein brot">
+            <div class="card-thumbnail"><img src="images/DIqEJ6WNmBR.jpg" alt="High Protein Brot" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Brot</div>
+                <div class="recipe-meta"><span class="category-tag">High Protein</span></div>
+            </div>
+        </a><a href="recipe-DJ4YyWRs4KZ.html" class="recipe-card" data-title="high protein cheeseburger hotpockets">
+            <div class="card-thumbnail"><img src="images/DJ4YyWRs4KZ.jpg" alt="High Protein Cheeseburger Hotpockets" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Cheeseburger Hotpockets</div>
+                <div class="recipe-meta"><span class="category-tag">High Protein</span><span class="category-tag">Meal Prep</span></div>
+            </div>
+        </a><a href="recipe-DLXoN3Qoo2Z.html" class="recipe-card" data-title="high protein cheesecake">
+            <div class="card-thumbnail"><img src="images/DLXoN3Qoo2Z.jpg" alt="High Protein Cheesecake" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Cheesecake</div>
+                <div class="recipe-meta"><span class="category-tag">Abnehmen</span><span class="category-tag">Muskelaufbau</span></div>
+            </div>
+        </a><a href="recipe-DKPhxq2oONv.html" class="recipe-card" data-title="high protein cheesecake">
+            <div class="card-thumbnail"><img src="images/DKPhxq2oONv.jpg" alt="High Protein Cheesecake" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Cheesecake</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C8kJyWxIzf0.html" class="recipe-card" data-title="high protein crispy chicken tender">
+            <div class="card-thumbnail"><img src="images/C8kJyWxIzf0.jpg" alt="High Protein Crispy Chicken Tender" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Crispy Chicken Tender</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C5TivvHtcge.html" class="recipe-card" data-title="high protein crispy korean popcorn chicken">
+            <div class="card-thumbnail"><img src="images/C5TivvHtcge.jpg" alt="High Protein Crispy Korean Popcorn Chicken" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Crispy Korean Popcorn Chicken</div>
+                <div class="recipe-meta"><span class="category-tag">High Protein Meal Prep</span></div>
+            </div>
+        </a><a href="recipe-DKzyDbyoSnU.html" class="recipe-card" data-title="high protein crêpe torte">
+            <div class="card-thumbnail"><img src="images/DKzyDbyoSnU.jpg" alt="High Protein Crêpe Torte" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Crêpe Torte</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DMJOyTNTq5O.html" class="recipe-card" data-title="high protein gnocchi bake">
+            <div class="card-thumbnail"><img src="images/DMJOyTNTq5O.jpg" alt="High protein gnocchi bake" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High protein gnocchi bake</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DKB9jTUM-cH.html" class="recipe-card" data-title="high protein linsencurry">
+            <div class="card-thumbnail"><img src="images/DKB9jTUM-cH.jpg" alt="High Protein Linsencurry" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Linsencurry</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLzXIjItQqb.html" class="recipe-card" data-title="high protein marmorkuchen muffin">
+            <div class="card-thumbnail"><img src="images/DLzXIjItQqb.jpg" alt="High Protein Marmorkuchen Muffin" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Marmorkuchen Muffin</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C5sv48tShGA.html" class="recipe-card" data-title="high protein meals">
+            <div class="card-thumbnail"><img src="images/C5sv48tShGA.jpg" alt="High Protein Meals" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Meals</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJbZieEIOse.html" class="recipe-card" data-title="high protein pancake bowl">
+            <div class="card-thumbnail"><img src="images/DJbZieEIOse.jpg" alt="High Protein Pancake Bowl" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Pancake Bowl</div>
+                <div class="recipe-meta"><span class="category-tag">Diät</span><span class="category-tag">Muskelaufbau</span></div>
+            </div>
+        </a><a href="recipe-DKG4jOKTKe7.html" class="recipe-card" data-title="high protein pizza base">
+            <div class="card-thumbnail"><img src="images/DKG4jOKTKe7.jpg" alt="High Protein Pizza Base" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Pizza Base</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DFLCOcVNKKF.html" class="recipe-card" data-title="high protein shakshuka für muskelaufbau">
+            <div class="card-thumbnail"><img src="images/DFLCOcVNKKF.jpg" alt="High Protein Shakshuka für Muskelaufbau" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Shakshuka für Muskelaufbau</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DHZES-BMIEI.html" class="recipe-card" data-title="high protein skyr kuchen">
+            <div class="card-thumbnail"><img src="images/DHZES-BMIEI.jpg" alt="High Protein Skyr Kuchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High Protein Skyr Kuchen</div>
+                <div class="recipe-meta"><span class="category-tag">High Protein</span></div>
+            </div>
+        </a><a href="recipe-DNEN9Jfs8YW.html" class="recipe-card" data-title="high-protein baked feta chicken & sweet potato meal prep">
+            <div class="card-thumbnail"><img src="images/DNEN9Jfs8YW.jpg" alt="High-Protein Baked Feta Chicken & Sweet Potato Meal Prep" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High-Protein Baked Feta Chicken & Sweet Potato Meal Prep</div>
+                <div class="recipe-meta"><span class="category-tag">high-protein</span><span class="category-tag">baked feta chicken</span><span class="category-tag">sweet potato</span></div>
+            </div>
+        </a><a href="recipe-DNKhxImTjYC.html" class="recipe-card" data-title="high-protein cottage cheese wrap edition">
+            <div class="card-thumbnail"><img src="images/DNKhxImTjYC.jpg" alt="High-Protein Cottage Cheese Wrap Edition" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High-Protein Cottage Cheese Wrap Edition</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLnPbsuMTrr.html" class="recipe-card" data-title="high-protein dark chocolate cheesecake">
+            <div class="card-thumbnail"><img src="images/DLnPbsuMTrr.jpg" alt="High-Protein Dark Chocolate Cheesecake" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High-Protein Dark Chocolate Cheesecake</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DKNFsCVs-JM.html" class="recipe-card" data-title="high-protein wölkchen-kuchen">
+            <div class="card-thumbnail"><img src="images/DKNFsCVs-JM.jpg" alt="High-Protein Wölkchen-Kuchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High-Protein Wölkchen-Kuchen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DNrB6_20Brw.html" class="recipe-card" data-title="high-protein-hähnchen-pesto mit reis">
+            <div class="card-thumbnail"><img src="images/DNrB6_20Brw.jpg" alt="High-Protein-Hähnchen-Pesto mit Reis" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">High-Protein-Hähnchen-Pesto mit Reis</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C5HhIN5PMr5.html" class="recipe-card" data-title="honey chicken wraps">
+            <div class="card-thumbnail"><img src="images/C5HhIN5PMr5.jpg" alt="Honey Chicken Wraps" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Honey Chicken Wraps</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DHBkw6RMFSj.html" class="recipe-card" data-title="honey garlic chicken mit gebratenem reis">
+            <div class="card-thumbnail"><img src="images/DHBkw6RMFSj.jpg" alt="Honey Garlic Chicken mit gebratenem Reis" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Honey Garlic Chicken mit gebratenem Reis</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLXRx-MIwUy.html" class="recipe-card" data-title="hähnchen frühlingsrollen">
+            <div class="card-thumbnail"><img src="images/DLXRx-MIwUy.jpg" alt="Hähnchen Frühlingsrollen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Hähnchen Frühlingsrollen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLXbAKio7FQ.html" class="recipe-card" data-title="hähnchen-gurken-salat">
+            <div class="card-thumbnail"><img src="images/DLXbAKio7FQ.jpg" alt="Hähnchen-Gurken-Salat" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Hähnchen-Gurken-Salat</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJRWcNDiXAN.html" class="recipe-card" data-title="hähnchen-gurken-salat">
+            <div class="card-thumbnail"><img src="images/DJRWcNDiXAN.jpg" alt="Hähnchen-Gurken-Salat" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Hähnchen-Gurken-Salat</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DN0uEBz0HDX.html" class="recipe-card" data-title="hähnchen-vollkornnudel-pfanne">
+            <div class="card-thumbnail"><img src="images/DN0uEBz0HDX.jpg" alt="Hähnchen-Vollkornnudel-Pfanne" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Hähnchen-Vollkornnudel-Pfanne</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DF-lPsGoQFo.html" class="recipe-card" data-title="hüttenkäse pizza">
+            <div class="card-thumbnail"><img src="images/DF-lPsGoQFo.jpg" alt="Hüttenkäse Pizza" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Hüttenkäse Pizza</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C7mVaiaKpjB.html" class="recipe-card" data-title="hüttenkäse wrap">
+            <div class="card-thumbnail"><img src="images/C7mVaiaKpjB.jpg" alt="Hüttenkäse Wrap" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Hüttenkäse Wrap</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DCUYdqxNYLX.html" class="recipe-card" data-title="immunbooster">
+            <div class="card-thumbnail"><img src="images/DCUYdqxNYLX.jpg" alt="Immunbooster" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Immunbooster</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DBnwfbLtkpd.html" class="recipe-card" data-title="ingwer shot selbermachen">
+            <div class="card-thumbnail"><img src="images/DBnwfbLtkpd.jpg" alt="Ingwer Shot Selbermachen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Ingwer Shot Selbermachen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C9xTcRKtX_m.html" class="recipe-card" data-title="kalorienarme chicken fajita wraps">
+            <div class="card-thumbnail"><img src="images/C9xTcRKtX_m.jpg" alt="Kalorienarme Chicken Fajita Wraps" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Kalorienarme Chicken Fajita Wraps</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DIHHGcnMzCZ.html" class="recipe-card" data-title="kalorienarme haferflocken körner stangen">
+            <div class="card-thumbnail"><img src="images/DIHHGcnMzCZ.jpg" alt="Kalorienarme Haferflocken Körner Stangen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Kalorienarme Haferflocken Körner Stangen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DIB_JjfM5vQ.html" class="recipe-card" data-title="kalorienarme spinat lasagne">
+            <div class="card-thumbnail"><img src="images/DIB_JjfM5vQ.jpg" alt="Kalorienarme Spinat Lasagne" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Kalorienarme Spinat Lasagne</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLnDekGMHk1.html" class="recipe-card" data-title="karotten zucchini wraps">
+            <div class="card-thumbnail"><img src="images/DLnDekGMHk1.jpg" alt="Karotten Zucchini Wraps" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Karotten Zucchini Wraps</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLSoZx9IVoG.html" class="recipe-card" data-title="kartoffelauflauf mit spinat-creme">
+            <div class="card-thumbnail"><img src="images/DLSoZx9IVoG.jpg" alt="Kartoffelauflauf mit Spinat-Creme" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Kartoffelauflauf mit Spinat-Creme</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DNVJNvnNhMK.html" class="recipe-card" data-title="kartoffelpfanne">
+            <div class="card-thumbnail"><img src="images/DNVJNvnNhMK.jpg" alt="Kartoffelpfanne" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Kartoffelpfanne</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DNbHhE1MRze.html" class="recipe-card" data-title="kinder pinguin fitness-variante">
+            <div class="card-thumbnail"><img src="images/DNbHhE1MRze.jpg" alt="Kinder Pinguin Fitness-Variante" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Kinder Pinguin Fitness-Variante</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJZZE5jsmYX.html" class="recipe-card" data-title="kräuter bällchen">
+            <div class="card-thumbnail"><img src="images/DJZZE5jsmYX.jpg" alt="Kräuter Bällchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Kräuter Bällchen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLKk8EqNDMd.html" class="recipe-card" data-title="kuchen mit wenig kalorien">
+            <div class="card-thumbnail"><img src="images/DLKk8EqNDMd.jpg" alt="Kuchen mit wenig Kalorien" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Kuchen mit wenig Kalorien</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DIVdKpms9Pm.html" class="recipe-card" data-title="käse nudelpfanne mit hähnchen">
+            <div class="card-thumbnail"><img src="images/DIVdKpms9Pm.jpg" alt="Käse Nudelpfanne mit Hähnchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Käse Nudelpfanne mit Hähnchen</div>
+                <div class="recipe-meta"><span class="category-tag">abnehmgerechte</span><span class="category-tag">Mittagessen</span><span class="category-tag">Abendessen</span></div>
+            </div>
+        </a><a href="recipe-DIlFPwZIED4.html" class="recipe-card" data-title="käsekuchen mit zimt-swirl">
+            <div class="card-thumbnail"><img src="images/DIlFPwZIED4.jpg" alt="Käsekuchen mit Zimt-Swirl" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Käsekuchen mit Zimt-Swirl</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DHi328XNCFP.html" class="recipe-card" data-title="körniger frischkäse light">
+            <div class="card-thumbnail"><img src="images/DHi328XNCFP.jpg" alt="Körniger Frischkäse Light" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Körniger Frischkäse Light</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DK-DsBYsiT3.html" class="recipe-card" data-title="lidl protein">
+            <div class="card-thumbnail"><img src="images/DK-DsBYsiT3.jpg" alt="Lidl Protein" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Lidl Protein</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLAa1A6sEOR.html" class="recipe-card" data-title="lieblings gemüse rolle">
+            <div class="card-thumbnail"><img src="images/DLAa1A6sEOR.jpg" alt="Lieblings Gemüse Rolle" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Lieblings Gemüse Rolle</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C7uCAPKqZw9.html" class="recipe-card" data-title="low carb hüttenkäse wrap">
+            <div class="card-thumbnail"><img src="images/C7uCAPKqZw9.jpg" alt="Low Carb Hüttenkäse Wrap" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Low Carb Hüttenkäse Wrap</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJ4ZO2Bixcx.html" class="recipe-card" data-title="low carb käsekuchen">
+            <div class="card-thumbnail"><img src="images/DJ4ZO2Bixcx.jpg" alt="Low Carb Käsekuchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Low Carb Käsekuchen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJ9RHMEoC0w.html" class="recipe-card" data-title="magerquark käsekuchen">
+            <div class="card-thumbnail"><img src="images/DJ9RHMEoC0w.jpg" alt="Magerquark Käsekuchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Magerquark Käsekuchen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DMfU2gltfA6.html" class="recipe-card" data-title="marmor cheesecake">
+            <div class="card-thumbnail"><img src="images/DMfU2gltfA6.jpg" alt="Marmor Cheesecake" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Marmor Cheesecake</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DGoAOODt8ir.html" class="recipe-card" data-title="meal prep chicken süß-sauer">
+            <div class="card-thumbnail"><img src="images/DGoAOODt8ir.jpg" alt="Meal Prep Chicken Süß-Sauer" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Meal Prep Chicken Süß-Sauer</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DIQySPCITlY.html" class="recipe-card" data-title="mealprep hähnchen-reis-pfanne">
+            <div class="card-thumbnail"><img src="images/DIQySPCITlY.jpg" alt="Mealprep Hähnchen-Reis-Pfanne" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Mealprep Hähnchen-Reis-Pfanne</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DHbVQZLNR8P.html" class="recipe-card" data-title="mini germknödel">
+            <div class="card-thumbnail"><img src="images/DHbVQZLNR8P.jpg" alt="Mini Germknödel" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Mini Germknödel</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C8m9AiPMdYQ.html" class="recipe-card" data-title="overnight protein pancakes">
+            <div class="card-thumbnail"><img src="images/C8m9AiPMdYQ.jpg" alt="Overnight Protein Pancakes" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Overnight Protein Pancakes</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJDktGnoo0F.html" class="recipe-card" data-title="pancake bowl">
+            <div class="card-thumbnail"><img src="images/DJDktGnoo0F.jpg" alt="Pancake Bowl" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Pancake Bowl</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DHyRKwbtHHn.html" class="recipe-card" data-title="paprika hähnchen aus ofen">
+            <div class="card-thumbnail"><img src="images/DHyRKwbtHHn.jpg" alt="Paprika Hähnchen aus Ofen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Paprika Hähnchen aus Ofen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DNiLOWoxdHI.html" class="recipe-card" data-title="perfectly cooked chicken breast">
+            <div class="card-thumbnail"><img src="images/DNiLOWoxdHI.jpg" alt="Perfectly Cooked Chicken Breast" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Perfectly Cooked Chicken Breast</div>
+                <div class="recipe-meta"><span class="category-tag">High Protein</span></div>
+            </div>
+        </a><a href="recipe-DB8-_LYM_W1.html" class="recipe-card" data-title="pita mit räuchertofu">
+            <div class="card-thumbnail"><img src="images/DB8-_LYM_W1.jpg" alt="Pita mit Räuchertofu" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Pita mit Räuchertofu</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DG_BT37tCZE.html" class="recipe-card" data-title="pizza auflauf">
+            <div class="card-thumbnail"><img src="images/DG_BT37tCZE.jpg" alt="Pizza Auflauf" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Pizza Auflauf</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJ65vpBsNzz.html" class="recipe-card" data-title="pizza brötchen - high protein & low fat">
+            <div class="card-thumbnail"><img src="images/DJ65vpBsNzz.jpg" alt="Pizza Brötchen - High Protein & Low Fat" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Pizza Brötchen - High Protein & Low Fat</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DN5_mXzCF5J.html" class="recipe-card" data-title="potato pockets – high protein & soulfood">
+            <div class="card-thumbnail"><img src="images/DN5_mXzCF5J.jpg" alt="Potato Pockets – High Protein & Soulfood" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Potato Pockets – High Protein & Soulfood</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DI_qKfoM-di.html" class="recipe-card" data-title="protein cheesecake rezept">
+            <div class="card-thumbnail"><img src="images/DI_qKfoM-di.jpg" alt="Protein Cheesecake Rezept" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein Cheesecake Rezept</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJ63vWMI903.html" class="recipe-card" data-title="protein cinnamon roll pancake bowls">
+            <div class="card-thumbnail"><img src="images/DJ63vWMI903.jpg" alt="Protein Cinnamon Roll Pancake Bowls" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein Cinnamon Roll Pancake Bowls</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DGN-_tMoLlk.html" class="recipe-card" data-title="protein eiermuffins">
+            <div class="card-thumbnail"><img src="images/DGN-_tMoLlk.jpg" alt="Protein Eiermuffins" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein Eiermuffins</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DKpfiSHNzgX.html" class="recipe-card" data-title="protein fluff">
+            <div class="card-thumbnail"><img src="images/DKpfiSHNzgX.jpg" alt="Protein Fluff" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein Fluff</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DKCLY6nIFxT.html" class="recipe-card" data-title="protein gnocchis">
+            <div class="card-thumbnail"><img src="images/DKCLY6nIFxT.jpg" alt="Protein Gnocchis" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein Gnocchis</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C8Ui7shtBE5.html" class="recipe-card" data-title="protein klößchen">
+            <div class="card-thumbnail"><img src="images/C8Ui7shtBE5.jpg" alt="Protein Klößchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein Klößchen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DN8XcsZCGoj.html" class="recipe-card" data-title="protein lahmacun">
+            <div class="card-thumbnail"><img src="images/DN8XcsZCGoj.jpg" alt="Protein Lahmacun" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein Lahmacun</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DJR_D1gM5z8.html" class="recipe-card" data-title="protein nudelauflauf aus resten">
+            <div class="card-thumbnail"><img src="images/DJR_D1gM5z8.jpg" alt="Protein Nudelauflauf aus Resten" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein Nudelauflauf aus Resten</div>
+                <div class="recipe-meta"><span class="category-tag">High Protein</span></div>
+            </div>
+        </a><a href="recipe-C-2888ztXNJ.html" class="recipe-card" data-title="protein schüttelpizza">
+            <div class="card-thumbnail"><img src="images/C-2888ztXNJ.jpg" alt="PROTEIN SCHÜTTELPIZZA" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">PROTEIN SCHÜTTELPIZZA</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLXrSMiolGr.html" class="recipe-card" data-title="protein sonntagsbrötchen">
+            <div class="card-thumbnail"><img src="images/DLXrSMiolGr.jpg" alt="Protein Sonntagsbrötchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein Sonntagsbrötchen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLFnADRofGh.html" class="recipe-card" data-title="protein-mango eis">
+            <div class="card-thumbnail"><img src="images/DLFnADRofGh.jpg" alt="Protein-Mango Eis" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein-Mango Eis</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DKw_mwiIvQ1.html" class="recipe-card" data-title="protein-pudding">
+            <div class="card-thumbnail"><img src="images/DKw_mwiIvQ1.jpg" alt="Protein-Pudding" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein-Pudding</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DMNhcepIUtM.html" class="recipe-card" data-title="protein-tofu-crumble">
+            <div class="card-thumbnail"><img src="images/DMNhcepIUtM.jpg" alt="Protein-Tofu-Crumble" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein-Tofu-Crumble</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DKm5AtfK7-M.html" class="recipe-card" data-title="protein-wraps">
+            <div class="card-thumbnail"><img src="images/DKm5AtfK7-M.jpg" alt="Protein-Wraps" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Protein-Wraps</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DFalyTktyOQ.html" class="recipe-card" data-title="proteinquellen und biologische wertigkeit">
+            <div class="card-thumbnail"><img src="images/DFalyTktyOQ.jpg" alt="Proteinquellen und biologische Wertigkeit" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Proteinquellen und biologische Wertigkeit</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DOJ3AMZiOtR.html" class="recipe-card" data-title="proteinreiches schoko-eis">
+            <div class="card-thumbnail"><img src="images/DOJ3AMZiOtR.jpg" alt="Proteinreiches Schoko-Eis" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Proteinreiches Schoko-Eis</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DHiTg_stSfL.html" class="recipe-card" data-title="quark käulchen kaloriarm & proteinreich">
+            <div class="card-thumbnail"><img src="images/DHiTg_stSfL.jpg" alt="Quark Käulchen kaloriarm & proteinreich" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Quark Käulchen kaloriarm & proteinreich</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DFhnX96Mtcx.html" class="recipe-card" data-title="rezept">
+            <div class="card-thumbnail"><img src="images/DFhnX96Mtcx.jpg" alt="Rezept" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Rezept</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C-ceLVMM52Z.html" class="recipe-card" data-title="schnelles linsensalat mittagessen">
+            <div class="card-thumbnail"><img src="images/C-ceLVMM52Z.jpg" alt="Schnelles Linsensalat Mittagessen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Schnelles Linsensalat Mittagessen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DHjUCeZIMTC.html" class="recipe-card" data-title="schnelles süßes rezept">
+            <div class="card-thumbnail"><img src="images/DHjUCeZIMTC.jpg" alt="Schnelles süßes Rezept" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Schnelles süßes Rezept</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DN0xV6d0HNd.html" class="recipe-card" data-title="schoko haferflocken">
+            <div class="card-thumbnail"><img src="images/DN0xV6d0HNd.jpg" alt="Schoko Haferflocken" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Schoko Haferflocken</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DND6acqotZH.html" class="recipe-card" data-title="schoko kuchen">
+            <div class="card-thumbnail"><img src="images/DND6acqotZH.jpg" alt="Schoko Kuchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Schoko Kuchen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DKxd_FMTV1a.html" class="recipe-card" data-title="selfmade wraps">
+            <div class="card-thumbnail"><img src="images/DKxd_FMTV1a.jpg" alt="Selfmade Wraps" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Selfmade Wraps</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DE0DcMSMhRQ.html" class="recipe-card" data-title="skyr cheesecake">
+            <div class="card-thumbnail"><img src="images/DE0DcMSMhRQ.jpg" alt="Skyr Cheesecake" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Skyr Cheesecake</div>
+                <div class="recipe-meta"><span class="category-tag">Proteinreich</span><span class="category-tag">gesunde Ernährung</span></div>
+            </div>
+        </a><a href="recipe-DK6hthmsygo.html" class="recipe-card" data-title="skyr himbeer cheesecake">
+            <div class="card-thumbnail"><img src="images/DK6hthmsygo.jpg" alt="Skyr Himbeer Cheesecake" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Skyr Himbeer Cheesecake</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DIEiAvAsiAU.html" class="recipe-card" data-title="skyr-kuchen">
+            <div class="card-thumbnail"><img src="images/DIEiAvAsiAU.jpg" alt="Skyr-Kuchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Skyr-Kuchen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C_nFicytr8w.html" class="recipe-card" data-title="smashed potato muffin mit pizzafüllung">
+            <div class="card-thumbnail"><img src="images/C_nFicytr8w.jpg" alt="Smashed Potato Muffin mit Pizzafüllung" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Smashed Potato Muffin mit Pizzafüllung</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DGLlzJasHlT.html" class="recipe-card" data-title="soft brownie">
+            <div class="card-thumbnail"><img src="images/DGLlzJasHlT.jpg" alt="Soft Brownie" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Soft Brownie</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLPpCRqo5DB.html" class="recipe-card" data-title="spaghetti eis">
+            <div class="card-thumbnail"><img src="images/DLPpCRqo5DB.jpg" alt="Spaghetti Eis" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Spaghetti Eis</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DMztvvaMm6M.html" class="recipe-card" data-title="sweet chili chicken rezept">
+            <div class="card-thumbnail"><img src="images/DMztvvaMm6M.jpg" alt="Sweet Chili Chicken Rezept" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Sweet Chili Chicken Rezept</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DEc7LUIsRxg.html" class="recipe-card" data-title="thunfisch schüttelpizza">
+            <div class="card-thumbnail"><img src="images/DEc7LUIsRxg.jpg" alt="Thunfisch Schüttelpizza" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Thunfisch Schüttelpizza</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DGOM3Q4Iwb6.html" class="recipe-card" data-title="tiramisu overnight oats">
+            <div class="card-thumbnail"><img src="images/DGOM3Q4Iwb6.jpg" alt="Tiramisu overnight oats" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Tiramisu overnight oats</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DNPrZh5TvDz.html" class="recipe-card" data-title="tuna protein bread">
+            <div class="card-thumbnail"><img src="images/DNPrZh5TvDz.jpg" alt="Tuna Protein Bread" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Tuna Protein Bread</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-C-S4NLiouXV.html" class="recipe-card" data-title="tunfischwrap zum abnehmen">
+            <div class="card-thumbnail"><img src="images/C-S4NLiouXV.jpg" alt="Tunfischwrap zum abnehmen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Tunfischwrap zum abnehmen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DLhG67kTukz.html" class="recipe-card" data-title="vanilla pancake bowl">
+            <div class="card-thumbnail"><img src="images/DLhG67kTukz.jpg" alt="Vanilla Pancake Bowl" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Vanilla Pancake Bowl</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DNQoaVMsT20.html" class="recipe-card" data-title="veggie slices">
+            <div class="card-thumbnail"><img src="images/DNQoaVMsT20.jpg" alt="Veggie Slices" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Veggie Slices</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DMdEVRbNZlC.html" class="recipe-card" data-title="zucchini feta brot">
+            <div class="card-thumbnail"><img src="images/DMdEVRbNZlC.jpg" alt="Zucchini Feta Brot" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Zucchini Feta Brot</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DL5CE_7tobo.html" class="recipe-card" data-title="zucchini käse brötchen">
+            <div class="card-thumbnail"><img src="images/DL5CE_7tobo.jpg" alt="Zucchini Käse Brötchen" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Zucchini Käse Brötchen</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a><a href="recipe-DM-t513NU8N.html" class="recipe-card" data-title="zucchini-wraps">
+            <div class="card-thumbnail"><img src="images/DM-t513NU8N.jpg" alt="Zucchini-Wraps" loading="lazy"></div>
+            <div class="card-content">
+                <div class="recipe-title">Zucchini-Wraps</div>
+                <div class="recipe-meta"></div>
+            </div>
+        </a></div>
+    <script>
+        function filterRecipes() {
+            const filter = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.recipe-card').forEach(card => {
+                card.style.display = card.getAttribute('data-title').includes(filter) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
