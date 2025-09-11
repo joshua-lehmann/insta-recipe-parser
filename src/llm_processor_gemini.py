@@ -39,7 +39,7 @@ class GeminiProcessor(LLMProcessor):
         try:
             client = genai.Client(api_key=GOOGLE_API_KEY)
 
-            logging.info(f"Sending caption to Google Gemini ({model_name})...")
+            logging.debug(f"Sending caption to Google Gemini ({model_name})...")
             cleaned_caption = preprocess_caption(caption)
 
             config = types.GenerateContentConfig(

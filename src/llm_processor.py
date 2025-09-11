@@ -94,7 +94,7 @@ class OllamaProcessor(LLMProcessor):
         response_content = ""
         start_time = time.time()
         try:
-            logging.info(f"Sending caption to Ollama ({model_name})...")
+            logging.debug(f"Sending caption to Ollama ({model_name})...")
             cleaned_caption = preprocess_caption(caption)
 
             response = ollama.chat(

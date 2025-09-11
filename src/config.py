@@ -55,7 +55,7 @@ LLM_MODELS = {
 }
 
 # --- GitHub Pages Settings ---
-DOCS_DIR = "output/docs"
+DOCS_DIR = "docs"
 
 # --- Validation Settings ---
 VALIDATION_OUTPUT_DIR = "output/validation"

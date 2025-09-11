@@ -95,14 +95,34 @@ def get_current_recipe_data(recipe_info: Dict[str, Any]) -> Dict[str, Any]:
     return recipe_info
 
 
-def generate_recipe_markdown(url: str, data: Dict, recipe_index: int) -> str:
+def generate_recipe_markdown(url: str, data: Dict) -> str:
     """Generate markdown content for a single recipe optimized for LLM evaluation."""
-    recipe_name = f"Recipe_{recipe_index:02d}"
+    # Get recipe title from first available model's data or use URL short code
+    recipe_title = "Untitled Recipe"
+
+    # Try to get a title from any model's data
+    for model_name, recipe_info in data.get('recipes', {}).items():
+        current_result = get_current_recipe_data(recipe_info)
+        recipe_data = current_result.get('data', {})
+        if title := recipe_data.get('title'):
+            recipe_title = title
+            break
+
+    # If no title found, try to extract a short code from URL
+    if recipe_title == "Untitled Recipe":
+        # Extract Instagram shortcode from URL if possible
+        try:
+            short_code = url.rstrip('/').split('/')[-1]
+            if short_code:
+                recipe_title = f"Recipe_{short_code}"
+        except:
+            pass
+
     # Prefer cleaned caption if available; fallback to original caption
     cleaned_or_original_caption = data.get('cleaned_caption') or data.get('caption', 'No caption available')
     caption_heading = "Cleaned Caption" if data.get('cleaned_caption') else "Original Caption"
 
-    markdown_content = f'''# {recipe_name}
+    markdown_content = f'''# {recipe_title}
 
 
 ## Original Instagram Post
@@ -283,7 +303,7 @@ This summary and benchmark files are automatically generated after each processi
     try:
         with open(summary_path, 'w', encoding='utf-8') as f:
             f.write(summary_content)
-        logging.info(f"Successfully updated validation summary: {summary_path}")
+        logging.debug(f"Successfully updated validation summary: {summary_path}")
     except Exception as e:
         logging.error(f"Failed to write validation summary {summary_path}: {e}")
 
@@ -302,13 +322,49 @@ def create_validation_benchmarks(progress_data: Dict[str, Any], output_dir: str 
     version_output_dir = os.path.join(output_dir, current_version)
     os.makedirs(version_output_dir, exist_ok=True)
 
-    for i, (url, data) in enumerate(selected_recipes):
-        markdown_content = generate_recipe_markdown(url, data, i + 1)
-        file_path = os.path.join(version_output_dir, f"recipe_{i+1:02d}_comparison.md")
+    # Get existing benchmark files to avoid regenerating existing ones
+    existing_benchmarks = set()
+    if os.path.exists(version_output_dir):
+        existing_benchmarks = set(os.listdir(version_output_dir))
+
+    for url, data in selected_recipes:
+        # Extract short code from URL
+        short_code = "unknown"
+        try:
+            short_code = url.rstrip('/').split('/')[-1]
+        except:
+            pass
+
+        # Generate recipe title
+        recipe_title = "untitled"
+
+        # Try to get a title from any model's data
+        for model_name, recipe_info in data.get('recipes', {}).items():
+            current_result = get_current_recipe_data(recipe_info)
+            recipe_data = current_result.get('data', {})
+            if title := recipe_data.get('title'):
+                recipe_title = title.lower().replace(' ', '_')
+                break
+
+        # Clean up the title to make it a valid filename
+        recipe_title = ''.join(c if c.isalnum() or c in '_-' else '_' for c in recipe_title)
+        recipe_title = recipe_title[:40]  # Limit length
+
+        # Format: shortcode-recipe_title_comparison.md
+        file_name = f"{short_code}-{recipe_title}_comparison.md"
+
+        # Skip if benchmark already exists for this recipe in this version
+        if file_name in existing_benchmarks:
+            logging.debug(f"Skipping existing benchmark for {recipe_title}")
+            continue
+
+        markdown_content = generate_recipe_markdown(url, data)
+        file_path = os.path.join(version_output_dir, file_name)
+
         try:
             with open(file_path, 'w', encoding='utf-8') as f:
                 f.write(markdown_content)
-            logging.info(f"Successfully created benchmark file: {file_path}")
+            logging.debug(f"Successfully created benchmark file: {file_path}")
         except Exception as e:
             logging.error(f"Failed to write benchmark file {file_path}: {e}")
 

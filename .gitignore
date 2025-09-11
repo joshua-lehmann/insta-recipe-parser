@@ -1,7 +1,7 @@
 failed.log
 input/processing_progress.json
 input/saved_collections.json
-output/validation
+output
 
 ### PythonVanilla template
 # Byte-compiled / optimized / DLL files
