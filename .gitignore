@@ -1,6 +1,7 @@
 failed.log
 input/processing_progress.json
 input/saved_collections.json
+output/validation
 
 ### PythonVanilla template
 # Byte-compiled / optimized / DLL files
@@ -70,3 +71,4 @@ cover/
 __pypackages__/
 
 
+/_josh_99_

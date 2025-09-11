@@ -7,6 +7,7 @@
 import re
 import logging
 from typing import Tuple, Optional
+import os
 
 import instaloader
 import config
@@ -34,7 +35,7 @@ def get_instaloader_instance() -> instaloader.Instaloader:
             quiet=True,
             download_pictures=False,
             download_videos=False,
-            download_video_thumbnails=False,
+            download_video_thumbnails=True,
             download_geotags=False,
             download_comments=False,
             save_metadata=False
@@ -122,7 +123,7 @@ def get_instaloader_instance() -> instaloader.Instaloader:
 
 
 def fetch_post_details(url: str) -> Tuple[Optional[str], Optional[str]]:
-    """Fetches both caption and thumbnail URL from an Instagram post."""
+    """Fetches caption and downloads the thumbnail, returning its local path."""
     logging.debug(f"Fetching post details from {url}")
 
     try:
@@ -141,8 +142,36 @@ def fetch_post_details(url: str) -> Tuple[Optional[str], Optional[str]]:
         post = instaloader.Post.from_shortcode(L.context, shortcode)
 
         caption = post.caption if post.caption else None
-        # Use video thumbnail when available; otherwise fall back to video_url for videos or the regular URL.
-        thumbnail_url = getattr(post, "video_thumbnail_url", None) or (post.video_url if post.is_video else post.url)
+        
+        # The 'url' attribute provides the thumbnail for both images and videos.
+        thumbnail_url = post.url
+
+        if not thumbnail_url:
+            logging.warning(f"No thumbnail URL could be determined for {url}")
+            return caption, None
+
+        # Define image directory and create if it doesn't exist
+        images_dir = os.path.join(config.DOCS_DIR, 'images')
+        os.makedirs(images_dir, exist_ok=True)
+
+        # Define local path for the thumbnail
+        image_filename_with_ext = f"{shortcode}.jpg"
+        image_path_with_ext = os.path.join(images_dir, image_filename_with_ext)
+        image_path_without_ext = os.path.join(images_dir, shortcode)
+        
+        # Download picture if it doesn't exist locally
+        if not os.path.exists(image_path_with_ext):
+            logging.debug(f"Downloading thumbnail for {shortcode} to {image_path_with_ext}")
+            # instaloader adds the extension, so we pass the path without it
+            if L.download_pic(filename=image_path_without_ext, url=thumbnail_url, mtime=post.date_utc):
+                logging.debug(f"✅ Thumbnail downloaded for {shortcode}")
+            else:
+                logging.info(f"Thumbnail for {shortcode} already exists (per instaloader).")
+        else:
+            logging.debug(f"Thumbnail for {shortcode} already exists at {image_path_with_ext}, skipping download call.")
+
+        # Return the relative path for use in HTML, using forward slashes
+        relative_path = os.path.join('images', image_filename_with_ext).replace('\\', '/')
 
         if caption:
             caption_preview = (caption[:70] + '...').replace('\n', ' ')
@@ -150,7 +179,7 @@ def fetch_post_details(url: str) -> Tuple[Optional[str], Optional[str]]:
         else:
             logger.warning(f"⚠️ No caption found for {url}")
 
-        return caption, thumbnail_url
+        return caption, relative_path
 
     except instaloader.InstaloaderException as e:
         if "401" in str(e) or "login" in str(e).lower():

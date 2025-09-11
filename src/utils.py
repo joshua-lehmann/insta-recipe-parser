@@ -8,7 +8,6 @@
 import json
 import logging
 import os
-import random
 import time
 from typing import Dict, Any, List, Tuple
 
@@ -40,7 +39,8 @@ def setup_logging():
     patterns_to_silence = [
         "HTTP Request:", "Websocket", '"client":', '"event":',
         'lmstudio-greeting', "JSON Query to graphql/query",
-        "127.0.0.1:", "ws://", "thread_id", "Switching Protocols"
+        "127.0.0.1:", "ws://", "thread_id", "Switching Protocols",
+        "AFC is enabled", "AFC remote call", "Both GOOGLE_API_KEY and GEMINI_API_KEY are set"
     ]
     noise_filter = NoiseFilter(patterns_to_silence)
 
@@ -49,6 +49,8 @@ def setup_logging():
         handler.addFilter(noise_filter)
 
     logging.getLogger('instaloader').setLevel(logging.WARNING)
+    logging.getLogger('google.generativeai').setLevel(logging.WARNING)
+    logging.getLogger('google.genai').setLevel(logging.WARNING)
 
     if not os.environ.get('INSTAGRAM_USERNAME') or not os.environ.get('INSTAGRAM_PASSWORD'):
         logging.info("Instagram credentials missing. For authentication, set environment variables.")
@@ -85,14 +87,6 @@ def get_recipes_with_min_models(progress_data: Dict[str, Any], min_models: int =
     return eligible_recipes
 
 
-def select_random_recipes(eligible_recipes: List[Tuple[str, Dict]], count: int = 5) -> List[Tuple[str, Dict]]:
-    """Select random recipes from the eligible list."""
-    if len(eligible_recipes) < count:
-        logging.warning(f"Only {len(eligible_recipes)} recipes available, but {count} requested. Using all available.")
-        return eligible_recipes
-    return random.sample(eligible_recipes, count)
-
-
 def get_current_recipe_data(recipe_info: Dict[str, Any]) -> Dict[str, Any]:
     """Extracts the current recipe data from a potentially versioned structure."""
     if isinstance(recipe_info, dict) and 'current' in recipe_info:
@@ -108,7 +102,7 @@ def generate_recipe_markdown(url: str, data: Dict, recipe_index: int) -> str:
     cleaned_or_original_caption = data.get('cleaned_caption') or data.get('caption', 'No caption available')
     caption_heading = "Cleaned Caption" if data.get('cleaned_caption') else "Original Caption"
 
-    markdown_content = f"""# {recipe_name}
+    markdown_content = f'''# {recipe_name}
 
 
 ## Original Instagram Post
@@ -118,7 +112,7 @@ def generate_recipe_markdown(url: str, data: Dict, recipe_index: int) -> str:
 ## {caption_heading}
 {cleaned_or_original_caption}
 ```
-"""
+'''
     for model, recipe_info in data.get('recipes', {}).items():
         current_result = get_current_recipe_data(recipe_info)
         recipe_data = current_result.get('data', {})
@@ -239,7 +233,7 @@ def update_validation_summary(progress_data: Dict[str, Any], output_dir: str):
 
     total_recipes = len([k for k, v in progress_data.items() if v.get('recipes')])
 
-    summary_content = f"""# LLM Model Performance Summary
+    summary_content = f'''# LLM Model Performance Summary
 
 Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}
 
@@ -251,15 +245,15 @@ Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}
 
 | Model | Recipes Processed | Avg Time (s) | Min Time (s) | Max Time (s) |
 |-------|------------------|--------------|--------------|--------------|
-"""
+'''
 
     for model_name, stats in sorted(model_stats.items()):
         summary_content += f"| {model_name} | {stats['count']} | {stats['avg_time']:.2f} | {stats['min_time']:.2f} | {stats['max_time']:.2f} |\n"
 
-    summary_content += f"""
+    summary_content += f'''
 ## Processing Efficiency
 
-"""
+'''
 
     # Add efficiency rankings
     if model_stats:
@@ -268,7 +262,7 @@ Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}
         for i, (model_name, stats) in enumerate(sorted_by_speed, 1):
             summary_content += f"{i}. **{model_name}** - {stats['avg_time']:.2f}s average\n"
 
-    summary_content += """
+    summary_content += '''
 ## Validation Guidelines
 
 These benchmark files are optimized for evaluation by external powerful LLMs to score and compare model performance across different metrics including:
@@ -283,7 +277,7 @@ These benchmark files are optimized for evaluation by external powerful LLMs to 
 ## Auto-Generation
 
 This summary and benchmark files are automatically generated after each processing batch, providing real-time insights into model performance.
-"""
+'''
 
     summary_path = os.path.join(output_dir, "summary.md")
     try:
@@ -294,10 +288,10 @@ This summary and benchmark files are automatically generated after each processi
         logging.error(f"Failed to write validation summary {summary_path}: {e}")
 
 
-def create_validation_benchmarks(progress_data: Dict[str, Any], output_dir: str = "benchmarks", count: int = 5, min_models: int = 3):
-    """Creates markdown files for a random selection of recipes to be used for validation."""
+def create_validation_benchmarks(progress_data: Dict[str, Any], output_dir: str = "benchmarks", min_models: int = 2):
+    """Creates markdown files for all recipes in the batch to be used for validation."""
     eligible_recipes = get_recipes_with_min_models(progress_data, min_models)
-    selected_recipes = select_random_recipes(eligible_recipes, count)
+    selected_recipes = eligible_recipes
 
     if not selected_recipes:
         logging.warning("No recipes were eligible for creating validation benchmarks.")

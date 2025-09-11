@@ -180,7 +180,7 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
     Args:
         recipes_by_model: Dictionary mapping model names to recipe data
         output_dir: Directory to save the HTML file
-        post_data: Data about the Instagram post
+        post_data: Data about the Instagram post (may contain thumbnail_path from Instagram fetcher)
         requested_version: Version to display (timestamp or 'current')
     """
     if not recipes_by_model:
@@ -198,8 +198,30 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
     filename = f"{filename_base}.html"
     filepath = os.path.join(output_dir, filename)
 
-    local_image_path = download_image(post_data.get('thumbnail_url'), output_dir, filename_base)
-    thumbnail_html = f'<div class="recipe-thumbnail"><img src="{local_image_path}" alt="Rezeptbild" loading="lazy"></div>' if local_image_path else ""
+    # Extract shortcode from URL to find the thumbnail
+    local_image_path = None
+    try:
+        url = post_data.get('url', '')
+        shortcode_match = re.search(r'/(?:p|reel|reels)/([A-Za-z0-9_-]+)', url)
+        if shortcode_match:
+            shortcode = shortcode_match.group(1)
+            # Check if the image exists in the images directory
+            if os.path.exists(os.path.join(output_dir, "images", f"{shortcode}.jpg")):
+                local_image_path = f"images/{shortcode}.jpg"
+                logging.debug(f"Found existing thumbnail for {shortcode} at {local_image_path}")
+    except Exception as e:
+        logging.warning(f"Error finding thumbnail by shortcode: {e}")
+
+    # If not available, fall back to downloading from URL
+    if not local_image_path:
+        local_image_path = download_image(post_data.get('thumbnail_url'), output_dir, filename_base)
+
+    if local_image_path:
+        logging.debug(f"Using thumbnail at path: {local_image_path}")
+        thumbnail_html = f'<div class="recipe-thumbnail"><img src="{local_image_path}" alt="Rezeptbild" loading="lazy"></div>'
+    else:
+        logging.warning(f"No thumbnail found for recipe {filename_base}")
+        thumbnail_html = ""
 
     json_ld = create_json_ld(recipe_for_meta)
 
@@ -392,9 +414,9 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
         ul, ol {{ padding-left: 20px; }} li {{ margin: 8px 0; }}
         .ingredient-group h3 {{ font-size: 1.1em; margin: 15px 0 8px 0; }}
         .content-wrapper {{ display: flow-root; }}
-        .recipe-thumbnail {{ float: right; width: 300px; max-width: 40%; margin: 5px 0 15px 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }}
-        .recipe-thumbnail img {{ width: 100%; height: auto; display: block; border-radius: 12px; }}
-        @media (max-width: 768px) {{ .recipe-thumbnail {{ float: none; width: 100%; max-width: 300px; margin: 15px auto; }} }}
+        .recipe-thumbnail {{ float: right; width: 250px; max-width: 35%; margin: 5px 0 15px 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); overflow: hidden; }}
+        .recipe-thumbnail img {{ width: 100%; height: auto; display: block; border-radius: 12px; object-fit: cover; }}
+        @media (max-width: 768px) {{ .recipe-thumbnail {{ float: none; width: 100%; max-width: 250px; margin: 15px auto; }} }}
         .nutrition-section {{ background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 25px; }}
         .nutrition-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin-top: 8px; }}
         .nutrition-item {{ background: white; padding: 12px; border-radius: 6px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }}
@@ -470,7 +492,7 @@ def generate_recipe_page(recipes_by_model: dict, output_dir: str, post_data: dic
     # Log more detailed information for debugging
     version_info = f" (version: {requested_version})" if requested_version != 'current' else ""
     available_versions = len(sorted_versions) + 1  # +1 for current
-    logging.info(
+    logging.debug(
         f"Generated comparison recipe page: {filepath}{version_info} with {available_versions} versions available")
 
     # Print console message about versions to make debugging easier
@@ -517,7 +539,24 @@ def generate_index_page(all_progress_data: Dict[str, Any], output_dir: str):
         recipe = Recipe(**first_recipe_data)
 
         filename = get_stable_filename_base(post_data['url']) + ".html"
+
+        # Extract thumbnail path from shortcode for index card
+        thumbnail_path = None
+        try:
+            url = post_data.get('url', '')
+            shortcode_match = re.search(r'/(?:p|reel|reels)/([A-Za-z0-9_-]+)', url)
+            if shortcode_match:
+                shortcode = shortcode_match.group(1)
+                # Check if the image exists in the images directory
+                if os.path.exists(os.path.join(output_dir, "images", f"{shortcode}.jpg")):
+                    thumbnail_path = f"images/{shortcode}.jpg"
+        except Exception as e:
+            logging.warning(f"Error finding thumbnail for index card: {e}")
+
+        thumbnail_html = f'<div class="card-thumbnail"><img src="{thumbnail_path}" alt="{recipe.title}" loading="lazy"></div>' if thumbnail_path else ''
+
         card = f"""<a href="{filename}" class="recipe-card" data-title="{recipe.title.lower()}">
+            {thumbnail_html}
             <div class="card-content">
                 <div class="recipe-title">{recipe.title}</div>
                 <div class="recipe-meta">{''.join([f'<span class="category-tag">{cat}</span>' for cat in recipe.categories[:3]])}</div>
@@ -538,9 +577,11 @@ def generate_index_page(all_progress_data: Dict[str, Any], output_dir: str):
         .stat-card {{ background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); min-width: 200px; }}
         .stat-card h3 {{ margin: 0 0 10px; }} .stat-card p {{ font-size: 1.5em; margin: 0; }} .stat-card span {{ font-size: 0.9em; color: #7f8c8d; }}
         .recipe-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }}
-        .recipe-card {{ background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: all 0.2s; text-decoration: none; color: inherit; }}
+        .recipe-card {{ background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: all 0.2s; text-decoration: none; color: inherit; display: flex; flex-direction: column; overflow: hidden; }}
         .recipe-card:hover {{ transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }}
-        .card-content {{ padding: 20px; }}
+        .card-content {{ padding: 20px; flex-grow: 1; }}
+        .card-thumbnail {{ width: 100%; height: 160px; overflow: hidden; }}
+        .card-thumbnail img {{ width: 100%; height: 100%; object-fit: cover; }}
         .recipe-title {{ font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #2c3e50; }}
         .recipe-meta {{ display: flex; flex-wrap: wrap; gap: 5px; }}
         .category-tag {{ background: #e8f4fd; color: #2c3e50; padding: 4px 10px; border-radius: 15px; font-size: 0.8em; }}
